@@ -1,0 +1,355 @@
+/* =========================================
+   Basic Reset and Font 
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fff;
+    color: #333;
+}
+
+/* =========================================
+   Header & Navigation 
+   ========================================= */
+header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #FF4500;
+}
+
+.cta-primary, .cta-secondary {
+    padding: 10px 20px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.cta-primary {
+    background-color: #333;
+    color: #fff;
+}
+
+.cta-primary:hover {
+    background-color: #000;
+}
+
+.cta-secondary {
+    background-color: #FF4500;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1.1em;
+}
+
+.cta-secondary:hover {
+    background-color: #CC3700;
+}
+
+/* =========================================
+   Hero Grid Layout 
+   ========================================= */
+.content-grid {
+    padding-top: 70px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 5px;
+}
+
+.grid-item {
+    background-size: cover;
+    background-position: center;
+    min-height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tall {
+    grid-row: span 2;
+    min-height: 405px;
+}
+
+.wide {
+    grid-column: span 2;
+}
+
+/* Main Promotional Box Styling */
+.main-promo-container {
+    grid-row: span 3;
+    grid-column: span 3;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    min-height: 610px;
+}
+
+.main-promo-content h1 {
+    font-size: 3em;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+
+.main-promo-content p {
+    font-size: 1.2em;
+    font-weight: 400;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.main-promo-content p strong {
+    font-weight: 700;
+    color: #333;
+}
+
+/* Member Count Box Styling */
+.member-count-box {
+    background-color: #FF4500;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: inline-block;
+    text-align: left;
+}
+
+.member-count-box .plus-sign {
+    font-size: 1.5em;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.member-count-box p {
+    font-size: 0.8em;
+    margin: 0;
+    line-height: 1.3;
+    color: #fff;
+    font-weight: 400;
+}
+
+/* =========================================
+   NEU: DWS Fakten Sektion 
+   ========================================= */
+.dws-section {
+    max-width: 1200px;
+    width: 100%;
+    margin: 80px auto; /* Zentriert die Sektion mit Abstand nach oben/unten */
+    padding: 0 30px;
+}
+
+.dws-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.dws-header h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333; /* Passend zu deiner main-promo-content h1 */
+}
+
+.dws-header p {
+    color: #555; /* Passend zu deinem p-Text */
+    font-size: 1.1em;
+    max-width: 700px;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+.fact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.fact-card {
+    background-color: #f8f9fa; /* Sehr helles Grau für subtilen Kontrast zum weißen Hintergrund */
+    border-radius: 15px; /* Etwas runder, passend zu deinen 20px CTAs */
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-circle svg {
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    stroke-width: 1.5px;
+}
+
+/* Fakten-Farben */
+.fact-orange        { background-color: #FF4500; } /* Dein Primary Orange */
+.fact-brown         { background-color: #7B3F00; }
+.fact-orange-light  { background-color: #FF6B35; }
+.fact-dark-green    { background-color: #2D3E33; }
+.fact-coral         { background-color: #FF7F50; }
+.fact-dark-red      { background-color: #8B0000; }
+.fact-forest-green  { background-color: #223322; }
+.fact-salmon        { background-color: #FF8C69; }
+
+.fact-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #333;
+}
+
+.fact-content p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* CTA Container für Fakten */
+.dws-cta-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Modifizierter CTA passend zu .cta-primary */
+.dws-cta-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 35px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1em;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.dws-cta-button:hover {
+    background-color: #000;
+}
+
+.dws-cta-button .dot {
+    height: 8px;
+    width: 8px;
+    background-color: #FF4500;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 12px;
+}
+
+
+/* =========================================
+   Media Queries for Responsiveness 
+   ========================================= */
+@media (max-width: 1024px) {
+    .main-promo-container {
+        grid-column: span 4;
+        grid-row: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Header & Navigation */
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 10px;
+    }
+
+    .nav-links {
+        margin-bottom: 10px;
+    }
+
+    .cta-primary {
+        margin-left: 0;
+        align-self: flex-end;
+    }
+
+    /* Hero Grid */
+    .content-grid {
+        padding-top: 120px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .tall, .wide {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+        min-height: 200px;
+    }
+
+    .main-promo-container {
+        grid-column: span 2 !important;
+        grid-row: span 2 !important;
+        min-height: 400px;
+    }
+
+    .main-promo-content h1 {
+        font-size: 2em;
+    }
+
+    .main-promo-content p {
+        font-size: 1em;
+    }
+    
+    /* DWS Fakten Sektion */
+    .dws-section {
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+    
+    .dws-header h2 {
+        font-size: 2em;
+    }
+
+    .fact-grid {
+        grid-template-columns: 1fr;
+    }
+}

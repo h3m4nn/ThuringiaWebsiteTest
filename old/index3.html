@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V.B.B! Thuringia</title>
+    <link rel="icon" type="image/png" href="./images/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="./images/icons/favicon.svg" />
+    <link rel="shortcut icon" href="./images/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./images/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="./images/icons/site.webmanifest" /> 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Germania+One&display=swap" rel="stylesheet">
+  
+    <style>
+        /* --- 1. General Setup --- */
+        :root {
+            --primary-orange: #72d124;
+            --text-dark: #111;
+            --overlay-white: rgba(255, 255, 255, 0.85);
+            /* New Colors for Cards */
+            --color-green: #383752;
+            --color-red: #8f3428;
+            --color-white-bg: #fff;
+            /* Pill Colors */
+            --pill-purple: #9b59b6;
+            --pill-orange: #e67e22;
+            --pill-green: #2ecc71;
+            --pill-blue: #3498db;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            width: 100vw;
+            position: relative;
+            padding-top: 90px; /* Push content down by nav height */
+            background-color: #fcfcfc;
+        }
+
+        /* --- 2. Moving Background Grid --- */
+        .background-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            overflow: hidden;
+            background: #f0f0f0;
+            padding-top: 90px;
+            transition: opacity 0.2s ease-out;
+        }
+
+        .scroll-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 20%; 
+            min-width: 200px;
+        }
+
+        .scroll-column-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .col-1 { animation: scrollUp 40s linear infinite; }
+        .col-2 { animation: scrollDown 50s linear infinite; }
+        .col-3 { animation: scrollUp 35s linear infinite; }
+        .col-4 { animation: scrollDown 45s linear infinite; }
+        .col-5 { animation: scrollUp 38s linear infinite; }
+
+        .scroll-column img {
+            width: 100%;
+            border-radius: 4px;
+            object-fit: cover;
+            display: block;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); } 
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0); }
+        }
+
+        /* --- 3. The White Gradient Overlay --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,1) 20%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.0) 100%);
+            z-index: 1;
+            pointer-events: none; 
+        }
+
+        /* --- 4. Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-orange);
+        }
+
+        /* --- 5. Hero Content --- */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            min-height: calc(100vh - 90px); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: transparent; 
+        }
+
+        .social-proof {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 5px 15px 5px 5px;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .avatars { display: flex; }
+        
+        .avatars img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-right: -10px; 
+        }
+        .avatars img:last-child { margin-right: 10px; }
+
+        .social-text {
+            font-size: 12px;
+            color: #555;
+            text-align: left;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-family: 'Germania One', serif;
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 40px;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+
+        .cta-button {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background-color: #000;
+        }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background-color: var(--primary-orange);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .highlight {
+            color: var(--primary-orange);
+            font-weight: 700;
+        }
+
+        /* --- 6. Content Section (Wrapper) --- */
+        .content-section {
+            position: relative;
+            z-index: 20;
+            background-color: #fff;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 50px;
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 100px; 
+        }
+
+        .info-box h2 {
+            font-family: 'Germania One', serif;
+            font-size: 3rem;
+            margin-bottom: 5px;
+            color: #222;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .website-url {
+            color: var(--primary-orange);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 35px 0;
+            border-top: 1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 35px;
+        }
+
+        .stat-item h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #222;
+            line-height: 1;
+        }
+
+        .stat-item p {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .stat-sub {
+             color: var(--primary-orange) !important;
+             font-size: 0.85rem !important;
+             margin-top: 5px;
+        }
+
+        .media-section p {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .media-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+            opacity: 0.7;
+        }
+        
+        .media-logo-text {
+            font-weight: 700;
+            color: #333;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+        .logo-spiegel { color: #d71f1f; font-family: sans-serif; font-weight: 800;}
+        .logo-ntv { color: #d71f1f; font-weight: 900; }
+        .logo-manager { font-family: 'Playfair Display', serif; text-transform: none; font-size: 1.2rem;}
+
+
+        /* --- 7. Cards Grid Styles --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            min-height: 300px;
+            color: var(--color-white-bg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-image-content {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: var(--text-dark); 
+        }
+
+        .card-image-content img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            filter: brightness(0.9);
+        }
+
+        .card-text-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-label {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+        
+        .card-white { background-color: var(--color-white-bg); color: var(--text-dark); }
+        .card-green { background-color: var(--color-green); }
+        .card-red { background-color: var(--color-red); }
+
+        .card-white .card-label { color: var(--text-dark); }
+        .card-white .card-description { color: #555; }
+        .card-red .card-description, .card-green .card-description { color: rgba(255, 255, 255, 0.85); }
+
+        .card-image-top .card-image-content {
+             justify-content: space-between;
+             padding: 0;
+             color: var(--color-white-bg); 
+        }
+        .card-image-top .card-label {
+            margin-bottom: 0;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 3;
+        }
+        .card-image-top .card-description {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            z-index: 3;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* --- 8. Values Section --- */
+        .section-wrapper {
+            margin-top: 150px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1100px;
+        }
+        
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 50px;
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .values-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .values-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .value-card {
+            background: #fff;
+            border-radius: 12px;
+            width: 200px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .value-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .vc-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .icon-orange { background-color: var(--primary-orange); }
+        .icon-green { background-color: var(--color-green); }
+
+        .vc-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 10px;
+        }
+
+        .vc-text {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .vc-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        /* --- 9. STEPS SECTION --- */
+        .steps-container {
+            width: 100%;
+            margin-top: 150px;
+            padding: 0 20px;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .step-card {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .step-visual-area {
+            height: 180px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .step-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 15px;
+        }
+
+        .step-desc {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        /* Visuals for Steps (Mockup styles) */
+        .mock-form {
+            width: 120px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            border: 1px solid #eee;
+        }
+        .mock-input {
+            height: 12px;
+            width: 100%;
+            background: #f4f4f4;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+        .mock-button-black {
+            height: 16px;
+            width: 80%;
+            background: #111;
+            border-radius: 20px;
+            margin: 5px auto 0;
+            font-size: 6px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hand-pointer {
+            position: absolute;
+            bottom: -20px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 40px;
+            height: 40px;
+            background: var(--primary-orange);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(58, 190, 6, 0.3);
+            z-index: 5;
+        }
+        .hand-pointer svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        /* Maurice Profile */
+        .profile-container { position: relative; }
+        .maurice-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .call-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            bottom: -10px;
+            border: 3px solid #fff;
+        }
+        .btn-red { background: #feebeb; color: #ff4d4d; left: 10px; }
+        .btn-green { background: #ebfef0; color: #2ecc71; right: 10px; }
+        
+        .call-badge {
+            margin-top: 15px;
+            background: #fff;
+            padding: 6px 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.1;
+        }
+        .call-badge span { color: #999; font-size: 0.65rem; text-transform: uppercase; margin-bottom: 2px;}
+
+        /* Crowd Visual */
+        .crowd-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .crowd-main {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+        .mini-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            position: absolute;
+            z-index: 1;
+        }
+        .ma-1 { top: 0; left: 10px; }
+        .ma-2 { top: 5px; right: 5px; }
+        .ma-3 { bottom: 10px; left: -5px; }
+        .ma-4 { bottom: 15px; right: -5px; }
+
+        .user-icon-circle {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            bottom: -10px;
+            z-index: 5;
+            border: 2px solid var(--primary-orange);
+        }
+        .user-icon-circle svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--primary-orange);
+            stroke-width: 2;
+            fill: none;
+        }
+
+
+        /* --- 10. Community Impressions Section --- */
+        .pin-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .pin-icon-svg {
+            width: 30px;
+            height: 30px;
+            stroke: var(--primary-orange);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .scatter-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .scatter-img {
+            width: 160px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            border: 4px solid white;
+            transition: transform 0.3s ease, z-index 0s;
+            position: relative;
+        }
+
+        .scatter-img:hover {
+            transform: scale(1.15) rotate(0deg) !important;
+            z-index: 50;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            cursor: pointer;
+        }
+
+        .scatter-img:nth-child(2n) { transform: rotate(3deg); margin-top: 10px; }
+        .scatter-img:nth-child(2n+1) { transform: rotate(-2deg); margin-top: -5px; }
+        .scatter-img:nth-child(3n) { transform: rotate(-4deg); margin-top: 15px; }
+        .scatter-img:nth-child(5n) { transform: rotate(5deg); margin-top: -10px; }
+
+
+        /* --- 11. Calendar Section --- */
+        .calendar-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            padding: 30px;
+            width: 100%;
+            overflow-x: auto; 
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(120px, 1fr));
+            border-collapse: collapse;
+        }
+
+        .cal-header {
+            text-align: center;
+            font-weight: 600;
+            color: #888;
+            font-size: 0.9rem;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .cal-cell {
+            border-bottom: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+            min-height: 70px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .cal-cell:nth-child(7n) { border-right: none; } 
+        .cal-row-last .cal-cell { border-bottom: none; } 
+
+        .cal-pill {
+            display: inline-flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #444;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            white-space: nowrap;
+            transition: transform 0.2s;
+        }
+        .cal-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+
+        .pill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .pill-purple .pill-dot { background: var(--pill-purple); }
+        .pill-orange .pill-dot { background: var(--pill-orange); }
+        .pill-green .pill-dot { background: var(--pill-green); }
+        .pill-blue .pill-dot { background: var(--pill-blue); }
+        
+        /* --- 12. NEW: FAQ Section --- */
+        .faq-section {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 150px;
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+
+        .faq-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #111;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .faq-subtitle {
+            font-size: 1rem;
+            color: #777;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 500;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .faq-item:first-child {
+            border-top: 1px solid #eaeaea;
+        }
+
+        .faq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .faq-header:hover {
+            color: var(--primary-orange);
+        }
+
+        .faq-question {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #111;
+            flex: 1;
+            padding-right: 20px;
+            line-height: 1.4;
+        }
+        
+        .faq-item.active .faq-question {
+            /* color: var(--primary-orange); Optional: highlight active question */
+        }
+
+        .faq-toggle {
+            position: relative;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .faq-toggle::before, .faq-toggle::after {
+            content: '';
+            position: absolute;
+            background-color: #333;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Horizontal line (always visible) */
+        .faq-toggle::before {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        /* Vertical line (rotates to become horizontal or disappears) */
+        .faq-toggle::after {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        /* Active State Icon (Minus) */
+        .faq-item.active .faq-toggle::after {
+            transform: translateX(-50%) rotate(90deg);
+            opacity: 0; /* Or just rotate to match horizontal */
+        }
+        
+        .faq-item.active .faq-toggle::before {
+             background-color: var(--primary-orange); /* Match the orange dash in image */
+        }
+
+        .faq-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease-out;
+        }
+
+        .faq-content {
+            padding-bottom: 30px;
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+            max-width: 90%;
+        }
+
+
+        /* --- 13. Application Form Section --- */
+        .application-section {
+            padding: 100px 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            background-color: #ffffff;
+        }
+
+        .app-card {
+            background-color: #f6f6f6; /* Light grey card background */
+            border-radius: 12px;
+            padding: 60px 40px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border: 1px solid #eee;
+        }
+
+        .app-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 600; /* Regular bold */
+            color: #111;
+            margin-bottom: 5px;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .app-highlight {
+            color: var(--primary-orange);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .app-desc {
+            color: #777;
+            margin-bottom: 50px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-header {
+            text-align: left;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #111;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background-color: #ebebeb; /* Match the slightly darker input bg from image */
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .form-input:focus {
+            background-color: #fff;
+            border-color: #ddd;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+        }
+
+        .form-btn-wrapper {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center; 
+        }
+
+        .btn-white-pill {
+            background-color: #fff;
+            color: #333;
+            padding: 12px 50px;
+            border-radius: 50px;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-white-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+
+
+        /* Mobile Adjustments */
+        @media (max-width: 1000px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .values-row {
+                flex-wrap: wrap;
+            }
+            .value-card {
+                width: 45%; 
+                min-width: 160px;
+            }
+            .steps-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .scroll-column:nth-child(3),
+            .scroll-column:nth-child(4),
+            .scroll-column:nth-child(5) { display: none; }
+            .scroll-column { width: 50%; }
+            
+            nav { padding: 0 20px; }
+            .nav-links a { display: none; }
+
+            .info-box { padding: 30px 20px; }
+            .info-box h2 { font-size: 2rem; }
+            .stats-container { flex-direction: column; gap: 30px; }
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-wrapper, .steps-container { margin-top: 80px; }
+            .value-card { width: 100%; max-width: 300px; }
+            
+            .calendar-card { padding: 15px; }
+            
+            .scatter-grid { gap: 10px; }
+            .scatter-img { width: 100px; height: 80px; }
+
+            .app-card { padding: 30px 20px; }
+            .app-title { font-size: 1.8rem; }
+            
+            .faq-section { margin-top: 80px; }
+        }
+        html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 150px;
+}
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight:900; font-size:1.5rem;">V.B.B! Thuringia</div>
+        
+        <div class="nav-links">
+            <a href="#intro">Community</a>
+            <a href="#sempro">Semesterprogramm</a>
+            <a href="#about">Über uns</a>
+            <a href="#mitglied"><button class="cta-button" style="padding: 10px 20px; font-size: 0.9rem;">
+                <span class="status-dot"></span>
+                Mitglied werden
+            </button></a>
+            
+        </div>
+    </nav>
+
+    <div class="background-wrapper">
+    </div>
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+        
+        <div class="social-proof">
+            <div class="avatars">
+                <img src="https://i.pravatar.cc/100?img=1" alt="User">
+                <img src="https://i.pravatar.cc/100?img=2" alt="User">
+                <img src="https://i.pravatar.cc/100?img=3" alt="User">
+            </div>
+            <div class="social-text">
+                <strong>Ärzte, Politiker, Immobilien Investoren</strong><br>
+                 waren als Studenten Teil von Thuringia
+            </div>
+        </div>
+
+        <h1>V.B.B! Thuringia</h1>
+        
+        <p class="subtitle">
+            Netzwerk seit 150 Jahren!
+        </p>
+
+        <button class="cta-button">
+            <span class="status-dot"></span>
+            Mitglied werden
+        </button>
+    </div>
+
+    <section class="content-section">
+        
+        <div class="info-box">
+            <h2>UMFELD IST ALLES</h2>
+            <a href="#" class="website-url">www.thuringia.berlin</a>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>1,500+</h3>
+                    <p>Mitglieder</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1875</h3>
+                    <p>Gegründet</p>
+                </div>
+                <div class="stat-item">
+                    <h3>400+</h3>
+                    <p>5-Sterne Bewertungen</p>
+                    <p class="stat-sub">Google | Trustpilot</p>
+                </div>
+            </div>
+
+            <div class="media-section">
+                <p>Unsere Projekte, Vorträge, Unternehmen und Bücher sind bekannt aus:</p>
+                <div class="media-logos">
+                    <span class="media-logo-text">Handelsblatt</span>
+                    <span class="media-logo-text logo-spiegel">DER SPIEGEL</span>
+                    <span class="media-logo-text logo-ntv">n-tv</span>
+                    <span class="media-logo-text logo-manager">manager magazin</span>
+                    <span class="media-logo-text">ERFOLG Magazin</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-section-title" id="intro">
+            <h2>Was ist die V.B.B! <span class="highlight">Thuringia</span>?</h2>
+        </div>
+
+        <div class="cards-grid">
+            
+            <div class="card card-red card-image-top" style="grid-row: span 2;">
+                <div class="card-image-content">
+                    <img src="images/Fechten.png" alt="Fechtsport">
+                    <div class="card-text-content">
+                        <h3 class="card-label">Fechtsport</h3>
+                        <p class="card-description">
+                            
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-green">
+                <div class="card-image-content" style="padding: 30px; justify-content: flex-start;">
+                    <div class="card-text-content">
+                        <h3 class="card-label">Netzerk</h3>
+                        <p class="card-description">
+                            Ein Umfeld voller Macher, das dich inspiriert, stärkt und auf deinem Weg begleitet – digital und im echten Leben.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-red card-image-top" style="grid-row: span 2;">
+                <div class="card-image-content">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mastermind">
+                    <div class="card-text-content">
+                        <h3 class="card-label">Nah an der Tu-Berlin</h3>
+                        <p class="card-description">
+                            Intensive Begegnungen mit Gleichgesinnten, die dich fordern, fördern und gemeinsam mit dir über dich hinauswachsen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-white card-image-top" style="grid-column: span 2;">
+                <div class="card-image-content">
+                    <img src="images/gruppe.jpg" alt="Gemeinschaft">
+                    <div class="card-text-content" style="color: var(--text-dark);">
+                        <h3 class="card-label" style="color:white; text-shadow:0 2px 5px rgba(0,0,0,0.5)">Gemeinschaft</h3>
+                        <p class="card-description" style="color:white; text-shadow:0 2px 5px rgba(0,0,0,0.5)">
+                            Persönliche Entwicklung, die nicht nur beginnt, sondern bleibt – mit Struktur, Support und echtem Commitment.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card card-green">
+                <div class="card-image-content" style="padding: 30px; justify-content: flex-start;">
+                    <div class="card-text-content">
+                        <h3 class="card-label">Austausch</h3>
+                        <p class="card-description">
+                            Dialog mit anderen Studenten interfakultativ – um deine eigene Blase zu verlassen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="section-wrapper">
+            <h2 class="section-title" id="sempro">Vielfalt & Austausch – für <span class="highlight">Körper und Geist</span></h2>
+            <p class="section-subtitle">
+                Von Biohacking bis Buchclub: Entdecke tägliche Formate, die dich wirklich weiterbringen.
+            </p>
+
+            <div class="calendar-card">
+                <div class="cal-grid">
+                    <div class="cal-header">Oktober</div>
+                    <div class="cal-header">November</div>
+                    <div class="cal-header">Dezember</div>
+                    <div class="cal-header">Jannuar</div>
+                    <div class="cal-header">Februar</div>
+                    <div class="cal-header">März</div>
+                    <div class="cal-header">Aprill</div>
+
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-purple">Skatrunde <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-orange">Mensurboden <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-green">Weihnachts- <br>markt Bummel <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell">
+                        
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-orange">Traditionskneipe <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-blue">BA: Aktien-Investments<span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-blue">Traditionskneipe <span class="pill-dot"></span></div>
+                    </div>
+
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-green">Whisky Tasting <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-green">Schieß-Training <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-green">KI-Stammtisch <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-green">Ankneipe <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-green">Etsy-Stammtisch <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-blue">Meditation mit Miriam <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-purple">Fecht Training<span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-orange">Vertriebsstunde <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell"></div>
+                    <div class="cal-cell">
+                        <div class="cal-pill pill-blue">Breathwork <span class="pill-dot"></span></div>
+                    </div>
+                    
+                    <div class="cal-row-last cal-cell">
+                        <div class="cal-pill pill-green">Aktien-Stammtisch <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-row-last cal-cell">
+                        <div class="cal-pill pill-green">Krypto-Stammtisch <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-row-last cal-cell">
+                        <div class="cal-pill pill-green">Spirituelle Tafelrunde <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-row-last cal-cell">
+                        <div class="cal-pill pill-purple">Bücherclub <span class="pill-dot"></span></div>
+                    </div>
+                    <div class="cal-row-last cal-cell"></div>
+                    <div class="cal-row-last cal-cell"></div>
+                    <div class="cal-row-last cal-cell"></div>
+
+                </div>
+            </div>
+            
+            <div style="margin-top: 50px;">
+                <a href="#mitglied"><button class="cta-button">
+                    <span class="status-dot"></span>
+                    Mitglied werden
+                </button></a>
+            </div>
+        </div>
+
+        <div class="section-wrapper" id="about">
+            <h2 class="section-title">Was Thuringia wirklich ausmacht</h2>
+            <p class="section-subtitle">
+                Thuringia ist mehr als ein Verein – es ist eine Haltung. Diese 7 Werte prägen unsere Gemeinschaft, unser Miteinander und unser tägliches Tun.
+            </p>
+
+            <div class="values-grid">
+                <div class="values-row">
+                    <div class="value-card">
+                        <div class="vc-icon icon-orange">
+                            <svg viewBox="0 0 24 24"><path d="M12,2C8.13,2 5,5.13 5,9C5,12.38 7.39,15.2 10.5,15.8V18H13.5V15.8C16.61,15.2 19,12.38 19,9C19,5.13 15.87,2 12,2M7.41,9C7.41,6.46 9.46,4.41 12,4.41C14.54,4.41 16.59,6.46 16.59,9H15C15,7.34 13.66,6 12,6C10.34,6 9,7.34 9,9H7.41M13,20H11V22H13V20Z" /></svg>
+                        </div>
+                        <h3 class="vc-title">Freiheit</h3>
+                        <p class="vc-text">Gestalte dein Leben aktiv – mit Klarheit und Selbstbestimmung.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="vc-icon icon-orange">
+                            <svg viewBox="0 0 24 24"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>
+                        </div>
+                        <h3 class="vc-title">Wissen</h3>
+                        <p class="vc-text">Von Mentoren und Mitgliedern lernen – praxisnah & echt.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="vc-icon icon-green">
+                            <svg viewBox="0 0 24 24"><path d="M12.75,3.94C13.75,3.22 14.96,2.83 16.17,2.83C17.44,2.83 18.73,3.31 19.7,4.24C21.65,6.1 21.72,9.15 19.92,11.1L12.06,19.66L4.25,11.08C2.5,9.13 2.57,6.1 4.5,4.24C6.5,2.34 9.5,2.39 11.45,4.3L12.06,4.92L12.75,3.94M12.06,16.74L18.41,9.81C19.34,8.81 19.33,7.18 18.36,6.16C17.38,5.15 15.77,5.1 14.75,6.07L12.06,8.7L9.42,6.08C8.4,5.1 6.78,5.15 5.81,6.16C4.84,7.18 4.83,8.81 5.76,9.81L12.06,16.74Z" /></svg>
+                        </div>
+                        <h3 class="vc-title">Dankbarkeit</h3>
+                        <p class="vc-text">Was du heute hast, ist schon ein Geschenk.</p>
+                    </div>
+                </div>
+
+                <div class="values-row">
+                    <div class="value-card">
+                        <div class="vc-icon icon-green">
+                            <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M16.33,8.91L17.58,10.16L11.5,16.25L7.91,12.66L9.16,11.41L11.5,13.75L16.33,8.91Z" /></svg>
+                        </div>
+                        <h3 class="vc-title">Support</h3>
+                        <p class="vc-text">Du wirst gesehen. Gemeinsam geht niemand verloren.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="vc-icon icon-orange">
+                            <svg viewBox="0 0 24 24"><path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z" /></svg>
+                        </div>
+                        <h3 class="vc-title">Entwicklung</h3>
+                        <p class="vc-text">Tägliche Schritte für dein persönliches Wachstum.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="vc-icon icon-orange">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" /></svg>
+                        </div>
+                        <h3 class="vc-title">Erfolg</h3>
+                        <p class="vc-text">Erfolg beginnt im Kleinen – durch Dranbleiben.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="vc-icon icon-green">
+                            <svg viewBox="0 0 24 24"><path d="M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z" /></svg>
+                        </div>
+                        <h3 class="vc-title">Inspiration</h3>
+                        <p class="vc-text">Lass dich von anderen tragen, beflügeln, motivieren.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-wrapper">
+            <div class="pin-icon-wrapper">
+                <svg class="pin-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21C12 21 19 14.5 19 9C19 5.13401 15.866 2 12 2C8.13401 2 5 5.13401 5 9C5 14.5 12 21 12 21Z" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 11C13.1046 11 14 10.1046 14 9C14 7.89543 13.1046 7 12 7C10.8954 7 10 7.89543 10 9C10 10.1046 10.8954 11 12 11Z" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            
+            <h2 class="section-title">Regionale & selbstorganisierte Treffen<br>aus der Community. <span class="highlight">Für die Community.</span></h2>
+            <p class="section-subtitle">
+                Hier siehst du Eindrücke von Treffen, die Mitglieder ganz einfach selbst organisiert haben.
+            </p>
+
+            <div class="scatter-grid">
+                <img src="images/bierjunge/1.jpg" class="scatter-img" alt="Community Treffen">
+                <img src="images/bierjunge/2.jpg" class="scatter-img" alt="Community Dinner">
+                <img src="images/bierjunge/3.jpeg" class="scatter-img" alt="Gruppe">
+                <img src="images/bierjunge/4.jpeg" class="scatter-img" alt="Freunde">
+                <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="scatter-img" alt="Party">
+                <img src="images/bierjunge/8.jpeg" class="scatter-img" alt="Hiking">
+                <img src="images/bierjunge/7.jpg" class="scatter-img" alt="Sport">
+                <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="scatter-img" alt="Treffen">
+                <img src="images/bierjunge/5.jpg" class="scatter-img" alt="Event">
+                <img src="images/bierjunge/6.jpg" class="scatter-img" alt="Fitness">
+                <img src="images/bierjunge/9.jpeg" class="scatter-img" alt="Outdoor">
+            </div>
+        </div>
+        <div class="section-wrapper" >
+            <h2 class="section-title">So kannst du dabei sein</h2>
+            <p class="section-subtitle">Folge diesen einfachen Schritten</p>
+
+            <div class="steps-grid">
+                
+                <div class="step-card">
+                    <div class="step-visual-area">
+                        <div class="mock-form">
+                            <div class="mock-input"></div>
+                            <div class="mock-input"></div>
+                            <div class="mock-input"></div>
+                            <div class="mock-button-black">Mitglied werden</div>
+                            <div class="hand-pointer">
+                                <svg viewBox="0 0 24 24"><path d="M10.5,15.5C10.5,15.5 9.5,13.5 10.5,12.5C11.5,11.5 12.5,11.5 12.5,11.5V6.5C12.5,6 12.7,5.5 13.5,5.5C14.3,5.5 14.5,6 14.5,6.5V11.5C14.5,11.5 15.5,11.5 16.5,12.5C17.5,13.5 16.5,15.5 16.5,15.5L14.5,20.5H12.5L10.5,15.5Z" fill="white"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="step-title">Bewirb dich</h3>
+                    <p class="step-desc">
+                        Nimm Kontakt auf und sende uns deine Bewerbung. Wir freuen uns auf dich.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-visual-area">
+                         <div class="profile-container">
+                             <img src="images/Tim.png" alt="Tim" class="maurice-img">
+                             <div class="call-btn btn-red">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"></path><line x1="23" y1="1" x2="1" y2="23"></line></svg>
+                             </div>
+                             <div class="call-btn btn-green">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                             </div>
+                          </div>
+                    </div>
+                    
+                 <!--   <div class="call-badge">
+                        <span>Check</span>
+                        Tim ruft an
+                    </div>  -->
+                    
+                    <h3 class="step-title" style="margin-top: 15px;">Gespräch mit Tim</h3>
+                    <p class="step-desc">
+                        Um das Commitment zu validieren und zu prüfen, ob du ins Netzwerk passt, ruft Tim jeden Bewerber persönlich an.
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-visual-area">
+                         <div class="crowd-container">
+                             <img src="images/Wappen.png" class="crowd-main">
+                             <img src="images/Tim.png" class="mini-avatar ma-1">
+                             <img src="images/Hermann.png" class="mini-avatar ma-2">
+                             <img src="https://i.pravatar.cc/100?img=3" class="mini-avatar ma-3">
+                             <img src="https://i.pravatar.cc/100?img=4" class="mini-avatar ma-4">
+                             <div class="user-icon-circle">
+                                 <svg viewBox="0 0 24 24"><path d="M20,21V19C20,17.9 19.1,17 18,17H6C4.9,17 4,17.9 4,19V21M12,13C14.2,13 16,11.2 16,9C16,6.8 14.2,5 12,5C9.8,5 8,6.8 8,9C8,11.2 9.8,13 12,13Z" /></svg>
+                             </div>
+                          </div>
+                    </div>
+                    <h3 class="step-title">Du bist Teil von Thuringia</h3>
+                    <p class="step-desc">
+                        Nach einem erfolgreichen Bewerbungsgespräch bekommst du eine Einladung zu eier unserer Veranstaltungen.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        
+
+        
+
+        
+
+        <section class="application-section" id="mitglied">
+             <div class="app-card">
+                 <h2 class="app-title">Ein Jahr Commitment<br><span class="app-highlight">Bist du dabei?</span></h2>
+                 <p class="app-desc">Du wählst, ob du monatlich oder jährlich zahlst. Das Commitment ist immer 1 Jahr.</p>
+                 
+                 <div class="form-header">Bewirb dich jetzt</div>
+                 
+                 <form>
+                     <div class="form-group">
+                         <label class="form-label">Vorname*</label>
+                         <input type="text" class="form-input" placeholder="Dein Vorname">
+                     </div>
+                     <div class="form-group">
+                         <label class="form-label">Nachname*</label>
+                         <input type="text" class="form-input" placeholder="Dein Nachname">
+                     </div>
+                     <div class="form-group">
+                         <label class="form-label">E-Mail-Adresse*</label>
+                         <input type="email" class="form-input" placeholder="Deine E-Mail-Adresse">
+                     </div>
+                     <div class="form-group">
+                         <label class="form-label">Telefonnummer*</label>
+                         <input type="tel" class="form-input" placeholder="+49 123 45678901">
+                     </div>
+
+                     <div class="form-btn-wrapper">
+                         <button type="button" class="btn-white-pill">Weiter</button>
+                     </div>
+                 </form>
+             </div>
+        </section>
+        <section class="faq-section" id="faq">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <p class="faq-subtitle">Wenn du noch Fragen hast, schreib uns gerne eine E-Mail.</p>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-header">
+                        <div class="faq-question">1. Was ist „V.B.B! Thuringia“?</div>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="faq-content">
+                            „V.B.B! Thuringia“ ist dein tägliches Ritual für Fokus und persönliches Wachstum. Es ist die erste Stunde des Tages, die du ganz bewusst für dich nutzt, um an deinen Zielen zu arbeiten, bevor der Alltag dich einholt.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-header">
+                        <div class="faq-question">2. Für wen ist die V.B.B! Thuringia geeignet?</div>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="faq-content">
+                            Die Community richtet sich an Menschen mit einem Growth-Mindset, die bereit sind, täglich sich Zeit für sich in Form einer Routine zu nehmen. Sie ist ideal für alle, die ihre Komfortzone verlassen, neue Gewohnheiten etablieren und sich mit Gleichgesinnten austauschen möchten. Die Community bietet Unterstützung, Motivation und ein starkes Netzwerk für nachhaltiges Wachstum im persönlichen, finanziellen und beruflichen Bereich.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-header">
+                        <div class="faq-question">3. Wie flexibel ist die Erfolgsroutine in den Alltag integrierbar?</div>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="faq-content">
+                            Die Routine ist maximal flexibel. Du bestimmst, wann „deine Stunde“ stattfindet. Ob morgens um 5 Uhr oder später am Tag – wichtig ist nur die Kontinuität und das bewusste Zeitfenster für dich selbst.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-header">
+                        <div class="faq-question">4. Welche Vorteile bietet die Mitgliedschaft in Thuringia?</div>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="faq-content">
+                            Du erhältst Zugang zu einem exklusiven Netzwerk, täglichen Live-Sessions, Experten-Workshops, lokalen Treffen und einem Erfolgspartner, der dich accountable hält. Zudem profitierst du vom geballten Wissen der Community.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-header">
+                        <div class="faq-question">5. Wie kann ich Mitglied werden und was kostet die Teilnahme?</div>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="faq-content">
+                            Die Mitgliedschaft läuft über ein Bewerbungsverfahren, um sicherzustellen, dass die Chemie stimmt. Nach deiner Bewerbung (siehe unten) besprechen wir alle Details und die Investition in einem persönlichen Gespräch.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-header">
+                        <div class="faq-question">6. Gibt es auch Treffen oder Events außerhalb der Online-Community?</div>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="faq-content">
+                            Absolut! Unsere Mitglieder organisieren regelmäßig lokale Stammtische, Wanderungen, Abendessen und Sport-Events in ganz Deutschland (und darüber hinaus). Das echte Treffen stärkt die Verbindung enorm.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-header">
+                        <div class="faq-question">7. Kann ich die Mitgliedschaft ausprobieren?</div>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-body">
+                        <div class="faq-content">
+                            Da wir Wert auf echtes Commitment legen, gibt es keine klassische „Schnupperphase“. Das Bewerbungsgespräch dient jedoch dazu, genau herauszufinden, ob Thuringia das Richtige für dich ist, bevor du dich entscheidest.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <script>
+        // --- SCRIPT TO GENERATE IMAGE GRID ---
+        const wrapper = document.querySelector('.background-wrapper');
+        const columnsCount = 5; 
+        const imagesPerColumn = 8; 
+
+        function createColumn(colIndex) {
+            const col = document.createElement('div');
+            col.className = `scroll-column col-${colIndex + 1}`;
+            
+            const inner = document.createElement('div');
+            inner.className = 'scroll-column-inner';
+            
+            // Set 1
+            for(let i = 1; i <= imagesPerColumn; i++) {
+                const img = document.createElement('img');
+                // Using random nature images for nice placeholder effect
+                img.src = `images/activity/${i+colIndex*columnsCount}.jpg`; 
+                inner.appendChild(img);
+            }
+            // Set 2 (Clone for loop for seamless scroll)
+            for(let i = 1; i <= imagesPerColumn; i++) {
+                const img = document.createElement('img');
+                img.src = `images/activity/${i+colIndex*columnsCount}.jpg`;
+                inner.appendChild(img);
+            }
+
+            col.appendChild(inner);
+            wrapper.appendChild(col);
+        }
+
+        for(let c = 0; c < columnsCount; c++) {
+            createColumn(c);
+        }
+
+        // --- SCRIPT FOR FADING OUT BACKGROUND ON SCROLL ---
+        const backgroundEl = document.querySelector('.background-wrapper');
+        const fadeStart = 0;
+        const fadeEnd = 600;
+
+        function handleScroll() {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            let opacity = 1;
+            if (scrollPosition > fadeStart) {
+                opacity = 1 - (scrollPosition - fadeStart) / (fadeEnd - fadeStart);
+                opacity = Math.max(0, Math.min(1, opacity));
+            }
+            
+            backgroundEl.style.opacity = opacity;
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        // --- FAQ ACCORDION SCRIPT ---
+        const faqHeaders = document.querySelectorAll('.faq-header');
+
+        faqHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const currentItem = header.parentElement;
+                const currentBody = currentItem.querySelector('.faq-body');
+
+                // Check if currently active to toggle
+                const isActive = currentItem.classList.contains('active');
+
+                // Close all other items (Optional Accordion behavior)
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-body').style.maxHeight = 0;
+                });
+
+                // If it wasn't active before, open it
+                if (!isActive) {
+                    currentItem.classList.add('active');
+                    currentBody.style.maxHeight = currentBody.scrollHeight + "px";
+                }
+            });
+        });
+
+        
+
+    </script>
+</body>
+</html>
