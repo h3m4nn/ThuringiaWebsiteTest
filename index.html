@@ -473,74 +473,114 @@
             line-height: 1.6;
         }
 
-        .values-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
+        /* --- Wahlspruch cards --- */
+        .ws-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
             width: 100%;
+            max-width: 1100px;
         }
 
-        .values-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        .value-card {
+        .ws-card {
             background: #fff;
-            border-radius: 12px;
-            width: 200px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 16px;
+            padding: 28px 22px 22px;
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            gap: 10px;
             position: relative;
+            overflow: hidden;
         }
 
-        .value-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            z-index: 10;
+        .ws-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--ws-color, #72d124);
+            border-radius: 16px 16px 0 0;
         }
 
-        .vc-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .ws-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 44px rgba(0,0,0,0.1);
+        }
+
+        .ws-roman {
+            font-family: 'Germania One', serif;
+            font-size: 0.85rem;
+            color: var(--ws-color, #72d124);
+            opacity: 0.8;
+            letter-spacing: 0.05em;
+        }
+
+        .ws-title {
+            font-family: 'Germania One', serif;
+            font-size: 1.25rem;
+            color: #111;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .ws-short {
+            font-size: 0.82rem;
+            color: #777;
+            line-height: 1.55;
+            flex: 1;
+            margin: 0;
+        }
+
+        .ws-more {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .icon-orange { background-color: var(--primary-green); }
-        .icon-green { background-color: var(--color-blue); }
-
-        .vc-title {
-            font-size: 1.2rem;
+            gap: 4px;
+            font-size: 0.78rem;
             font-weight: 600;
+            color: var(--ws-color, #72d124);
+            margin-top: 4px;
+        }
+
+        /* Wahlspruch detail modal */
+        .ws-modal-content {
+            max-width: 560px;
+            padding: 40px;
+        }
+
+        .ws-modal-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ws-modal-color, #72d124);
+            margin-bottom: 8px;
+        }
+
+        .ws-modal-title {
+            font-family: 'Germania One', serif;
+            font-size: 2rem;
             color: #111;
-            margin-bottom: 10px;
+            margin: 0 0 20px;
+            line-height: 1.2;
         }
 
-        .vc-text {
-            font-size: 0.8rem;
-            color: #666;
-            line-height: 1.4;
+        .ws-modal-body {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.75;
+            white-space: pre-line;
         }
 
-        .vc-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
+        @media (max-width: 900px) {
+            .ws-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .ws-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         /* --- 9. STEPS SECTION --- */
@@ -1110,6 +1150,91 @@
         }
 
         /* --- 14. Inspiration Section (Neu hinzugefügt) --- */
+        /* --- Liegenschaften --- */
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 40px;
+        }
+
+        .location-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+            border: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .location-map {
+            width: 100%;
+            height: 240px;
+            background: #f5f5f5;
+        }
+
+        .location-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .location-info {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .location-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #666;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
+        .location-name {
+            font-family: 'Germania One', serif;
+            font-size: 1.6rem;
+            color: #111;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .location-address {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .location-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+            .location-map { height: 200px; }
+        }
+
         .inspiration-section {
             max-width: 1200px;
             width: 100%;
@@ -1230,7 +1355,6 @@
             }
 
             .section-wrapper, .steps-container { margin-top: 80px; }
-            .value-card { width: 40%; max-width: 300px; }
             
             .calendar-card { padding: 5px; }
             
@@ -1812,67 +1936,46 @@
 </div>
 
         <div class="section-wrapper" id="about">
-            <h2 class="section-title">Was Thuringia wirklich ausmacht</h2>
-            <p class="section-subtitle">
-                Thuringia ist mehr als ein Verein – es ist eine Haltung. Diese 7 Werte prägen unsere Gemeinschaft, unser Miteinander und unser tägliches Tun.
-            </p>
+            <h2 class="section-title">Unser <span class="highlight">Wahlspruch</span></h2>
+            <p class="section-subtitle">Fünf Werte. Ein Lebensbund. Klick auf eine Kachel für die volle Bedeutung.</p>
 
-            <div class="values-grid">
-                <div class="values-row">
-                    <div class="value-card">
-                        <div class="vc-icon icon-orange">
-                            <svg viewBox="0 0 24 24"><path d="M12,2C8.13,2 5,5.13 5,9C5,12.38 7.39,15.2 10.5,15.8V18H13.5V15.8C16.61,15.2 19,12.38 19,9C19,5.13 15.87,2 12,2M7.41,9C7.41,6.46 9.46,4.41 12,4.41C14.54,4.41 16.59,6.46 16.59,9H15C15,7.34 13.66,6 12,6C10.34,6 9,7.34 9,9H7.41M13,20H11V22H13V20Z" /></svg>
-                        </div>
-                        <h3 class="vc-title">Freiheit</h3>
-                        <p class="vc-text">Selbstbestimmter Austausch ohne Einschränkung</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="vc-icon icon-orange">
-                            <svg viewBox="0 0 24 24"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>
-                        </div>
-                        <h3 class="vc-title">Wissen</h3>
-                        <p class="vc-text">Politischer und wissenschaftlicher Diskurs</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="vc-icon icon-green">
-                            <svg viewBox="0 0 24 24"><path d="M12.75,3.94C13.75,3.22 14.96,2.83 16.17,2.83C17.44,2.83 18.73,3.31 19.7,4.24C21.65,6.1 21.72,9.15 19.92,11.1L12.06,19.66L4.25,11.08C2.5,9.13 2.57,6.1 4.5,4.24C6.5,2.34 9.5,2.39 11.45,4.3L12.06,4.92L12.75,3.94M12.06,16.74L18.41,9.81C19.34,8.81 19.33,7.18 18.36,6.16C17.38,5.15 15.77,5.1 14.75,6.07L12.06,8.7L9.42,6.08C8.4,5.1 6.78,5.15 5.81,6.16C4.84,7.18 4.83,8.81 5.76,9.81L12.06,16.74Z" /></svg>
-                        </div>
-                        <h3 class="vc-title">Tradition</h3>
-                        <p class="vc-text">Studentisches Leben hautnah miterleben!</p>
-                    </div>
+            <div class="ws-grid">
+
+                <div class="ws-card" data-ws="0" style="--ws-color:#72d124;">
+                    <span class="ws-roman">I</span>
+                    <h3 class="ws-title">Einer für alle,<br>alle für einen</h3>
+                    <p class="ws-short">Das unbedingte Solidaritätsprinzip des Lebensbundes.</p>
+                    <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
                 </div>
 
-                <div class="values-row">
-                    <div class="value-card">
-                        <div class="vc-icon icon-green">
-                            <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M16.33,8.91L17.58,10.16L11.5,16.25L7.91,12.66L9.16,11.41L11.5,13.75L16.33,8.91Z" /></svg>
-                        </div>
-                        <h3 class="vc-title">Unterstützung</h3>
-                        <p class="vc-text">Du wirst gesehen. Einer für alle, Alle für einen.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="vc-icon icon-orange">
-                            <svg viewBox="0 0 24 24"><path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z" /></svg>
-                        </div>
-                        <h3 class="vc-title">Wachstum</h3>
-                        <p class="vc-text">Wo wir sind ist Vorne!</p>
-                    </div>
-                    
-                    <div class="value-card">
-                        <div class="vc-icon icon-orange">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" /></svg>
-                        </div>
-                        <h3 class="vc-title">Ertüchtigung</h3>
-                        <p class="vc-text">Fechten, Rudern, Schießen, Sauphen</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="vc-icon icon-green">
-                            <svg viewBox="0 0 24 24"><path d="M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z" /></svg>
-                        </div>
-                        <h3 class="vc-title">Veranstaltungen</h3>
-                        <p class="vc-text">Vernetzt in ganz Deutschland!</p>
-                    </div>
+                <div class="ws-card" data-ws="1" style="--ws-color:#8f3428;">
+                    <span class="ws-roman">II</span>
+                    <h3 class="ws-title">Ehre</h3>
+                    <p class="ws-short">Charakterliche Integrität, Aufrichtigkeit und Haltung.</p>
+                    <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
                 </div>
+
+                <div class="ws-card" data-ws="2" style="--ws-color:#3498db;">
+                    <span class="ws-roman">III</span>
+                    <h3 class="ws-title">Freiheit</h3>
+                    <p class="ws-short">Verteidigung von Meinungsfreiheit und selbstbestimmtem Denken.</p>
+                    <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
+                </div>
+
+                <div class="ws-card" data-ws="3" style="--ws-color:#3f465f;">
+                    <span class="ws-roman">IV</span>
+                    <h3 class="ws-title">Recht</h3>
+                    <p class="ws-short">Bekenntnis zu Demokratie, Rechtsstaatlichkeit und fairen Regeln.</p>
+                    <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
+                </div>
+
+                <div class="ws-card" data-ws="4" style="--ws-color:#e67e22;">
+                    <span class="ws-roman">V</span>
+                    <h3 class="ws-title">Brudersinn</h3>
+                    <p class="ws-short">Das Fundament der generationenübergreifenden Gemeinschaft.</p>
+                    <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
+                </div>
+
             </div>
         </div>
 
@@ -1905,94 +2008,50 @@
         </div>
 
         <div class="section-wrapper">
-            <section class="inspiration-section">
-                <header class="inspiration-header">
-                    <h2>V.B.B! Thuringia in Fakten, die inspirieren</h2>
-                    <p>Von wissenschaftlichen Abenden bis zum Stiftungsfest – unsere Verbindung ist so vielfältig wie ihre Bundesbrüder.</p>
-                </header>
+            <h2 class="section-title">Unsere <span class="highlight">Liegenschaften</span></h2>
+            <p class="section-subtitle">Zwei besondere Orte, die das Herz der Thuringia bilden – mitten in Berlin und direkt am Wasser.</p>
 
-                <div class="fact-grid">
-                    <div class="fact-card">
-                        <div class="icon-circle fact-orange"><i data-lucide="smile"></i></div>
-                        <div class="fact-content">
-                            <h3>Generationen vereint</h3>
-                            <p>Vom 18-jährigen Fux bis zum 95-jährigen Alten Herrn – unser Lebensbund verbindet Generationen auf Augenhöhe.</p>
-                        </div>
+            <div class="locations-grid">
+
+                <!-- Verbindungshaus -->
+                <div class="location-card">
+                    <div class="location-map">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Richard-Wagner-Stra%C3%9Fe+19%2C+10585+Berlin&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-brown"><i data-lucide="book-open"></i></div>
-                        <div class="fact-content">
-                            <h3>Akademische Förderung</h3>
-                            <p>Mit günstigen Zimmern auf dem Haus und Mentoring-Programmen unterstützen wir die junge Studentengeneration.</p>
+                    <div class="location-info">
+                        <div class="location-tag">Verbindungshaus</div>
+                        <h3 class="location-name">Thüringerkonstante</h3>
+                        <div class="location-address">
+                            <i data-lucide="map-pin" style="width:14px;height:14px;flex-shrink:0;color:var(--primary-green);"></i>
+                            Richard-Wagner-Straße 19, 10585 Berlin-Charlottenburg
                         </div>
-                    </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-orange-light"><i data-lucide="users"></i></div>
-                        <div class="fact-content">
-                            <h3>Starkes Netzwerk</h3>
-                            <p>Seit unserer Gründung haben hunderte Studenten bei uns ihre akademische Heimat und lebenslange Freunde gefunden.</p>
-                        </div>
-                    </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-dark-green"><i data-lucide="trophy"></i></div>
-                        <div class="fact-content">
-                            <h3>Zielsicher</h3>
-                            <p>Ob bei Turnieren im Hochschulsport, im Studium oder beim feierlichen Fassanstich – Teamgeist steht an erster Stelle.</p>
-                        </div>
-                    </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-coral"><i data-lucide="globe"></i></div>
-                        <div class="fact-content">
-                            <h3>Blick über den Tellerrand</h3>
-                            <p>Von Auslandssemestern bis zur Forschungsexpedition – unsere Bundesbrüder sammeln weltweit Erfahrungen und teilen sie auf dem Haus.</p>
-                        </div>
-                    </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-dark-red"><i data-lucide="calendar"></i></div>
-                        <div class="fact-content">
-                            <h3>Austausch & Wissen</h3>
-                            <p>Zahlreiche wissenschaftliche Vortragsabende, Rhetorikseminare und unzählige Stunden akademischer Diskurs.</p>
-                        </div>
-                    </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-orange"><i data-lucide="map"></i></div>
-                        <div class="fact-content">
-                            <h3>Gemeinsam erleben</h3>
-                            <p>Regelmäßige Aktivenfahrten, feierliche Stiftungsfeste und unvergessliche Kneipen schweißen uns zusammen.</p>
-                        </div>
-                    </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-forest-green"><i data-lucide="home"></i></div>
-                        <div class="fact-content">
-                            <h3>Unsere Konstante</h3>
-                            <p>Unser wunderschönes Verbindungshaus im Herzen der Stadt ist seit Generationen unser zentraler Dreh- und Angelpunkt.</p>
-                        </div>
-                    </div>
-
-                    <div class="fact-card">
-                        <div class="icon-circle fact-salmon"><i data-lucide="heart"></i></div>
-                        <div class="fact-content">
-                            <h3>Wahrer Reichtum</h3>
-                            <p>Der größte Schatz unserer Verbindung ist kein Bankkonto, sondern die absolute Verlässlichkeit lebenslanger Freundschaften.</p>
-                        </div>
+                        <p class="location-desc">Unser Verbindungshaus im Herzen Charlottenburgs ist seit Generationen der zentrale Dreh- und Angelpunkt der Thuringia. Hier finden Stammtische, Kneipen, Vortragsabende und das gesellige Miteinander statt. Aktive Bundesbrüder haben die Möglichkeit, günstige Zimmer auf dem Haus zu beziehen.</p>
                     </div>
                 </div>
 
-                <div class="inspiration-cta-container">
-                    <a href="#mitglied" style="text-decoration: none;">
-                        <button class="cta-button" style="margin: 0 auto;">
-                            <span class="status-dot"></span> Mitglied werden
-                        </button>
-                    </a>
+                <!-- Wassergrundstück -->
+                <div class="location-card">
+                    <div class="location-map">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Am+Pichelssee+30a%2C+13599+Berlin+Spandau&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="location-info">
+                        <div class="location-tag">Wassergrundstück</div>
+                        <h3 class="location-name">Am Pichelssee</h3>
+                        <div class="location-address">
+                            <i data-lucide="map-pin" style="width:14px;height:14px;flex-shrink:0;color:var(--primary-green);"></i>
+                            Am Pichelssee 30a, 13599 Berlin-Spandau
+                        </div>
+                        <p class="location-desc">Unser Wassergrundstück am Pichelssee in Spandau bietet die perfekte Kulisse für gemeinsame Ausflüge und das legendäre Sommerfest. Direkt am Wasser gelegen, verbringen Bundesbrüder hier unvergessliche Stunden abseits des Stadtlebens – beim Grillen, Schwimmen und Entspannen.</p>
+                    </div>
                 </div>
-            </section>
+
+            </div>
         </div>
 
         <div class="section-wrapper" >
@@ -2134,6 +2193,17 @@
     </div>
 </div>
 
+<div id="wsModal" class="modal-overlay">
+    <div class="modal-content ws-modal-content" style="position:relative;">
+        <button id="closeWsModal" class="ev-modal-close-btn" title="Schließen">
+            <i data-lucide="x" style="width:18px;height:18px;"></i>
+        </button>
+        <div class="ws-modal-tag" id="wsModalTag">Wahlspruch</div>
+        <h3 class="ws-modal-title" id="wsModalTitle"></h3>
+        <div class="ws-modal-body" id="wsModalBody"></div>
+    </div>
+</div>
+
 <section class="faq-section" id="faq">  
     <h2 class="faq-title">Frequently Asked Questions</h2>  
     <p class="faq-subtitle">Wenn du noch Fragen hast, schreib uns gerne eine E-Mail.</p>  
@@ -2142,25 +2212,24 @@
         <!-- FAQ 1 -->
         <div class="faq-item">  
             <div class="faq-header">  
-                <div class="faq-question">1. Was ist „V.B.B! Thuringia“?</div>  
+                <div class="faq-question">1. Was beduetet „V.B.B! Thuringia“?</div>  
                 <div class="faq-toggle"></div>  
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Die V.B.B! (Vereinigte Berliner Burschenschaft) Thuringia ist eine traditionsreiche Studentenverbindung in Berlin. Wir sind eine generationenübergreifende Gemeinschaft von Studenten und Akademikern, die sich im Studium unterstützen, gemeinsame Werte teilen und Freundschaften fürs Leben schließen.  
-                </div>  
+                    Die V.B.B.! (Vereinigte Berliner Burschenschaft) Thuringia ist eine traditionsreiche Studentenverbindung in Berlin, hervorgegangen aus der erfolgreichen Fusion starker Bünde. Dieser Zusammenschluss prägt uns bis heute: Wir sind eine generationenübergreifende Gemeinschaft von Studenten und Akademikern, die sich im Studium unterstützen, gemeinsame Werte teilen und Freundschaften fürs Leben schließen.      </div>  
             </div>  
         </div>  
 
         <!-- FAQ 2 -->
         <div class="faq-item">  
             <div class="faq-header">  
-                <div class="faq-question">2. Für wen ist die V.B.B! Thuringia geeignet?</div>  
+                <div class="faq-question">2. Für wen ist Thuringia geeignet?</div>  
                 <div class="faq-toggle"></div>  
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Unsere Gemeinschaft richtet sich an immatrikulierte Studenten an Berliner Universitäten und Hochschulen, die mehr aus ihrer Studienzeit machen wollen. Sie ist ideal für junge Männer, die über den Tellerrand ihres eigenen Studiengangs blicken, sich persönlich weiterentwickeln und Teil einer starken, verlässlichen Gemeinschaft werden möchten.  
+                    Unsere Gemeinschaft richtet sich an deutsche Studenten aller Berliner Universitäten und (Fach-) hochschulen, die sich nicht mit dem reinen Fachstudium zufriedengeben wollen. Wir suchen junge Männer, die über den Tellerrand ihres Fachbereichs blicken wollen, um sich persönlich zu entfalten und Teil eines starken, verlässlichen Lebensbundes zu werden.
                 </div>  
             </div>  
         </div>  
@@ -2173,7 +2242,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Im Studium geht es nicht nur um Vorlesungen, sondern um Struktur und Disziplin. Unsere „Erfolgsroutine“ besteht aus dem gemeinsamen Lernen auf unserem Verbindungshaus, gegenseitiger akademischer Unterstützung und dem regelmäßigen Austausch mit älteren Semestern, die wertvolle Tipps für Prüfungen und den Berufseinstieg geben.  
+                    Vorsprung durch Struktur: Ein erfolgreiches Studium verlangt mehr als nur den Besuch von Vorlesungen – es erfordert Struktur, Disziplin und das richtige Umfeld. Unsere Erfolgsroutine setzt genau hier an: Wir lernen gemeinsam auf dem Verbindungshaus und unterstützen uns akademisch auf Augenhöhe. Durch den stetigen Austausch mit höheren Semestern profitierst du von echtem Mentoring. So erhältst du nicht nur erprobtes Wissen für deine Prüfungen, sondern auch entscheidende Impulse für deinen späteren Berufseinstieg.
                 </div>  
             </div>  
         </div>  
@@ -2186,7 +2255,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Du profitierst von einem starken, lebenslangen Netzwerk (dem sogenannten Lebensbund). Wir bieten günstige Zimmer auf unserem zentralen Verbindungshaus in Berlin, gemeinsame Veranstaltungen (Vorträge, Ausflüge, Feiern), ein großes akademisches Netzwerk für Praktika und Karriere sowie die Möglichkeit, in unserer Gemeinschaft früh Verantwortung durch verschiedene Ämter zu übernehmen.  
+                   Deine Vorteile auf einen Blick: Wer in Berlin studiert, kennt den harten Wohnungsmarkt. Genau hier greift unser Netzwerk: Wir lassen dich bei der Wohnungssuche nicht allein und vermitteln gezielt Kontakte zu Wohnraum. Doch Thuringia bietet noch mehr: Als Teil unseres Lebensbundes profitierst du von exzellenten akademischen Kontakten für Praktika und Karriereschritte. Du entwickelst dich durch die Übernahme von Ämtern persönlich weiter und erlebst auf unseren gemeinsamen Veranstaltungen echte, lebenslange Freundschaften.
                 </div>  
             </div>  
         </div>  
@@ -2194,12 +2263,12 @@
         <!-- FAQ 5 -->
         <div class="faq-item">  
             <div class="faq-header">  
-                <div class="faq-question">5. Wie kann ich Mitglied werden und was kostet die Teilnahme?</div>  
+                <div class="faq-question">5. Wie kann ich Mitglied werden und was kostet das?</div>  
                 <div class="faq-toggle"></div>  
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Komm am besten einfach unverbindlich auf unserem Haus vorbei oder schreib uns eine Nachricht, damit wir uns kennenlernen können! Der Semesterbeitrag für aktive Studenten ist bei uns sehr gering und absolut studentenfreundlich gestaltet, da unser Bund durch unsere berufstätigen Mitglieder (Alten Herren) unterstützt wird.  
+                    Der einfachste Weg: Schreib uns eine Nachricht oder komm ganz unverbindlich auf unserem Haus vorbei. Lerne uns bei einem gemeinsamen Abend persönlich kennen! Um die Kosten musst du dir dabei keine Sorgen machen: Da unser Bund finanziell stark von unseren berufstätigen Mitgliedern (den „Alten Herren“) getragen wird, ist der Semesterbeitrag für aktive Studenten sehr gering und schont dein Budget.
                 </div>  
             </div>  
         </div>  
@@ -2207,12 +2276,12 @@
         <!-- FAQ 6 -->
         <div class="faq-item">  
             <div class="faq-header">  
-                <div class="faq-question">6. Was ist eine Studentenverbindung?</div>  
+                <div class="faq-question">6. Was macht unsere Studentenverbindung aus?</div>  
                 <div class="faq-toggle"></div>  
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Eine Studentenverbindung ist ein Zusammenschluss von Studenten und Ehemaligen (Alten Herren), der auf dem Lebensbundprinzip beruht – einer lebenslangen Freundschaft. Wir pflegen akademische Traditionen, organisieren gemeinsam unseren studentischen Alltag und unterstützen uns gegenseitig. Als Burschenschaft stehen wir dabei historisch für die Werte Freiheit, Ehre und Vaterlandsliebe sowie ein demokratisches Miteinander.  
+                    Im Zentrum unserer Studentenverbindung steht der Lebensbund: eine unverbrüchliche Gemeinschaft aus aktiven Studenten und Berufstätigen, die ein Leben lang hält. Wir organisieren unser Studium gemeinsam, halten akademische Traditionen lebendig und bieten einander starken Rückhalt. Als traditionsreiche Burschenschaft ist unser Kompass dabei klar definiert. Wir stehen aktiv für eine demokratische Diskussionskultur und richten unser Handeln an den historischen Leitbegriffen Freiheit, Ehre und Vaterlandsliebe aus.
                 </div>  
             </div>  
         </div>  
@@ -2225,7 +2294,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Ja, absolut! Genau dafür gibt es in Studentenverbindungen die sogenannte „Fuchsenzeit“. In deinen ersten Semestern bist du als sogenannter „Fuchs“ auf Probe dabei. In dieser Zeit lernst du unsere Traditionen, die Mitglieder und das Verbindungsleben in Berlin ganz in Ruhe kennen, bevor du dich entscheidest, als Vollmitglied (Bursche) auf Lebenszeit aufgenommen zu werden.  
+                    Ja, absolut! Die Entscheidung für einen Lebensbund trifft man nicht über Nacht. Genau dafür gibt es bei uns die „Fuxenzeit“. In deinen ersten Semestern bist du als sogenannter Fux zunächst auf Probe dabei. Dieses gegenseitige Kennenlernen ist entscheidend für beide Seiten. Du hast die Ruhe, unsere Gemeinschaft und Werte aus erster Hand zu erleben. Erst am Ende dieser Zeit fällt die gemeinsame Entscheidung: Wenn du Teil des Lebensbundes werden möchtest und der Bund dir das Vertrauen ausspricht, wirst du als Vollmitglied (Bursch) aufgenommen. 
                 </div>  
             </div>  
         </div>  
@@ -2238,7 +2307,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Im Gegensatz zu lockeren Online-Netzwerken, normalen WGs oder Business-Clubs setzen wir auf das Lebensbundprinzip. Das bedeutet: Wir bleiben auch nach dem Studium ein Leben lang verbunden. Bei uns treffen junge Erstsemester-Studenten auf erfahrene Akademiker im Ruhestand. Diese tiefe, familiäre und generationenübergreifende Verbundenheit findest du in kaum einem anderen Netzwerk.  
+                   Wir sind mehr als nur ein Netzwerk auf Zeit! Wo andere Netzwerke nach dem Studium zerfallen, fängt unsere Gemeinschaft erst richtig an. Der entscheidende Unterschied ist unser Lebensbund: eine unverbrüchliche Freundschaft, die weit über die Studienzeit hinausgeht. Bei Thuringia begegnen sich junge Erstsemester erfahrene Akademikern aus allen Lebensphasen auf Augenhöhe. Eine derartige generationenübergreifende und fast familiäre Verbundenheit findest du in keinem Business-Club der Welt.
                 </div>  
             </div>  
         </div>  
@@ -2503,6 +2572,55 @@
 
         // --- INITIALIZE LUCIDE ICONS ---
         lucide.createIcons();
+
+        // --- WAHLSPRUCH MODAL ---
+        const WS_DATA = [
+            {
+                title: 'Einer für alle, alle für einen',
+                color: '#72d124',
+                body: `Dieser Grundsatz verkörpert das unbedingte Solidaritätsprinzip des Lebensbundes. Er bedeutet, dass jedes Mitglied verlässlich und bedingungslos für die Gemeinschaft einsteht. Im Gegenzug bietet die Verbindung einen starken Rückhalt, der den Einzelnen in akademischen, beruflichen und privaten Herausforderungen stützt und trägt.`
+            },
+            {
+                title: 'Ehre',
+                color: '#8f3428',
+                body: `Im burschenschaftlichen Sinne bedeutet Ehre charakterliche Integrität, Aufrichtigkeit und Haltung. Es geht darum, für die eigenen Überzeugungen mutig einzustehen, stets zu seinem Wort zu stehen und Konflikte mit offenem Visier auszutragen. Diese persönliche Standhaftigkeit und das Einstehen für das eigene Handeln finden historisch und teils bis heute in der studentischen Mensur ihren symbolischen Ausdruck.`
+            },
+            {
+                title: 'Freiheit',
+                color: '#3498db',
+                body: `Die Wurzeln dieses Wertes reichen zurück zur Urburschenschaft von 1815 und dem Wartburgfest, wo Studenten gegen Zensur und absolutistische Kleinstaaterei aufbegehrten. Heute übersetzt sich dieser burschenschaftliche Freiheitsbegriff in die unbedingte Verteidigung von Meinungsfreiheit, akademischer Wissenschaftsfreiheit und dem Recht auf selbstbestimmtes, kritisches Denken abseits gesellschaftlicher Konventionen.`
+            },
+            {
+                title: 'Recht',
+                color: '#3f465f',
+                body: `Der Einsatz für das Recht ist untrennbar mit der historischen Forderung der frühen Burschenschafter nach einer demokratischen Verfassung und Rechtsstaatlichkeit verbunden, die 1848 in der Paulskirche ihren Höhepunkt fand. Innerhalb der Gemeinschaft bedeutet dies ein Bekenntnis zu demokratischen Spielregeln, basisdemokratischer Mitbestimmung in den Konventen und einem Zusammenleben, das auf gemeinsamen Werten und fairen Regeln basiert.`
+            },
+            {
+                title: 'Brudersinn',
+                color: '#e67e22',
+                body: `Der Brudersinn ist das Fundament der generationenübergreifenden Gemeinschaft und des Lebensbundprinzips. Er überwindet Herkunft, Stand und Fakultätsgrenzen, um eine völlig egalitäre Ebene unter den Bundesbrüdern zu schaffen. Dieser Wert verpflichtet zu lebenslanger Freundschaft, gegenseitigem Respekt und einem stetigen Wissenstransfer vom jungen Studenten bis zum Alter Herrn.`
+            }
+        ];
+
+        const wsModal = document.getElementById('wsModal');
+        const wsModalTag = document.getElementById('wsModalTag');
+        const wsModalTitle = document.getElementById('wsModalTitle');
+        const wsModalBody = document.getElementById('wsModalBody');
+
+        document.querySelectorAll('.ws-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const idx = parseInt(this.dataset.ws, 10);
+                const d = WS_DATA[idx];
+                wsModalTag.style.color = d.color;
+                wsModalTitle.textContent = d.title;
+                wsModalBody.textContent = d.body;
+                wsModal.classList.add('show');
+                lucide.createIcons();
+            });
+        });
+
+        document.getElementById('closeWsModal').addEventListener('click', () => wsModal.classList.remove('show'));
+        wsModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
 
         // --- SCRIPT TO GENERATE IMAGE GRID ---
         const wrapper = document.querySelector('.background-wrapper');
