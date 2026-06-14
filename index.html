@@ -815,8 +815,7 @@
 
 .cal-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(120px, 1fr));
-    /* Ensure the container itself doesn't add a top or left line */
+    /* grid-template-columns wird per JS dynamisch gesetzt */
     border-top: none;
     border-left: none;
 }
@@ -827,20 +826,9 @@
     color: #888;
     font-size: 0.9rem;
     padding: 15px 10px;
-    /* First row: No top border as requested */
-    border-top: none; 
-    /* Keep the bottom line to separate month names from the dates */
+    border-top: none;
     border-bottom: 2px solid #f0f0f0;
-    /* Right border for vertical separation */
     border-right: 1px solid #f0f0f0;
-}
-.cal-header:last-of-type {
-    border-right: none;
-}
-
-/* Remove right border on the very last header (top right corner) */
-.cal-header:nth-child(4) {
-    border-right: none;
 }
 
 .cal-cell {
@@ -854,25 +842,14 @@
     align-items: flex-start;
 }
 
-/* --- COLUMN LOGIC --- */
-
-/* Remove right border on the last column (right side) */
-.cal-cell:nth-child(4n) { 
-    border-right: none; 
-} 
-
-/* Remove left border on the first column (left side) */
-/* This targets cells 1, 5, 9... in your 4-column grid */
-.cal-cell:nth-child(4n+1), 
-.cal-header:nth-child(4n+1) {
-    border-left: none;
+/* Letzte Spalte: kein rechter Rand – wird per JS-Klasse gesetzt */
+.cal-col-last {
+    border-right: none !important;
 }
 
-/* --- ROW LOGIC --- */
-
-/* Ensure the last row elements don't have a bottom border */
-.cal-cell.cal-row-last { 
-    border-bottom: none; 
+/* Letzte Zeile: kein unterer Rand */
+.cal-cell.cal-row-last {
+    border-bottom: none;
 }
 
 
@@ -2329,17 +2306,17 @@
             grid.style.gridTemplateColumns = `repeat(${months.length}, minmax(120px, 1fr))`;
             grid.innerHTML = '';
 
+            const years = new Set(months.map(x => x.slice(0, 4)));
+            const multiYear = years.size > 1;
+            const lastColIdx = months.length - 1;
+
             // Monats-Header rendern
             months.forEach((ym, i) => {
                 const [y, m] = ym.split('-');
                 const name = MONTH_NAMES_DE[parseInt(m) - 1];
-                const isLast = i === months.length - 1;
                 const header = document.createElement('div');
-                header.className = 'cal-header';
-                // Jahr nur anzeigen wenn mehrere Jahre vorkommen
-                const years = new Set(months.map(x => x.slice(0,4)));
-                header.textContent = years.size > 1 ? `${name} ${y}` : name;
-                if (isLast) header.style.borderRight = 'none';
+                header.className = 'cal-header' + (i === lastColIdx ? ' cal-col-last' : '');
+                header.textContent = multiYear ? `${name} ${y}` : name;
                 grid.appendChild(header);
             });
 
@@ -2356,11 +2333,14 @@
 
             // Zellen rendern
             for (let row = 0; row < maxRows; row++) {
-                const isLast = row === maxRows - 1;
-                months.forEach(ym => {
+                const isLastRow = row === maxRows - 1;
+                months.forEach((ym, colIdx) => {
                     const ev = byMonth[ym][row];
                     const cell = document.createElement('div');
-                    cell.className = `cal-cell${isLast ? ' cal-row-last' : ''}`;
+                    const classes = ['cal-cell'];
+                    if (isLastRow) classes.push('cal-row-last');
+                    if (colIdx === lastColIdx) classes.push('cal-col-last');
+                    cell.className = classes.join(' ');
                     if (ev) cell.innerHTML = buildPillHTML(ev);
                     grid.appendChild(cell);
                 });
