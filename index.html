@@ -1481,6 +1481,8 @@
     flex-shrink: 0;
 }
 .btn-ical-icon:hover { background: #e0e0e0; color: #111; transform: translateY(-1px); }
+.btn-ical-icon--green { background: var(--primary-green) !important; color: #fff !important; }
+.btn-ical-icon--green:hover { background: #5db31a !important; color: #fff !important; }
 .btn-ical-green {
     display: inline-flex;
     align-items: center;
@@ -1814,11 +1816,6 @@
             </p>
 
 <div class="calendar-card">
-    <div class="cal-toolbar">
-        <button id="downloadAllIcal" class="btn-ical-icon" title="Alle Termine als iCal herunterladen">
-            <i data-lucide="calendar-down" style="width:18px; height:18px;"></i>
-        </button>
-    </div>
     <!-- Desktop: 4-Spalten-Grid -->
     <div class="cal-grid" id="calGrid" style="grid-template-columns: repeat(4, 1fr);">
         <div class="cal-header" id="calHeader0">April</div>
@@ -1831,10 +1828,15 @@
     <div class="cal-list" id="calList"></div>
     <!-- Legende -->
     <div class="cal-legend">
-        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#3498db;"></div> Offizielle Veranstaltung</div>
-        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#2ecc71;"></div> Hochoffizielle Veranstaltung</div>
-        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#e67e22;"></div> Intern</div>
-        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#9b59b6;"></div> Gäste &amp; Damen willkommen</div>
+        <div style="display:flex; flex-wrap:wrap; gap:14px 24px; flex:1;">
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#3498db;"></div> Offizielle Veranstaltung</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#2ecc71;"></div> Hochoffizielle Veranstaltung</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#e67e22;"></div> Intern</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#9b59b6;"></div> Gäste &amp; Damen willkommen</div>
+        </div>
+        <button id="downloadAllIcal" class="btn-ical-icon btn-ical-icon--green" title="Alle Termine als iCal herunterladen">
+            <i data-lucide="download" style="width:18px; height:18px;"></i>
+        </button>
     </div>
 </div>
 
