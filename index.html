@@ -1464,39 +1464,83 @@
 .cal-toolbar {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
-.btn-ical {
+.btn-ical-icon {
     display: inline-flex;
     align-items: center;
-    background: #111;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #f0f0f0;
+    color: #555;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+.btn-ical-icon:hover { background: #e0e0e0; color: #111; transform: translateY(-1px); }
+.btn-ical-green {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-green);
     color: #fff;
     border: none;
     border-radius: 50px;
-    padding: 10px 20px;
-    font-size: 0.85rem;
+    padding: 13px 24px;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
+    transition: filter 0.2s, transform 0.2s;
     font-family: 'Inter', sans-serif;
 }
-.btn-ical:hover { background: #333; transform: translateY(-1px); }
-.btn-ical-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #f0f0f0;
-    color: #333;
+.btn-ical-green:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* X-Schließen-Button im Event-Modal */
+.ev-modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     border: none;
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
+    background: #f0f0f0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: background 0.2s;
-    font-family: 'Inter', sans-serif;
+    padding: 0;
 }
-.btn-ical-secondary:hover { background: #e0e0e0; }
+.ev-modal-close-btn:hover { background: #e0e0e0; color: #111; }
+
+/* --- Kalender-Legende --- */
+.cal-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 24px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+.cal-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: #555;
+    font-weight: 500;
+}
+.cal-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
 
 /* --- Mobile Calendar List --- */
 .cal-list { display: none; }
@@ -1628,7 +1672,7 @@
 <body>
 
     <nav>
-        <div style="font-weight:900; font-size:1.5rem;">V.B.B! Thuringia</div>
+        <div style="font-family:'Germania One',serif; font-size:1.6rem; letter-spacing:0.5px;">V.B.B! Thuringia</div>
         
         <div class="nav-links">
             <a href="#about">Impressionen</a>
@@ -1771,9 +1815,8 @@
 
 <div class="calendar-card">
     <div class="cal-toolbar">
-        <button id="downloadAllIcal" class="btn-ical">
-            <i data-lucide="calendar-download" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;"></i>
-            Alle Termine herunterladen (.ics)
+        <button id="downloadAllIcal" class="btn-ical-icon" title="Alle Termine als iCal herunterladen">
+            <i data-lucide="calendar-down" style="width:18px; height:18px;"></i>
         </button>
     </div>
     <!-- Desktop: 4-Spalten-Grid -->
@@ -1786,6 +1829,13 @@
     </div>
     <!-- Mobile: Listenansicht -->
     <div class="cal-list" id="calList"></div>
+    <!-- Legende -->
+    <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#3498db;"></div> Offizielle Veranstaltung</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#2ecc71;"></div> Hochoffizielle Veranstaltung</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#e67e22;"></div> Intern</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#9b59b6;"></div> Gäste &amp; Damen willkommen</div>
+    </div>
 </div>
 
 <div style="margin-top: 50px;">
@@ -2103,17 +2153,19 @@
 
 <!-- Event Detail Modal -->
 <div id="eventDetailModal" class="modal-overlay">
-    <div class="modal-content event-modal-content">
+    <div class="modal-content event-modal-content" style="position:relative;">
+        <button id="closeEventModal" class="ev-modal-close-btn" title="Schließen">
+            <i data-lucide="x" style="width:18px;height:18px;"></i>
+        </button>
         <p class="event-modal-category" id="evModalCategory"></p>
         <h3 class="event-modal-title" id="evModalTitle"></h3>
         <div class="event-modal-info" id="evModalInfo"></div>
         <div class="event-modal-description" id="evModalDesc"></div>
         <div class="event-modal-actions">
-            <button id="evModalIcal" class="btn-ical" style="flex:1;">
+            <button id="evModalIcal" class="btn-ical-green" style="width:100%;">
                 <i data-lucide="calendar-plus" style="width:15px;height:15px;margin-right:6px;vertical-align:middle;"></i>
                 Zu Kalender hinzufügen
             </button>
-            <button class="btn-close-modal" id="closeEventModal" style="flex:1;">Schließen</button>
         </div>
     </div>
 </div>
