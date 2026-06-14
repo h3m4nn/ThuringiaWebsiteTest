@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -1498,12 +1498,25 @@
     max-width: 400px;
     width: 90%;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    transform: translateY(20px);
-    transition: transform 0.3s ease-in-out;
+}
+
+@keyframes modal-pop-in {
+    0%   { opacity: 0; transform: translateY(24px) scale(0.94); }
+    65%  { opacity: 1; transform: translateY(-3px) scale(1.01); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes modal-bg-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal-overlay.show {
+    animation: modal-bg-in 0.2s ease forwards;
 }
 
 .modal-overlay.show .modal-content {
-    transform: translateY(0);
+    animation: modal-pop-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 /* Das grüne Häkchen-Icon */
@@ -2007,52 +2020,7 @@
             </div>
         </div>
 
-        <div class="section-wrapper">
-            <h2 class="section-title">Unsere <span class="highlight">Liegenschaften</span></h2>
-            <p class="section-subtitle">Zwei besondere Orte, die das Herz der Thuringia bilden – mitten in Berlin und direkt am Wasser.</p>
-
-            <div class="locations-grid">
-
-                <!-- Verbindungshaus -->
-                <div class="location-card">
-                    <div class="location-map">
-                        <iframe
-                            src="https://maps.google.com/maps?q=Richard-Wagner-Stra%C3%9Fe+19%2C+10585+Berlin&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <div class="location-info">
-                        <div class="location-tag">Verbindungshaus</div>
-                        <h3 class="location-name">Thüringerkonstante</h3>
-                        <div class="location-address">
-                            <i data-lucide="map-pin" style="width:14px;height:14px;flex-shrink:0;color:var(--primary-green);"></i>
-                            Richard-Wagner-Straße 19, 10585 Berlin-Charlottenburg
-                        </div>
-                        <p class="location-desc">Unser Verbindungshaus im Herzen Charlottenburgs ist seit Generationen der zentrale Dreh- und Angelpunkt der Thuringia. Hier finden Stammtische, Kneipen, Vortragsabende und das gesellige Miteinander statt. Aktive Bundesbrüder haben die Möglichkeit, günstige Zimmer auf dem Haus zu beziehen.</p>
-                    </div>
-                </div>
-
-                <!-- Wassergrundstück -->
-                <div class="location-card">
-                    <div class="location-map">
-                        <iframe
-                            src="https://maps.google.com/maps?q=Am+Pichelssee+30a%2C+13599+Berlin+Spandau&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <div class="location-info">
-                        <div class="location-tag">Wassergrundstück</div>
-                        <h3 class="location-name">Am Pichelssee</h3>
-                        <div class="location-address">
-                            <i data-lucide="map-pin" style="width:14px;height:14px;flex-shrink:0;color:var(--primary-green);"></i>
-                            Am Pichelssee 30a, 13599 Berlin-Spandau
-                        </div>
-                        <p class="location-desc">Unser Wassergrundstück am Pichelssee in Spandau bietet die perfekte Kulisse für gemeinsame Ausflüge und das legendäre Sommerfest. Direkt am Wasser gelegen, verbringen Bundesbrüder hier unvergessliche Stunden abseits des Stadtlebens – beim Grillen, Schwimmen und Entspannen.</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        
 
         <div class="section-wrapper" >
             <h2 class="section-title">So kannst du dabei sein</h2>
@@ -2158,7 +2126,52 @@
         </form>
     </div>
 </section>
+<div class="section-wrapper">
+            <h2 class="section-title">Unsere <span class="highlight">Liegenschaften</span></h2>
+            <p class="section-subtitle">Zwei besondere Orte, die das Herz der Thuringia bilden – mitten in Berlin und direkt am Wasser.</p>
 
+            <div class="locations-grid">
+
+                <!-- Verbindungshaus -->
+                <div class="location-card">
+                    <div class="location-map">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Richard-Wagner-Stra%C3%9Fe+19%2C+10585+Berlin&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="location-info">
+                        <div class="location-tag">Verbindungshaus</div>
+                        <h3 class="location-name">Thüringerkonstante</h3>
+                        <div class="location-address">
+                            <i data-lucide="map-pin" style="width:14px;height:14px;flex-shrink:0;color:var(--primary-green);"></i>
+                            Richard-Wagner-Straße 19, 10585 Berlin-Charlottenburg
+                        </div>
+                        <p class="location-desc">Unser Verbindungshaus im Herzen Charlottenburgs ist seit Generationen der zentrale Dreh- und Angelpunkt der Thuringia. Hier finden Stammtische, Kneipen, Vortragsabende und das gesellige Miteinander statt. Aktive Bundesbrüder haben die Möglichkeit, günstige Zimmer auf dem Haus zu beziehen.</p>
+                    </div>
+                </div>
+
+                <!-- Wassergrundstück -->
+                <div class="location-card">
+                    <div class="location-map">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Am+Pichelssee+30a%2C+13599+Berlin+Spandau&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="location-info">
+                        <div class="location-tag">Wassergrundstück</div>
+                        <h3 class="location-name">Am Pichelssee</h3>
+                        <div class="location-address">
+                            <i data-lucide="map-pin" style="width:14px;height:14px;flex-shrink:0;color:var(--primary-green);"></i>
+                            Am Pichelssee 30a, 13599 Berlin-Spandau
+                        </div>
+                        <p class="location-desc">Unser Wassergrundstück am Pichelssee in Spandau bietet die perfekte Kulisse für gemeinsame Ausflüge und das legendäre Sommerfest. Direkt am Wasser gelegen, verbringen Bundesbrüder hier unvergessliche Stunden abseits des Stadtlebens – beim Grillen, Schwimmen und Entspannen.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 <!-- DAS NEUE MODAL POPUP -->
 <div id="successModal" class="modal-overlay">
     <div class="modal-content">
