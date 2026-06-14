@@ -816,8 +816,8 @@
 .cal-grid {
     display: grid;
     /* grid-template-columns wird per JS dynamisch gesetzt */
-    border-top: none;
-    border-left: none;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .cal-header {
@@ -826,30 +826,19 @@
     color: #888;
     font-size: 0.9rem;
     padding: 15px 10px;
-    border-top: none;
-    border-bottom: 2px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
+    /* box-shadow erzeugt rechte + untere Linie für jede Zelle –
+       funktioniert für beliebig viele Spalten ohne nth-child */
+    box-shadow: inset -1px -2px 0 #e8e8e8;
 }
 
 .cal-cell {
-    border-bottom: 1px solid #f0f0f0;
-    border-right: 1px solid #f0f0f0;
     min-height: 70px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 8px;
     align-items: flex-start;
-}
-
-/* Letzte Spalte: kein rechter Rand – wird per JS-Klasse gesetzt */
-.cal-col-last {
-    border-right: none !important;
-}
-
-/* Letzte Zeile: kein unterer Rand */
-.cal-cell.cal-row-last {
-    border-bottom: none;
+    box-shadow: inset -1px -1px 0 #f0f0f0;
 }
 
 
@@ -2308,14 +2297,13 @@
 
             const years = new Set(months.map(x => x.slice(0, 4)));
             const multiYear = years.size > 1;
-            const lastColIdx = months.length - 1;
 
             // Monats-Header rendern
-            months.forEach((ym, i) => {
+            months.forEach((ym) => {
                 const [y, m] = ym.split('-');
                 const name = MONTH_NAMES_DE[parseInt(m) - 1];
                 const header = document.createElement('div');
-                header.className = 'cal-header' + (i === lastColIdx ? ' cal-col-last' : '');
+                header.className = 'cal-header';
                 header.textContent = multiYear ? `${name} ${y}` : name;
                 grid.appendChild(header);
             });
@@ -2331,16 +2319,12 @@
 
             const maxRows = Math.max(...months.map(ym => byMonth[ym].length), 1);
 
-            // Zellen rendern
+            // Zellen rendern – keine Sonderbehandlung für letzte Spalte/Zeile nötig
             for (let row = 0; row < maxRows; row++) {
-                const isLastRow = row === maxRows - 1;
-                months.forEach((ym, colIdx) => {
+                months.forEach((ym) => {
                     const ev = byMonth[ym][row];
                     const cell = document.createElement('div');
-                    const classes = ['cal-cell'];
-                    if (isLastRow) classes.push('cal-row-last');
-                    if (colIdx === lastColIdx) classes.push('cal-col-last');
-                    cell.className = classes.join(' ');
+                    cell.className = 'cal-cell';
                     if (ev) cell.innerHTML = buildPillHTML(ev);
                     grid.appendChild(cell);
                 });
