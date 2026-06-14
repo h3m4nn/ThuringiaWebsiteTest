@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
             --text-dark: #111;
             --overlay-white: rgba(255, 255, 255, 0.85);
             /* New Colors for Cards */
-            --color-blue: #4f4e7e;
+            --color-blue: #3f465f;
             --color-red: #8f3428;
             --color-white-bg: #fff;
             /* Pill Colors */
@@ -409,14 +409,14 @@
         }
         
         .card-white { background-color: var(--color-white-bg); color: var(--text-dark); }
-        .card-green { background-color: #4e7e52; }
-        .card-red { background-color: var(--color-red); }
+        .card-green { background-color: #98be5b; }
+        .card-blue { background-color: var(--color-blue); }
 
 
         .card-white .card-label { color: var(--text-dark); }
         .card-white .card-description { color: #555; }
-        .card-red .card-description, .card-green .card-description { color: rgba(255, 255, 255, 0.85); }
-        .card-red h3 {
+        .card-blue .card-description, .card-green .card-description { color: rgba(255, 255, 255, 0.85); }
+        .card-blue h3 {
             
   color: #ffffff; /* Sets text to white */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds the drop shadow */
@@ -1460,6 +1460,129 @@
 .btn-close-modal:active {
     transform: scale(0.98);
 }
+/* --- iCal Button & Calendar Toolbar --- */
+.cal-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+.btn-ical {
+    display: inline-flex;
+    align-items: center;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+.btn-ical:hover { background: #333; transform: translateY(-1px); }
+.btn-ical-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+.btn-ical-secondary:hover { background: #e0e0e0; }
+
+/* --- Mobile Calendar List --- */
+.cal-list { display: none; }
+.cal-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 16px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 8px;
+}
+.cal-list-item:hover { background: #f9f9f9; }
+.cal-list-item:last-child { border-bottom: none; }
+.cal-list-date {
+    min-width: 48px;
+    text-align: center;
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 8px 4px;
+    flex-shrink: 0;
+}
+.cal-list-date-day { font-size: 1.3rem; font-weight: 800; color: #111; line-height: 1; }
+.cal-list-date-month { font-size: 0.65rem; font-weight: 600; color: #888; text-transform: uppercase; margin-top: 2px; }
+.cal-list-body { flex: 1; }
+.cal-list-title { font-size: 0.95rem; font-weight: 700; color: #111; margin-bottom: 4px; }
+.cal-list-meta { font-size: 0.8rem; color: #777; display: flex; flex-direction: column; gap: 2px; }
+.cal-list-meta span { display: flex; align-items: center; gap: 5px; }
+.cal-list-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.cal-pill { cursor: pointer; }
+.cal-pill:hover { transform: translateY(-3px) !important; box-shadow: 0 6px 12px rgba(0,0,0,0.12) !important; }
+
+/* --- Event Detail Modal --- */
+.event-modal-content { max-width: 480px !important; text-align: left !important; }
+.event-modal-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin: 0 0 18px 0;
+    line-height: 1.2;
+}
+.event-modal-category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #999;
+    margin-bottom: 6px;
+}
+.event-modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.event-modal-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.4;
+}
+.event-modal-info-row svg { flex-shrink: 0; color: #888; }
+.event-modal-description {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.event-modal-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .cal-grid { display: none !important; }
+    .cal-list { display: block !important; }
+    .cal-toolbar { justify-content: center; }
+}
+
 /* Footer Container */
 .site-footer {
     
@@ -1573,12 +1696,11 @@
             </div>
 
             <div class="media-section">
-                <p>Unsere Projekte, Vorträge und Veranstaltungen sind bekannt aus:</p>
+                <p>Bei uns haben bereits gesprochen:</p>
                 <div class="media-logos">
-                    <span class="media-logo-text">JUNGE FREIHEIT</span>
-                    <span class="media-logo-text logo-Zeitung-b">Unsere Jagd</span>
-                    <span class="media-logo-text logo-Zeitung">Tichys Einblick</span>
-                    <span class="media-logo-text">ASta Magazin</span>
+                    <span class="media-logo-text">Eberhard Diepgen <br><i style="font-size: 9px;">(CDU, ehem. Bürgermeister)</i></span>
+                    <span class="media-logo-text">Konrad Adam <br><i style="font-size: 9px;"   >(Journalist)</i></span>
+                    <span class="media-logo-text">Beatrix von Storch <br><i style="font-size: 9px;">(AfD, stellv. Fraktionsvorsitzende)</i></span>
                 </div>
             </div>
         </div>
@@ -1587,33 +1709,35 @@
             <h2>Was ist die V.B.B! <span class="highlight">Thuringia</span>?</h2>
         </div>
 
-        <div class="cards-grid">
+        
+            <div class="cards-grid">
+            <div class="card card-green" style="grid-row: span 2;">
+                <div class="card-image-content" style="padding: 30px; justify-content: flex-start;">
+                    <div class="card-text-content">
+                        <h3 class="card-label">Netzwerk</h3>
+                        <p class="card-description">
+                            Von erfolgreichen Machern lernen, eigene Ziele erreichen: Unser Netzwerk aus erfolgreichen Alumni begleitet dich auf deinem Weg nach oben - nicht nur digital sondern im echten Leben.
+                        </p>
+                    </div>
+                </div>
+            </div>
             
-            <div class="card card-red card-image-top" style="grid-row: span 2;">
+            
+            <div class="card card-blue card-image-top" style="grid-row: span 2;">
                 <div class="card-image-content">
                     <img src="images/Fechten.png" alt="Fechtsport">
                     <div class="card-text-content">
                         <h3 class="card-label">Fechtsport</h3>
                     </div>
                 </div>
-            </div>
-
-            <div class="card card-green" style="grid-row: span 2;">
+            </div>    
+            <div class="card card-blue" style="grid-row: span 2;">
                 <div class="card-image-content" style="padding: 30px; justify-content: flex-start;">
                     <div class="card-text-content">
-                        <h3 class="card-label">Netzwerk</h3>
+                        <h3 class="card-label">Kompetenz-Erwerb</h3>
                         <p class="card-description">
-                            Ein Umfeld voller Macher, das dich inspiriert, stärkt und auf deinem Weg begleitet – digital und im echten Leben.
+                            Freie Rede. Organisationsfähigkeit. Führungsverantwortung. Bei uns sammelst du genau die Praxiserfahrung, die spätere Arbeitgeber fordern. Dazu gehört auch das aktive Erleben demokratischer Strukturen - lerne, Mehrheiten zu organisieren, fundiert zu debattieren und gemeinsam Verantwortung zu tragen.
                         </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card card-red card-image-top" style="grid-row: span 2;">
-                <div class="card-image-content">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/TU_Berlin_Hauptgebaeude070710_UlrichDahl.jpg" alt="TU Berlin">
-                    <div class="card-text-content">
-                        <h3 class="card-label">Nah an der TU-Berlin</h3>
                     </div>
                 </div>
             </div>
@@ -1642,183 +1766,26 @@
         <div class="section-wrapper">
             <h2 class="section-title" id="sempro">Vielfalt & Austausch – in <span class="highlight">jedem Semester</span></h2>
             <p class="section-subtitle">
-                Von Stammtischen bis Vortragsabenden. Entdecke Veranstaltungen, die dich wirklich weiterbringen.
+                Ob sportlicher Fokus beim Fechten, Erholung am Wasser, lebhafter Austausch am Stammtisch oder gesellige Kneipenabende: Unser Programm bietet dir genau die richtige Mischung aus Anspruch und Ausgleich.
             </p>
 
 <div class="calendar-card">
-    <div class="cal-grid" style="grid-template-columns: repeat(4, 1fr);">
-        <div class="cal-header">April</div>
-        <div class="cal-header">Mai</div>
-        <div class="cal-header">Juni</div>
-        <div class="cal-header">Juli</div>
-
-        <!-- Row 1 -->
-        <div class="cal-cell">
-            <div class="cal-pill pill-purple" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Thüringerstammtisch <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> Thüringerkonstante</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 08.04.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 19:00 c.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-orange" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    1. Mensurboden <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> adH C! Berlin</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 06.05.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 19:00 s.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-orange" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    2. Mensurboden <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> adH L! Thuringia</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 03.06.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 19:00 s.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-orange" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    3. Mensurboden <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> adH L! Brandenburg</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 04.07.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 13:00 s.t.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Row 2 -->
-        <div class="cal-cell">
-            <div class="cal-pill pill-green" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Friesenpokalschießen <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> adH ASG Berlin</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 11.04.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 16:00 s.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-purple" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Thüringerstammtisch <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> Thüringerkonstante</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 13.05.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 19:00 c.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-purple" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Thüringerstammtisch <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> Thüringerkonstante</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 10.06.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 19:00 c.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-purple" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Thüringerstammtisch <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> Thüringerkonstante</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 08.07.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 19:00 c.t.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Row 3 -->
-        <div class="cal-cell">
-            <div class="cal-pill pill-blue" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Semesterantrittskneipe <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> adH B.B! Märker</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 18.04.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 20:00 c.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-blue" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    BA: Kommunalpolitik und Abgeordnetenwahl <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> Thüringerkonstante</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 27.05.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 19:00 c.t.</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-green" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    151. Stiftungsfest <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> Thüringerkonstante</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 18.-21.06.26</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> Ganztägig</div>
-                </div>
-            </div>
-        </div>
-        <div class="cal-cell">
-            <div class="cal-pill pill-blue" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Semesterabschlusskneipe <span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> adH B.B! Märker</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 18.07.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 20:00 c.t.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Row 4 (Last) -->
-        <div class="cal-row-last cal-cell"></div>
-        <div class="cal-row-last cal-cell"></div>
-        <div class="cal-row-last cal-cell"></div>
-        <div class="cal-row-last cal-cell">
-            <div class="cal-pill pill-green" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                <div style="font-weight: bold; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    Sommerfest mit B.B! Märker<span class="pill-dot"></span>
-                </div>
-                <div style="font-size: 0.85em; line-height: 1.2; font-weight: normal; display: flex; flex-direction: column; gap: 2px;">
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="map-pin" style="width: 14px;"></i> Wassergrundstück</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="calendar" style="width: 14px;"></i> 25.07.2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px;"><i data-lucide="clock" style="width: 14px;"></i> 18:00 c.t.</div>
-                </div>
-            </div>
-        </div>
+    <div class="cal-toolbar">
+        <button id="downloadAllIcal" class="btn-ical">
+            <i data-lucide="calendar-download" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;"></i>
+            Alle Termine herunterladen (.ics)
+        </button>
     </div>
+    <!-- Desktop: 4-Spalten-Grid -->
+    <div class="cal-grid" id="calGrid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="cal-header" id="calHeader0">April</div>
+        <div class="cal-header" id="calHeader1">Mai</div>
+        <div class="cal-header" id="calHeader2">Juni</div>
+        <div class="cal-header" id="calHeader3">Juli</div>
+        <!-- Wird per JS befüllt -->
+    </div>
+    <!-- Mobile: Listenansicht -->
+    <div class="cal-list" id="calList"></div>
 </div>
 
 <div style="margin-top: 50px;">
@@ -2134,6 +2101,23 @@
     </div>
 </div>
 
+<!-- Event Detail Modal -->
+<div id="eventDetailModal" class="modal-overlay">
+    <div class="modal-content event-modal-content">
+        <p class="event-modal-category" id="evModalCategory"></p>
+        <h3 class="event-modal-title" id="evModalTitle"></h3>
+        <div class="event-modal-info" id="evModalInfo"></div>
+        <div class="event-modal-description" id="evModalDesc"></div>
+        <div class="event-modal-actions">
+            <button id="evModalIcal" class="btn-ical" style="flex:1;">
+                <i data-lucide="calendar-plus" style="width:15px;height:15px;margin-right:6px;vertical-align:middle;"></i>
+                Zu Kalender hinzufügen
+            </button>
+            <button class="btn-close-modal" id="closeEventModal" style="flex:1;">Schließen</button>
+        </div>
+    </div>
+</div>
+
 <section class="faq-section" id="faq">  
     <h2 class="faq-title">Frequently Asked Questions</h2>  
     <p class="faq-subtitle">Wenn du noch Fragen hast, schreib uns gerne eine E-Mail.</p>  
@@ -2257,6 +2241,229 @@
     </div>
 </footer>
     <script>
+        // --- KALENDER AUS events.json LADEN UND RENDERN ---
+        const COLOR_MAP = {
+            purple: '#9b59b6', orange: '#e67e22', green: '#2ecc71', blue: '#3498db'
+        };
+
+        function formatDateDE(dateStr) {
+            const [y, m, d] = dateStr.split('-');
+            return `${d}.${m}.${y}`;
+        }
+
+        function buildPillHTML(ev) {
+            const pillClass = `pill-${ev.color}`;
+            return `<div class="cal-pill ${pillClass}" style="flex-direction:column;align-items:flex-start;gap:4px;" data-event-id="${ev.id}">
+                <div style="font-weight:bold;width:100%;display:flex;justify-content:space-between;align-items:center;">
+                    ${ev.title} <span class="pill-dot"></span>
+                </div>
+                <div style="font-size:0.85em;line-height:1.2;font-weight:normal;display:flex;flex-direction:column;gap:2px;">
+                    <div style="display:flex;align-items:center;gap:5px;"><i data-lucide="map-pin" style="width:14px;"></i> ${ev.location}</div>
+                    <div style="display:flex;align-items:center;gap:5px;"><i data-lucide="calendar" style="width:14px;"></i> ${ev.dateEnd ? formatDateDE(ev.dateStart) + '–' + formatDateDE(ev.dateEnd) : formatDateDE(ev.dateStart)}</div>
+                    <div style="display:flex;align-items:center;gap:5px;"><i data-lucide="clock" style="width:14px;"></i> ${ev.timeDisplay}</div>
+                </div>
+            </div>`;
+        }
+
+        function renderCalendarGrid(events, months) {
+            const grid = document.getElementById('calGrid');
+            // Group events by month
+            const byMonth = {};
+            months.forEach(m => byMonth[m.number] = []);
+            events.forEach(ev => {
+                if (byMonth[ev.monthIndex] !== undefined) byMonth[ev.monthIndex].push(ev);
+            });
+            months.forEach(m => byMonth[m.number].sort((a,b) => a.dateStart.localeCompare(b.dateStart)));
+
+            const maxRows = Math.max(...months.map(m => byMonth[m.number].length));
+
+            let html = '';
+            // Headers already in HTML, just add cells
+            for (let row = 0; row < maxRows; row++) {
+                const isLast = row === maxRows - 1;
+                months.forEach(m => {
+                    const ev = byMonth[m.number][row];
+                    html += `<div class="cal-cell${isLast ? ' cal-row-last' : ''}">`;
+                    if (ev) html += buildPillHTML(ev);
+                    html += `</div>`;
+                });
+            }
+            // Append after headers (which already exist)
+            const existingCells = grid.querySelectorAll('.cal-cell');
+            existingCells.forEach(c => c.remove());
+            grid.insertAdjacentHTML('beforeend', html);
+        }
+
+        function renderCalendarList(events) {
+            const list = document.getElementById('calList');
+            const sorted = [...events].sort((a,b) => a.dateStart.localeCompare(b.dateStart));
+            const monthNames = ['', 'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+            let html = '';
+            sorted.forEach(ev => {
+                const [y, m, d] = ev.dateStart.split('-');
+                const color = COLOR_MAP[ev.color] || '#888';
+                html += `<div class="cal-list-item" data-event-id="${ev.id}">
+                    <div class="cal-list-date">
+                        <div class="cal-list-date-day">${d}</div>
+                        <div class="cal-list-date-month">${monthNames[parseInt(m)]}</div>
+                    </div>
+                    <div class="cal-list-color-dot" style="background:${color};"></div>
+                    <div class="cal-list-body">
+                        <div class="cal-list-title">${ev.title}</div>
+                        <div class="cal-list-meta">
+                            <span><i data-lucide="map-pin" style="width:12px;height:12px;"></i> ${ev.location}</span>
+                            <span><i data-lucide="clock" style="width:12px;height:12px;"></i> ${ev.timeDisplay}</span>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:16px;height:16px;color:#ccc;flex-shrink:0;margin-top:2px;"></i>
+                </div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        // --- ICAL GENERATION ---
+        function pad(n) { return String(n).padStart(2,'0'); }
+
+        function dateToIcal(dateStr) {
+            return dateStr.replace(/-/g, '');
+        }
+
+        function generateIcalContent(events) {
+            let ical = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//V.B.B! Thuringia//Semesterprogramm SS26//DE',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH',
+                'X-WR-CALNAME:V.B.B! Thuringia – Semesterprogramm',
+                'X-WR-TIMEZONE:Europe/Berlin',
+            ];
+            events.forEach(ev => {
+                ical.push('BEGIN:VEVENT');
+                ical.push(`UID:thuringia-ev-${ev.id}@thuringia.berlin`);
+                ical.push(`SUMMARY:${ev.title}`);
+                ical.push(`LOCATION:${ev.location}\\, ${ev.address}`);
+                ical.push(`DESCRIPTION:${ev.description.replace(/\n/g, '\\n')}`);
+                if (ev.allDay) {
+                    ical.push(`DTSTART;VALUE=DATE:${dateToIcal(ev.dateStart)}`);
+                    if (ev.dateEnd) {
+                        // iCal all-day end is exclusive, so add 1 day
+                        const d = new Date(ev.dateEnd);
+                        d.setDate(d.getDate() + 1);
+                        ical.push(`DTEND;VALUE=DATE:${d.toISOString().slice(0,10).replace(/-/g,'')}`);
+                    } else {
+                        const d = new Date(ev.dateStart);
+                        d.setDate(d.getDate() + 1);
+                        ical.push(`DTEND;VALUE=DATE:${d.toISOString().slice(0,10).replace(/-/g,'')}`);
+                    }
+                } else {
+                    ical.push(`DTSTART;TZID=Europe/Berlin:${dateToIcal(ev.dateStart)}T${ev.timeIcal}`);
+                    // Default duration: 2 hours
+                    const startH = parseInt(ev.timeIcal.slice(0,2));
+                    const startM = parseInt(ev.timeIcal.slice(2,4));
+                    const endH = String(startH + 2).padStart(2,'0');
+                    ical.push(`DTEND;TZID=Europe/Berlin:${dateToIcal(ev.dateStart)}T${endH}${ev.timeIcal.slice(2)}`);
+                }
+                ical.push('END:VEVENT');
+            });
+            ical.push('END:VCALENDAR');
+            return ical.join('\r\n');
+        }
+
+        function downloadIcal(events, filename) {
+            const content = generateIcalContent(events);
+            const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // --- EVENT DETAIL MODAL ---
+        let allEvents = [];
+
+        function showEventModal(ev) {
+            const color = COLOR_MAP[ev.color] || '#888';
+            document.getElementById('evModalCategory').textContent = ev.category;
+            document.getElementById('evModalTitle').textContent = ev.title;
+
+            const dateStr = ev.dateEnd
+                ? `${formatDateDE(ev.dateStart)} – ${formatDateDE(ev.dateEnd)}`
+                : formatDateDE(ev.dateStart);
+
+            document.getElementById('evModalInfo').innerHTML = `
+                <div class="event-modal-info-row">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span>${dateStr} &nbsp;·&nbsp; ${ev.timeDisplay}</span>
+                </div>
+                <div class="event-modal-info-row">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 5 14 5 9a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="9" r="2"/></svg>
+                    <div>
+                        <div style="font-weight:600;">${ev.location}</div>
+                        <div style="color:#999;font-size:0.85rem;">${ev.address}</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('evModalDesc').textContent = ev.description;
+
+            document.getElementById('evModalIcal').onclick = () => downloadIcal([ev], `thuringia-${ev.id}.ics`);
+
+            const modal = document.getElementById('eventDetailModal');
+            modal.style.display = 'flex';
+            requestAnimationFrame(() => modal.classList.add('show'));
+            lucide.createIcons();
+        }
+
+        function closeEventModal() {
+            const modal = document.getElementById('eventDetailModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = '', 300);
+        }
+
+        document.getElementById('closeEventModal').addEventListener('click', closeEventModal);
+        document.getElementById('eventDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEventModal();
+        });
+
+        // --- MAIN: LOAD events.json ---
+        fetch('events.json')
+            .then(r => r.json())
+            .then(data => {
+                allEvents = data.events;
+                renderCalendarGrid(data.events, data.months);
+                renderCalendarList(data.events);
+                lucide.createIcons();
+
+                // Click handlers for grid pills
+                document.getElementById('calGrid').addEventListener('click', function(e) {
+                    const pill = e.target.closest('[data-event-id]');
+                    if (pill) {
+                        const ev = allEvents.find(x => x.id === parseInt(pill.dataset.eventId));
+                        if (ev) showEventModal(ev);
+                    }
+                });
+
+                // Click handlers for list items
+                document.getElementById('calList').addEventListener('click', function(e) {
+                    const item = e.target.closest('[data-event-id]');
+                    if (item) {
+                        const ev = allEvents.find(x => x.id === parseInt(item.dataset.eventId));
+                        if (ev) showEventModal(ev);
+                    }
+                });
+
+                // Download all iCal
+                document.getElementById('downloadAllIcal').addEventListener('click', () => {
+                    downloadIcal(allEvents, 'thuringia-semesterprogramm-ss26.ics');
+                });
+            })
+            .catch(err => {
+                console.error('events.json konnte nicht geladen werden:', err);
+                document.getElementById('calGrid').innerHTML = '<p style="padding:20px;color:#999;grid-column:span 4;">Veranstaltungen konnten nicht geladen werden.</p>';
+            });
+
         // --- INITIALIZE LUCIDE ICONS ---
         lucide.createIcons();
 
