@@ -1817,12 +1817,8 @@
 
 <div class="calendar-card">
     <!-- Desktop: 4-Spalten-Grid -->
-    <div class="cal-grid" id="calGrid" style="grid-template-columns: repeat(4, 1fr);">
-        <div class="cal-header" id="calHeader0">April</div>
-        <div class="cal-header" id="calHeader1">Mai</div>
-        <div class="cal-header" id="calHeader2">Juni</div>
-        <div class="cal-header" id="calHeader3">Juli</div>
-        <!-- Wird per JS befüllt -->
+    <div class="cal-grid" id="calGrid">
+        <!-- Wird vollständig per JS aus events.json generiert -->
     </div>
     <!-- Mobile: Listenansicht -->
     <div class="cal-list" id="calList"></div>
@@ -2319,33 +2315,56 @@
             </div>`;
         }
 
-        function renderCalendarGrid(events, months) {
+        const MONTH_NAMES_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+
+        function renderCalendarGrid(events) {
             const grid = document.getElementById('calGrid');
-            // Group events by month
-            const byMonth = {};
-            months.forEach(m => byMonth[m.number] = []);
-            events.forEach(ev => {
-                if (byMonth[ev.monthIndex] !== undefined) byMonth[ev.monthIndex].push(ev);
+
+            // Monate aus Event-Daten ableiten und chronologisch sortieren (YYYY-MM → korrekt auch jahresübergreifend)
+            const monthSet = new Set();
+            events.forEach(ev => monthSet.add(ev.dateStart.slice(0, 7)));
+            const months = [...monthSet].sort(); // z.B. ["2026-11","2026-12","2027-01"]
+
+            // Grid-Spalten dynamisch setzen
+            grid.style.gridTemplateColumns = `repeat(${months.length}, minmax(120px, 1fr))`;
+            grid.innerHTML = '';
+
+            // Monats-Header rendern
+            months.forEach((ym, i) => {
+                const [y, m] = ym.split('-');
+                const name = MONTH_NAMES_DE[parseInt(m) - 1];
+                const isLast = i === months.length - 1;
+                const header = document.createElement('div');
+                header.className = 'cal-header';
+                // Jahr nur anzeigen wenn mehrere Jahre vorkommen
+                const years = new Set(months.map(x => x.slice(0,4)));
+                header.textContent = years.size > 1 ? `${name} ${y}` : name;
+                if (isLast) header.style.borderRight = 'none';
+                grid.appendChild(header);
             });
-            months.forEach(m => byMonth[m.number].sort((a,b) => a.dateStart.localeCompare(b.dateStart)));
 
-            const maxRows = Math.max(...months.map(m => byMonth[m.number].length));
+            // Events nach Monat gruppieren und sortieren
+            const byMonth = {};
+            months.forEach(ym => byMonth[ym] = []);
+            events.forEach(ev => {
+                const ym = ev.dateStart.slice(0, 7);
+                if (byMonth[ym]) byMonth[ym].push(ev);
+            });
+            months.forEach(ym => byMonth[ym].sort((a, b) => a.dateStart.localeCompare(b.dateStart)));
 
-            let html = '';
-            // Headers already in HTML, just add cells
+            const maxRows = Math.max(...months.map(ym => byMonth[ym].length), 1);
+
+            // Zellen rendern
             for (let row = 0; row < maxRows; row++) {
                 const isLast = row === maxRows - 1;
-                months.forEach(m => {
-                    const ev = byMonth[m.number][row];
-                    html += `<div class="cal-cell${isLast ? ' cal-row-last' : ''}">`;
-                    if (ev) html += buildPillHTML(ev);
-                    html += `</div>`;
+                months.forEach(ym => {
+                    const ev = byMonth[ym][row];
+                    const cell = document.createElement('div');
+                    cell.className = `cal-cell${isLast ? ' cal-row-last' : ''}`;
+                    if (ev) cell.innerHTML = buildPillHTML(ev);
+                    grid.appendChild(cell);
                 });
             }
-            // Append after headers (which already exist)
-            const existingCells = grid.querySelectorAll('.cal-cell');
-            existingCells.forEach(c => c.remove());
-            grid.insertAdjacentHTML('beforeend', html);
         }
 
         function renderCalendarList(events) {
@@ -2486,7 +2505,7 @@
             .then(r => r.json())
             .then(data => {
                 allEvents = data.events;
-                renderCalendarGrid(data.events, data.months);
+                renderCalendarGrid(data.events);
                 renderCalendarList(data.events);
                 lucide.createIcons();
 

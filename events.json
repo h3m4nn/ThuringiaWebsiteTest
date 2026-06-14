@@ -201,5 +201,20 @@
       "category": "Fest",
       "description": "Gemeinsames Sommerfest mit den Bundesbrüdern der B.B! Märker auf dem Wassergrundstück. Grillen, Schwimmen und entspanntes Beisammensein zum Ausklang des Sommersemesters."
     }
+    {
+      "id": 13,
+      "title": "Sommerfest mit B.B! Märker",
+      "dateStart": "2026-08-25",
+      "dateEnd": null,
+      "timeDisplay": "18:00 c.t.",
+      "timeIcal": "181500",
+      "allDay": false,
+      "monthIndex": 7,
+      "location": "Wassergrundstück",
+      "address": "Adresse folgt",
+      "color": "green",
+      "category": "Fest",
+      "description": "Gemeinsames Sommerfest mit den Bundesbrüdern der B.B! Märker auf dem Wassergrundstück. Grillen, Schwimmen und entspanntes Beisammensein zum Ausklang des Sommersemesters."
+    }
   ]
 }
