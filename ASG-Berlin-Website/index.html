@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akademische Schützengesellschaft zu Berlin</title>
+    <meta name="description" content="Akademische Schützengesellschaft zu Berlin – studentische Tradition und Schießsport. Offen für alle Studenten, gegründet 2025.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%231c4530'/%3E%3Cg fill='none' stroke='%23c2a049' stroke-width='2'%3E%3Ccircle cx='16' cy='16' r='9'/%3E%3Ccircle cx='16' cy='16' r='4'/%3E%3C/g%3E%3Cg stroke='%23eae2cf' stroke-width='2'%3E%3Cline x1='16' y1='2' x2='16' y2='7'/%3E%3Cline x1='16' y1='25' x2='16' y2='30'/%3E%3Cline x1='2' y1='16' x2='7' y2='16'/%3E%3Cline x1='25' y1='16' x2='30' y2='16'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='1.6' fill='%23c2a049'/%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Germania+One&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* =====================================================================
+           A.S.G. zu Berlin  ·  Rustikal · Konservativ · Klassisch
+           Pergament, Serifen (EB Garamond), Germania One, Wappen-Siegel,
+           Bandfarben Schwarz–Weiß–Dunkelgrün mit silberner Perkussion + Gold
+           ===================================================================== */
+        :root {
+            --paper:      #f4eede;   /* Pergament */
+            --paper-2:    #ece3cd;   /* etwas dunkler (Panels) */
+            --paper-3:    #e4d9bd;   /* Rahmen/Kanten */
+            --ink:        #21261d;   /* warmes Tiefschwarz */
+            --ink-soft:   #4a4a3c;
+            --green:      #1c4530;   /* Dunkelgrün (Band) */
+            --green-deep: #12301f;
+            --green-soft: #2f5d43;
+            --gold:       #b08d46;   /* Messing/Gold */
+            --gold-deep:  #8c6d31;
+            --silver:     #9aa1a3;   /* Perkussion */
+            --line:       #cdbf9c;   /* dünne Trennlinien auf Pergament */
+            --pill-purple: #6f7469;  /* Stammtisch  */
+            --pill-orange: #b08d46;  /* Kneipe & Kommers (Gold) */
+            --pill-green:  #2f5d43;  /* Schießsport */
+            --pill-blue:   #3a5a53;  /* Offiziell */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 110px; }
+
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            color: var(--ink);
+            background-color: var(--paper);
+            background-image: radial-gradient(rgba(28,69,48,0.045) 1px, transparent 1.4px);
+            background-size: 22px 22px;
+            overflow-x: hidden;
+            width: 100vw;
+            line-height: 1.65;
+            font-size: 18px;
+            padding-top: 92px;
+        }
+
+        h1, h2, h3, .display { font-family: 'Germania One', 'EB Garamond', serif; font-weight: 400; letter-spacing: 0.5px; }
+
+        a { color: var(--green); }
+
+        /* ---- Wiederkehrende Zierelemente ---- */
+        .band-ribbon { display: flex; height: 100%; width: 100%; }
+        .band-ribbon span { flex: 1; }
+        .band-ribbon .s-black { background: #141414; }
+        .band-ribbon .s-white { background: #f6f3ea; }
+        .band-ribbon .s-green { background: var(--green); }
+        .band-ribbon .s-gold  { background: var(--gold); flex: 0 0 3px; }
+
+        .ornament {
+            display: flex; align-items: center; justify-content: center;
+            gap: 14px; margin: 0 auto; max-width: 340px; color: var(--gold);
+        }
+        .ornament::before, .ornament::after {
+            content: ''; height: 1px; flex: 1;
+            background: linear-gradient(to var(--dir, right), transparent, var(--gold));
+        }
+        .ornament::before { --dir: left; }
+        .ornament .diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+        .ornament svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+        .eyebrow {
+            font-family: 'EB Garamond', serif;
+            text-transform: uppercase;
+            letter-spacing: 0.32em;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold-deep);
+            text-align: center;
+        }
+
+        .sec-title {
+            font-size: 3rem; color: var(--ink); text-align: center;
+            line-height: 1.05; margin: 12px 0 10px;
+        }
+        .sec-intro {
+            text-align: center; max-width: 640px; margin: 0 auto 10px;
+            color: var(--ink-soft); font-size: 1.15rem;
+        }
+
+        /* Doppelrahmen (wie auf einer Urkunde) */
+        .double-frame { position: relative; }
+        .double-frame::after {
+            content: ''; position: absolute; inset: 5px; border: 1px solid var(--green);
+            pointer-events: none;
+        }
+
+        /* ---- Buttons (klassisch, kantig) ---- */
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: 'EB Garamond', serif; font-size: 1rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.14em;
+            padding: 13px 30px; border-radius: 2px; cursor: pointer;
+            text-decoration: none; transition: all 0.2s ease; border: 1px solid transparent;
+        }
+        .btn-primary {
+            background: var(--green); color: var(--paper);
+            border-color: var(--green-deep);
+            box-shadow: inset 0 0 0 1px rgba(176,141,70,0.35), 0 3px 0 var(--green-deep);
+        }
+        .btn-primary:hover { background: var(--green-deep); transform: translateY(1px); box-shadow: inset 0 0 0 1px rgba(176,141,70,0.5), 0 2px 0 var(--green-deep); }
+        .btn-ghost {
+            background: transparent; color: var(--green);
+            border-color: var(--green);
+        }
+        .btn-ghost:hover { background: var(--green); color: var(--paper); }
+
+        /* ============================ Kopf / Navigation ============================ */
+        .top-ribbon { position: fixed; top: 0; left: 0; width: 100%; height: 6px; z-index: 101; }
+        nav {
+            position: fixed; top: 6px; left: 0; width: 100%; height: 86px;
+            padding: 0 40px; display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; background: var(--paper);
+            border-bottom: 2px solid var(--green);
+            box-shadow: 0 3px 0 rgba(176,141,70,0.25), 0 6px 16px rgba(33,38,29,0.08);
+        }
+        .nav-brand { display: flex; align-items: center; gap: 14px; }
+        .nav-brand .seal { width: 46px; height: 46px; }
+        .nav-brand .wordmark { font-family: 'Germania One', serif; font-size: 1.5rem; color: var(--ink); line-height: 1; }
+        .nav-brand .wordmark small { display: block; font-family: 'EB Garamond', serif; font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-deep); margin-top: 3px; }
+        .nav-links { display: flex; align-items: center; gap: 30px; }
+        .nav-links a {
+            text-decoration: none; color: var(--ink); font-weight: 500;
+            font-size: 0.98rem; text-transform: uppercase; letter-spacing: 0.12em;
+            padding-bottom: 3px; border-bottom: 1px solid transparent; transition: all 0.2s;
+        }
+        .nav-links a:hover { color: var(--green); border-bottom-color: var(--gold); }
+        .nav-toggle { display: none; }
+
+        /* ============================ Hero (statisches Bild) ============================ */
+        .hero {
+            position: relative; min-height: calc(100vh - 92px);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 70px 24px;
+            /* TODO: durch echtes, stimmungsvolles Foto ersetzen (Schießstand / Halle / Berlin) */
+            background: linear-gradient(rgba(15,32,22,0.72), rgba(15,32,22,0.82)), url('https://picsum.photos/seed/asg-hero-hall/1600/1000') center/cover no-repeat;
+            background-attachment: fixed;
+        }
+        .hero-inner {
+            position: relative; max-width: 760px; width: 100%;
+            padding: 60px 40px; color: var(--paper);
+        }
+        .hero-inner::before, .hero-inner::after {
+            content: ''; position: absolute; width: 46px; height: 46px; border: 2px solid var(--gold);
+        }
+        .hero-inner::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .hero-inner::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+        .hero .seal { width: 122px; height: 122px; margin: 0 auto 26px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
+        .hero h1 { font-size: 4.2rem; color: var(--paper); line-height: 1.02; margin-bottom: 6px; }
+        .hero .subline { font-family: 'EB Garamond', serif; text-transform: uppercase; letter-spacing: 0.3em; font-size: 0.9rem; color: var(--gold); margin-bottom: 26px; }
+        .hero .motto { font-size: 1.9rem; font-style: italic; color: var(--paper); line-height: 1.35; margin-bottom: 8px; font-family: 'EB Garamond', serif; }
+        .hero .founded { font-size: 1.05rem; color: rgba(244,238,222,0.85); margin-bottom: 34px; letter-spacing: 0.05em; }
+        .hero .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .hero .btn-ghost { color: var(--paper); border-color: var(--gold); }
+        .hero .btn-ghost:hover { background: var(--gold); color: var(--green-deep); border-color: var(--gold); }
+
+        /* ============================ Sektions-Grundgerüst ============================ */
+        section.band { padding: 96px 24px; }
+        .container { max-width: 1080px; margin: 0 auto; }
+        .container-narrow { max-width: 820px; margin: 0 auto; }
+
+        /* Fakten-Zeile */
+        .facts-strip {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+            gap: 12px 30px; margin: 34px auto 0; color: var(--ink);
+            font-size: 1.15rem;
+        }
+        .facts-strip .fact { display: flex; align-items: center; gap: 12px; }
+        .facts-strip .fact strong { font-family: 'Germania One', serif; font-weight: 400; color: var(--green); font-size: 1.35rem; letter-spacing: 0.5px; }
+        .facts-strip .sep { width: 7px; height: 7px; background: var(--gold); transform: rotate(45deg); }
+
+        /* ---- Über uns: klassischer Prosablock ---- */
+        .intro-prose { text-align: center; }
+        .intro-prose p { font-size: 1.22rem; color: var(--ink); margin-bottom: 22px; }
+        .intro-prose .lead::first-letter {
+            font-family: 'Germania One', serif; font-size: 3.6rem; float: left;
+            line-height: 0.8; padding: 6px 12px 0 0; color: var(--green);
+        }
+
+        /* ---- Drei Säulen ---- */
+        .pillars { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 56px; }
+        .pillar { padding: 20px 34px; text-align: center; position: relative; }
+        .pillar + .pillar { border-left: 1px solid var(--line); }
+        .pillar .pillar-icon {
+            width: 78px; height: 78px; margin: 0 auto 22px;
+            border: 1px solid var(--gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--paper-2); box-shadow: inset 0 0 0 4px var(--paper);
+        }
+        .pillar .pillar-icon svg { width: 34px; height: 34px; stroke: var(--green); fill: none; stroke-width: 1.4; }
+        .pillar h3 { font-size: 1.75rem; color: var(--ink); margin-bottom: 12px; }
+        .pillar p { color: var(--ink-soft); font-size: 1.08rem; }
+
+        /* ---- Leitwerte (klassische Tafel) ---- */
+        .values-panel {
+            background: var(--paper-2); border: 1px solid var(--green);
+            padding: 20px; margin-top: 54px;
+        }
+        .values-inner { border: 1px solid var(--line); padding: 40px 44px; }
+        .value-row { display: flex; gap: 26px; padding: 24px 0; border-bottom: 1px solid var(--line); align-items: flex-start; }
+        .value-row:last-child { border-bottom: none; }
+        .value-roman {
+            font-family: 'Germania One', serif; font-size: 2rem; color: var(--gold);
+            flex-shrink: 0; width: 54px; text-align: center; line-height: 1.2;
+            border-right: 1px solid var(--line); padding-right: 20px;
+        }
+        .value-body h4 { font-family: 'Germania One', serif; font-size: 1.5rem; color: var(--green); margin-bottom: 6px; letter-spacing: 0.5px; }
+        .value-body p { color: var(--ink-soft); font-size: 1.08rem; }
+
+        /* ---- Galerie (klassisch gerahmt) ---- */
+        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 52px; }
+        .gallery-frame {
+            background: var(--paper); padding: 8px; border: 1px solid var(--green-soft);
+            box-shadow: 0 6px 16px rgba(33,38,29,0.12); transition: transform 0.25s ease;
+        }
+        .gallery-frame:hover { transform: translateY(-4px); }
+        .gallery-frame img { width: 100%; height: 190px; object-fit: cover; display: block; border: 1px solid var(--paper-3); filter: sepia(0.12) saturate(0.95); }
+
+        /* ---- Beitritt: drei Schritte ---- */
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 56px; }
+        .step { text-align: center; }
+        .step .numeral {
+            width: 76px; height: 76px; margin: 0 auto 22px; border-radius: 50%;
+            background: var(--green); color: var(--gold);
+            font-family: 'Germania One', serif; font-size: 2.1rem;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 0 0 3px var(--paper), 0 0 0 1px var(--green);
+        }
+        .step h4 { font-size: 1.55rem; color: var(--ink); margin-bottom: 10px; }
+        .step p { color: var(--ink-soft); font-size: 1.08rem; max-width: 300px; margin: 0 auto; }
+
+        /* ============================ Semesterprogramm (übernommen) ============================ */
+        .calendar-card {
+            background: var(--paper); border: 1px solid var(--green); padding: 22px;
+            width: 100%; overflow-x: auto; margin-top: 50px;
+        }
+        .calendar-inner { border: 1px solid var(--line); padding: 18px; }
+        .cal-grid { display: grid; overflow: hidden; }
+        .cal-header {
+            text-align: center; font-family: 'Germania One', serif; color: var(--green);
+            font-size: 1.05rem; letter-spacing: 0.5px; padding: 12px 10px;
+            box-shadow: inset -1px -2px 0 var(--line); background: var(--paper-2);
+        }
+        .cal-cell { min-height: 72px; padding: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; box-shadow: inset -1px -1px 0 var(--line); }
+        .cal-pill {
+            display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px;
+            background: var(--paper); border: 1px solid var(--green-soft); border-radius: 2px;
+            padding: 8px 11px; font-size: 0.82rem; color: var(--ink); white-space: nowrap;
+            box-shadow: 2px 2px 0 rgba(28,69,48,0.08); transition: transform 0.2s; cursor: pointer; width: 100%;
+        }
+        .cal-pill:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 rgba(28,69,48,0.14); }
+        .cal-pill .pill-title { font-family: 'Germania One', serif; font-weight: 400; letter-spacing: 0.3px; width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.92rem; }
+        .pill-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+        .cal-pill .pill-meta { font-size: 0.82rem; color: var(--ink-soft); display: flex; flex-direction: column; gap: 2px; }
+        .cal-pill .pill-meta span { display: flex; align-items: center; gap: 5px; }
+        .pill-purple .pill-dot { background: var(--pill-purple); }
+        .pill-orange .pill-dot { background: var(--pill-orange); }
+        .pill-green  .pill-dot { background: var(--pill-green); }
+        .pill-blue   .pill-dot { background: var(--pill-blue); }
+
+        .cal-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+        .cal-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.92rem; color: var(--ink-soft); }
+        .cal-legend-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+        .btn-ical-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--green); color: var(--paper); border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s, transform 0.2s; flex-shrink: 0; }
+        .btn-ical-icon:hover { background: var(--green-deep); transform: translateY(-1px); }
+
+        .cal-list { display: none; }
+        .cal-list-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 6px; border-bottom: 1px solid var(--line); cursor: pointer; }
+        .cal-list-item:last-child { border-bottom: none; }
+        .cal-list-date { min-width: 54px; text-align: center; background: var(--green); color: var(--paper); border-radius: 2px; padding: 8px 4px; flex-shrink: 0; }
+        .cal-list-date-day { font-family: 'Germania One', serif; font-size: 1.4rem; line-height: 1; }
+        .cal-list-date-month { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; color: var(--gold); }
+        .cal-list-title { font-family: 'Germania One', serif; font-size: 1.15rem; color: var(--ink); margin-bottom: 3px; }
+        .cal-list-meta { font-size: 0.92rem; color: var(--ink-soft); display: flex; flex-direction: column; gap: 2px; }
+        .cal-list-meta span { display: flex; align-items: center; gap: 6px; }
+        .cal-list-color-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+
+        /* ============================ Location (eine, übernommen) ============================ */
+        .location-card {
+            display: grid; grid-template-columns: 1fr 1fr; margin-top: 52px;
+            background: var(--paper); border: 1px solid var(--green); overflow: hidden;
+        }
+        .location-map { min-height: 320px; background: var(--paper-2); }
+        .location-map iframe { width: 100%; height: 100%; min-height: 320px; border: none; display: block; filter: sepia(0.15) saturate(0.9); }
+        .location-info { padding: 44px; display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+        .location-tag { font-family: 'EB Garamond', serif; text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.78rem; font-weight: 600; color: var(--gold-deep); }
+        .location-name { font-family: 'Germania One', serif; font-size: 2.4rem; color: var(--ink); line-height: 1; }
+        .location-address { display: flex; align-items: flex-start; gap: 8px; font-size: 1.05rem; color: var(--ink-soft); }
+        .location-address svg { margin-top: 5px; color: var(--green); flex-shrink: 0; }
+        .location-desc { font-size: 1.08rem; color: var(--ink-soft); }
+
+        /* ============================ Mitglied-Formular (übernommen) ============================ */
+        .join-section { background: var(--green); position: relative; padding: 96px 24px; }
+        .join-section::before, .join-section::after { content: ''; position: absolute; left: 0; width: 100%; height: 6px; }
+        .join-section::before { top: 0; }
+        .join-panel {
+            max-width: 720px; margin: 0 auto; background: var(--paper); padding: 20px;
+        }
+        .join-inner { border: 1px solid var(--line); padding: 50px 44px; text-align: center; }
+        .join-inner .eyebrow { color: var(--gold-deep); }
+        .join-inner h2 { font-size: 2.7rem; color: var(--ink); line-height: 1.05; margin: 12px 0 8px; }
+        .join-inner .join-sub { color: var(--ink-soft); font-size: 1.15rem; max-width: 480px; margin: 0 auto 34px; }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        .form-label { display: block; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold-deep); margin-bottom: 7px; font-weight: 600; }
+        .form-input {
+            width: 100%; padding: 13px 15px; border: 1px solid var(--line); border-radius: 2px;
+            background: var(--paper-2); font-family: 'EB Garamond', serif; font-size: 1.05rem; color: var(--ink);
+            transition: all 0.2s;
+        }
+        .form-input::placeholder { color: #a79f88; }
+        .form-input:focus { outline: none; border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(28,69,48,0.08); }
+        textarea.form-input { resize: vertical; }
+        .form-btn-wrapper { margin-top: 30px; }
+
+        /* ============================ FAQ (übernommen) ============================ */
+        .faq-list { margin-top: 46px; border-top: 1px solid var(--green); }
+        .faq-item { border-bottom: 1px solid var(--line); }
+        .faq-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 6px; cursor: pointer; transition: color 0.2s; }
+        .faq-header:hover { color: var(--green); }
+        .faq-question { font-family: 'Germania One', serif; font-size: 1.3rem; color: var(--ink); line-height: 1.3; letter-spacing: 0.3px; }
+        .faq-header:hover .faq-question { color: var(--green); }
+        .faq-toggle { position: relative; width: 18px; height: 18px; flex-shrink: 0; }
+        .faq-toggle::before, .faq-toggle::after { content: ''; position: absolute; background: var(--green); transition: transform 0.3s ease, opacity 0.3s ease; }
+        .faq-toggle::before { width: 100%; height: 2px; top: 50%; left: 0; transform: translateY(-50%); }
+        .faq-toggle::after { width: 2px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+        .faq-item.active .faq-toggle::after { opacity: 0; }
+        .faq-item.active .faq-toggle::before { background: var(--gold); }
+        .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; }
+        .faq-content { padding: 0 6px 26px; font-size: 1.1rem; color: var(--ink-soft); max-width: 92%; }
+
+        /* ============================ Footer ============================ */
+        .site-footer { background: var(--green-deep); color: var(--paper); padding: 60px 24px 34px; text-align: center; position: relative; }
+        .site-footer .band-cap { position: absolute; top: 0; left: 0; width: 100%; height: 6px; }
+        .footer-seal { width: 68px; height: 68px; margin: 0 auto 18px; }
+        .footer-brand { font-family: 'Germania One', serif; font-size: 1.9rem; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .footer-tag { color: var(--gold); text-transform: uppercase; letter-spacing: 0.24em; font-size: 0.78rem; margin-bottom: 26px; }
+        .footer-links { list-style: none; display: flex; justify-content: center; gap: 30px; margin-bottom: 22px; flex-wrap: wrap; }
+        .footer-links a { color: var(--paper); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-copy { color: rgba(244,238,222,0.6); font-size: 0.9rem; }
+
+        /* ============================ Modals ============================ */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(18,32,22,0.6); backdrop-filter: blur(3px); z-index: 9999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-content { background: var(--paper); padding: 16px; max-width: 460px; width: 100%; border: 1px solid var(--green); box-shadow: 0 24px 50px rgba(0,0,0,0.35); }
+        .modal-inner { border: 1px solid var(--line); padding: 36px 30px; text-align: center; position: relative; }
+        @keyframes modal-pop { 0% { opacity: 0; transform: translateY(20px) scale(0.96); } 100% { opacity: 1; transform: none; } }
+        .modal-overlay.show .modal-content { animation: modal-pop 0.3s cubic-bezier(0.16,1,0.3,1) both; }
+        .modal-icon { width: 56px; height: 56px; margin: 0 auto 18px; color: var(--green); }
+        .modal-title { font-family: 'Germania One', serif; font-size: 1.7rem; color: var(--ink); margin-bottom: 10px; }
+        .modal-text { color: var(--ink-soft); font-size: 1.05rem; margin-bottom: 26px; }
+        .ev-modal-close-btn { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 2px; border: 1px solid var(--line); background: var(--paper-2); color: var(--ink-soft); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .ev-modal-close-btn:hover { background: var(--green); color: var(--paper); }
+        .event-modal .modal-inner { text-align: left; }
+        .event-modal-category { font-family: 'EB Garamond', serif; text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.75rem; font-weight: 600; color: var(--gold-deep); margin-bottom: 6px; }
+        .event-modal-title { font-family: 'Germania One', serif; font-size: 1.7rem; color: var(--ink); margin-bottom: 18px; line-height: 1.1; padding-right: 30px; }
+        .event-modal-info { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+        .event-modal-info-row { display: flex; gap: 10px; font-size: 1rem; color: var(--ink); }
+        .event-modal-info-row svg { flex-shrink: 0; color: var(--green); margin-top: 3px; }
+        .event-modal-description { font-size: 1rem; color: var(--ink-soft); padding: 15px; background: var(--paper-2); border-left: 3px solid var(--gold); margin-bottom: 20px; }
+
+        /* ============================ Responsive ============================ */
+        @media (max-width: 900px) {
+            .pillars { grid-template-columns: 1fr; }
+            .pillar + .pillar { border-left: none; border-top: 1px solid var(--line); }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .location-card { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; gap: 34px; }
+        }
+        @media (max-width: 768px) {
+            body { font-size: 17px; padding-top: 78px; }
+            nav { height: 72px; padding: 0 18px; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .nav-brand .wordmark small { display: none; }
+            .cal-grid { display: none !important; }
+            .cal-list { display: block !important; }
+            .hero h1 { font-size: 2.9rem; }
+            .hero .motto { font-size: 1.45rem; }
+            .hero-inner { padding: 44px 24px; }
+            .sec-title { font-size: 2.2rem; }
+            .section.band, section.band { padding: 64px 20px; }
+            .values-inner, .join-inner, .location-info { padding: 30px 22px; }
+            .value-row { gap: 16px; }
+            .value-roman { width: 38px; padding-right: 12px; font-size: 1.6rem; }
+            .facts-strip { font-size: 1.05rem; gap: 10px 18px; }
+            .hero { background-attachment: scroll; }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .gallery-frame img { height: 130px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Wiederverwendbares Wappen-Siegel -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="asg-seal" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="98" fill="#1c4530"/>
+            <circle cx="100" cy="100" r="91" fill="none" stroke="#b08d46" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="91" fill="none" stroke="#c9cfcf" stroke-width="3" stroke-dasharray="1.5 7"/>
+            <circle cx="100" cy="100" r="80" fill="#f4eede"/>
+            <circle cx="100" cy="100" r="79" fill="none" stroke="#1c4530" stroke-width="1"/>
+            <!-- Zielscheibe -->
+            <circle cx="100" cy="100" r="30" fill="#1c4530"/>
+            <circle cx="100" cy="100" r="24" fill="#f4eede"/>
+            <circle cx="100" cy="100" r="17" fill="#1c4530"/>
+            <circle cx="100" cy="100" r="10" fill="#f4eede"/>
+            <circle cx="100" cy="100" r="4"  fill="#b08d46"/>
+            <!-- Fadenkreuz-Marken -->
+            <g stroke="#1c4530" stroke-width="3" stroke-linecap="round">
+                <line x1="100" y1="42" x2="100" y2="58"/>
+                <line x1="100" y1="142" x2="100" y2="158"/>
+                <line x1="42" y1="100" x2="58" y2="100"/>
+                <line x1="142" y1="100" x2="158" y2="100"/>
+            </g>
+            <!-- Zierperlen oben -->
+            <text x="100" y="34" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#8c6d31" letter-spacing="3">★</text>
+            <text x="100" y="172" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="#8c6d31" letter-spacing="2">· 2025 ·</text>
+        </symbol>
+    </svg>
+
+    <div class="top-ribbon"><div class="band-ribbon"><span class="s-black"></span><span class="s-white"></span><span class="s-gold"></span><span class="s-green"></span></div></div>
+
+    <nav>
+        <a href="#top" class="nav-brand" style="text-decoration:none;">
+            <svg class="seal"><use href="#asg-seal"/></svg>
+            <div class="wordmark">A.S.G. zu Berlin<small>Akad. Schützengesellschaft</small></div>
+        </a>
+        <div class="nav-links">
+            <a href="#ueber">Über uns</a>
+            <a href="#werte">Leitwerte</a>
+            <a href="#programm">Semesterprogramm</a>
+            <a href="#faq">Fragen</a>
+            <a href="#mitglied" class="nav-cta"><button class="btn btn-primary" style="padding:10px 22px;">Mitglied werden</button></a>
+        </div>
+    </nav>
+
+    <!-- ============================ HERO ============================ -->
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <svg class="seal"><use href="#asg-seal"/></svg>
+            <h1>Akademische Schützen&shy;gesellschaft zu Berlin</h1>
+            <div class="subline">Gegründet A.D. 2025 &nbsp;·&nbsp; zu Berlin</div>
+            <p class="motto">„Klarer Blick. Ruhige Hand. Fester Bund."</p>
+            <p class="founded">Studentische Tradition und Schießsport — offen für alle Studenten.</p>
+            <div class="hero-actions">
+                <a href="#mitglied" class="btn btn-primary">Mitglied werden</a>
+                <a href="#ueber" class="btn btn-ghost">Mehr erfahren</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================ ÜBER UNS ============================ -->
+    <section class="band" id="ueber">
+        <div class="container-narrow">
+            <p class="eyebrow">Wer wir sind</p>
+            <h2 class="sec-title">Ein junger Bund<br>in alter Tradition</h2>
+            <div class="ornament"><span class="diamond"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><span class="diamond"></span></div>
+
+            <div class="intro-prose" style="margin-top:36px;">
+                <p class="lead">Die Akademische Schützengesellschaft zu Berlin verbindet zwei ehrwürdige Traditionen: das studentische Brauchtum mit Kneipe und Kommers — und das Schützenwesen mit seiner Kunst der ruhigen Hand. Gegründet im Jahre 2025, sind wir ein junger, aber überzeugter Bund.</p>
+                <p>Bei uns ist jeder Student willkommen, der Freude an Präzision, an gepflegter Tradition und an aufrichtiger Gemeinschaft mitbringt — aus allen Berliner Hochschulen und Fakultäten. Zu Gast auf dem Stand der <strong>BSG Berlin</strong> treffen wir uns zum Schießen — und danach zum geselligen Beisammensein bei Kneipe, Kommers und Stammtisch.</p>
+            </div>
+
+            <div class="facts-strip">
+                <div class="fact"><strong>2025</strong> gegründet</div>
+                <span class="sep"></span>
+                <div class="fact"><strong>Offen</strong> für neue Mitglieder</div>
+                <span class="sep"></span>
+                <div class="fact">zu Gast bei der <strong>BSG Berlin</strong></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ DREI SÄULEN ============================ -->
+    <section class="band" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+        <div class="container">
+            <p class="eyebrow">Worauf es uns ankommt</p>
+            <h2 class="sec-title">Drei Säulen</h2>
+            <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
+
+            <div class="pillars">
+                <div class="pillar">
+                    <div class="pillar-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22.5" y2="12"/></svg>
+                    </div>
+                    <h3>Schießsport</h3>
+                    <p>Ob Luftgewehr, Kleinkaliber oder Pistole — bei uns lernst Du den Schießsport von Grund auf, unter fachkundiger Aufsicht. Ausrüstung wird gestellt, Vorerfahrung braucht es keine.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">
+                        <svg viewBox="0 0 24 24"><path d="M5 10h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-6z"/><path d="M16 11h2.5a2.5 2.5 0 0 1 0 5H16"/><path d="M7 10V6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v4"/><line x1="9" y1="2.5" x2="9" y2="4.5"/><line x1="12" y1="2.5" x2="12" y2="4.5"/></svg>
+                    </div>
+                    <h3>Tradition</h3>
+                    <p>Studentisches Brauchtum lebt vom Miteinander: Kneipen, Kommerse und der Stammtisch mit Liedgut und gutem Bier. Gepflegt und mit Haltung — aber nie verstaubt.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 19v-1.5a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4V19"/><path d="M15 13.5h.5a4 4 0 0 1 4 4V19"/></svg>
+                    </div>
+                    <h3>Gemeinschaft</h3>
+                    <p>Über alle Fakultäten und Semester hinweg: eine offene, verlässliche Gemeinschaft. Man kommt als Gast — und bleibt als Freund. Fest im Bund, ein Leben lang.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ LEITWERTE ============================ -->
+    <section class="band" id="werte">
+        <div class="container-narrow">
+            <p class="eyebrow">Unser Wahlspruch</p>
+            <h2 class="sec-title" style="color:var(--green);">Klarer Blick.<br>Ruhige Hand. Fester Bund.</h2>
+            <div class="ornament"><span class="diamond"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><span class="diamond"></span></div>
+            <p class="sec-intro" style="margin-top:24px;">Fünf Werte tragen unseren Bund.</p>
+
+            <div class="values-panel">
+                <div class="values-inner">
+                    <div class="value-row">
+                        <div class="value-roman">I</div>
+                        <div class="value-body">
+                            <h4>Präzision</h4>
+                            <p>Ein ruhiger Puls, ein klarer Blick, volle Konzentration im entscheidenden Moment. Was auf dem Stand über Ringe entscheidet, zahlt sich auch im Studium und im Leben aus: die Fähigkeit, sich zu fokussieren und im richtigen Augenblick Ruhe zu bewahren.</p>
+                        </div>
+                    </div>
+                    <div class="value-row">
+                        <div class="value-roman">II</div>
+                        <div class="value-body">
+                            <h4>Gemeinschaft</h4>
+                            <p>Vom ersten Schuss bis zum letzten Lied des Abends zählt der Zusammenhalt — über alle Fakultäten und Generationen hinweg. Man unterstützt einander beim Training, im Studium und weit darüber hinaus.</p>
+                        </div>
+                    </div>
+                    <div class="value-row">
+                        <div class="value-roman">III</div>
+                        <div class="value-body">
+                            <h4>Tradition</h4>
+                            <p>Wir vereinen studentisches Brauchtum und Schützenbrauch mit ihren Ritualen und ihrem Liedgut. Diese Traditionen pflegen wir mit Respekt — sie geben uns Halt und Identität, ohne uns einzuengen.</p>
+                        </div>
+                    </div>
+                    <div class="value-row">
+                        <div class="value-roman">IV</div>
+                        <div class="value-body">
+                            <h4>Fairness</h4>
+                            <p>Sportliche Ehrlichkeit ist für uns Haltung, nicht bloß Regel. Respekt vor Mitstreitern und Gegnern und ein aufrichtiger Umgang prägen uns auf dem Stand wie im Vereinsleben. Wer verliert, gratuliert; wer gewinnt, bleibt bescheiden.</p>
+                        </div>
+                    </div>
+                    <div class="value-row">
+                        <div class="value-roman">V</div>
+                        <div class="value-body">
+                            <h4>Offenheit</h4>
+                            <p>Die A.S.G. steht Studenten aus allen Fakultäten offen. Bei uns entscheidet der Charakter und die Freude an der gemeinsamen Sache. Wer sich einbringt und zur Gemeinschaft passt, ist herzlich willkommen.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ SEMESTERPROGRAMM ============================ -->
+    <section class="band" id="programm" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+        <div class="container">
+            <p class="eyebrow">Was ansteht</p>
+            <h2 class="sec-title">Semesterprogramm</h2>
+            <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
+            <p class="sec-intro" style="margin-top:20px;">Schießabende, Wettkämpfe, Kneipen und Stammtische — die richtige Mischung aus sportlichem Anspruch und studentischer Geselligkeit.</p>
+
+            <div class="calendar-card">
+                <div class="calendar-inner">
+                    <div class="cal-grid" id="calGrid"></div>
+                    <div class="cal-list" id="calList"></div>
+                    <div class="cal-legend">
+                        <div style="display:flex; flex-wrap:wrap; gap:14px 24px; flex:1;">
+                            <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#2f5d43;"></span> Schießsport &amp; Wettkampf</div>
+                            <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#b08d46;"></span> Kneipe &amp; Kommers</div>
+                            <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#6f7469;"></span> Stammtisch (intern)</div>
+                            <div class="cal-legend-item"><span class="cal-legend-dot" style="background:#3a5a53;"></span> Offizieller Termin · Gäste willkommen</div>
+                        </div>
+                        <button id="downloadAllIcal" class="btn-ical-icon" title="Alle Termine als iCal herunterladen"><i data-lucide="download" style="width:18px;height:18px;"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ IMPRESSIONEN ============================ -->
+    <section class="band">
+        <div class="container">
+            <p class="eyebrow">Aus dem Bundesleben</p>
+            <h2 class="sec-title">Impressionen</h2>
+            <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
+
+            <!-- TODO: durch echte Fotos ersetzen -->
+            <div class="gallery-grid">
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i1/500/380" alt="Impression"></div>
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i2/500/380" alt="Impression"></div>
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i3/500/380" alt="Impression"></div>
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i4/500/380" alt="Impression"></div>
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i5/500/380" alt="Impression"></div>
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i6/500/380" alt="Impression"></div>
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i7/500/380" alt="Impression"></div>
+                <div class="gallery-frame"><img src="https://picsum.photos/seed/asg-i8/500/380" alt="Impression"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ BEITRITT: SCHRITTE ============================ -->
+    <section class="band" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+        <div class="container">
+            <p class="eyebrow">Der Weg zu uns</p>
+            <h2 class="sec-title">In drei Schritten dabei</h2>
+            <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="numeral">I</div>
+                    <h4>Melde Dich</h4>
+                    <p>Schreib uns über das Formular unten — oder komm einfach zu einem Termin aus dem Semesterprogramm vorbei.</p>
+                </div>
+                <div class="step">
+                    <div class="numeral">II</div>
+                    <h4>Schnupperschießen</h4>
+                    <p>Lern die Truppe bei einem Schieß- oder Kneipenabend kennen. Die Ausrüstung stellen wir — Du bringst nur Neugier mit.</p>
+                </div>
+                <div class="step">
+                    <div class="numeral">III</div>
+                    <h4>Willkommen im Bund</h4>
+                    <p>Passt es für beide Seiten, wirst Du Teil der A.S.G. — mit allem, was studentische Gemeinschaft ausmacht.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ MITGLIED WERDEN (Formular) ============================ -->
+    <section class="join-section" id="mitglied">
+        <div class="join-section-ribbon"></div>
+        <div class="join-panel">
+            <div class="join-inner">
+                <p class="eyebrow">Werde Teil der A.S.G.</p>
+                <h2>Bist Du dabei?</h2>
+                <p class="join-sub">Werde Teil einer jungen, offenen Gemeinschaft in Berlin. Wir freuen uns auf Deine Nachricht — unverbindlich und ohne Vorerfahrung.</p>
+
+                <form id="bewerbungsForm" action="https://formsubmit.co/h3rm4nn.kru3g3r@gmail.com" method="POST">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_subject" value="Neue Anfrage über die A.S.G.-Website">
+                    <div class="form-group">
+                        <label class="form-label">Vorname*</label>
+                        <input type="text" name="Vorname" class="form-input" placeholder="Dein Vorname" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nachname*</label>
+                        <input type="text" name="Nachname" class="form-input" placeholder="Dein Nachname" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Hochschule / Studiengang</label>
+                        <input type="text" name="Hochschule" class="form-input" placeholder="z. B. TU Berlin, Maschinenbau">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">E-Mail-Adresse*</label>
+                        <input type="email" name="Email" class="form-input" placeholder="Deine E-Mail-Adresse" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefonnummer</label>
+                        <input type="tel" name="Telefon" class="form-input" placeholder="+49 123 45678901">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nachricht*</label>
+                        <textarea name="Nachricht" class="form-input" placeholder="Deine Nachricht an uns..." rows="4" required></textarea>
+                    </div>
+                    <div class="form-btn-wrapper">
+                        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Absenden</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ LOCATION (eine) ============================ -->
+    <section class="band">
+        <div class="container">
+            <p class="eyebrow">Wo Du uns findest</p>
+            <h2 class="sec-title">Unser Schießstand</h2>
+            <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
+
+            <div class="location-card">
+                <div class="location-map">
+                    <iframe src="https://maps.google.com/maps?q=Oderstra%C3%9Fe%2018%2C%2012051%20Berlin&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div class="location-info">
+                    <div class="location-tag">Schießstand · zu Gast</div>
+                    <div class="location-name">BSG Berlin</div>
+                    <div class="location-address">
+                        <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
+                        Oderstraße 18, 12051 Berlin
+                    </div>
+                    <p class="location-desc">Auf dem Stand der BSG Berlin finden unsere Übungs- und Wettkampfabende statt. Hier lernst Du den Schießsport unter fachkundiger Aufsicht kennen — die Ausrüstung wird gestellt, Einsteiger sind jederzeit willkommen. Die geselligen Veranstaltungen halten wir an wechselnden Orten in Berlin ab.</p>
+                    <div style="margin-top:8px;"><a href="#mitglied" class="btn btn-ghost">Zum Schnupperschießen anmelden</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ FAQ ============================ -->
+    <section class="band" id="faq" style="background:var(--paper-2); border-top:1px solid var(--line);">
+        <div class="container-narrow">
+            <p class="eyebrow">Gut zu wissen</p>
+            <h2 class="sec-title">Häufige Fragen</h2>
+            <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Was bedeutet „A.S.G. zu Berlin"?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">A.S.G. steht für Akademische Schützengesellschaft zu Berlin. Wir sind eine 2025 gegründete studentische Gemeinschaft, die den Schießsport mit studentischer Tradition verbindet — Kneipen, Kommerse und Stammtische inklusive. Wir stehen allen Studenten Berlins offen.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Für wen ist die A.S.G. geeignet?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Für Studenten aller Berliner Hochschulen und Fakultäten — ganz ohne schießsportliche Vorerfahrung. Wichtig ist uns nur die Freude an Präzision, Tradition und Gemeinschaft.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Brauche ich Erfahrung oder einen Waffenschein?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Nein. Das Schießen findet unter fachkundiger Aufsicht auf dem Stand der BSG Berlin statt — dafür brauchst Du weder Vorerfahrung noch eine Waffenbesitzkarte. Die Ausrüstung wird gestellt, und wir bringen Dir Sicherheit und Technik Schritt für Schritt bei.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Muss ich schießen, oder geht es auch um Geselligkeit?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Beides gehört bei uns zusammen. Der Schießsport ist unser Kern — aber genauso wichtig sind Kneipe, Kommers und Stammtisch. Viele kommen wegen des einen und bleiben wegen des anderen.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Können auch Frauen mitmachen?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Ja, selbstverständlich. Die A.S.G. zu Berlin steht Studentinnen ebenso offen wie Studenten — wer Freude am Schießsport und an studentischer Tradition hat, ist willkommen.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Was kostet die Mitgliedschaft?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Als junge, studentische Gemeinschaft halten wir die Beiträge bewusst gering. Die genauen Konditionen (Semesterbeitrag, Standmiete, Munition) besprechen wir am besten persönlich — melde Dich einfach, dann klären wir alles in Ruhe. <em>(Konkrete Beträge hier eintragen.)</em></div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Kann ich unverbindlich reinschnuppern?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Klar! Komm zu einem Schnupperschießen oder einem unserer Stammtische vorbei. Ganz ohne Verpflichtung — lern uns kennen und schau, ob es für Dich passt.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Wo trainiert ihr?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Aktuell sind wir zu Gast auf dem Stand der BSG Berlin. Dort finden unsere Übungs- und Wettkampfabende statt. Die geselligen Veranstaltungen halten wir an wechselnden Orten in Berlin ab.</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================ FOOTER ============================ -->
+    <footer class="site-footer">
+        <div class="band-cap"><div class="band-ribbon"><span class="s-green"></span><span class="s-gold"></span><span class="s-white"></span><span class="s-black"></span></div></div>
+        <svg class="footer-seal"><use href="#asg-seal"/></svg>
+        <div class="footer-brand">A.S.G. zu Berlin</div>
+        <div class="footer-tag">Klarer Blick · Ruhige Hand · Fester Bund</div>
+        <ul class="footer-links">
+            <li><a href="#ueber">Über uns</a></li>
+            <li><a href="#programm">Programm</a></li>
+            <li><a href="#mitglied">Mitglied werden</a></li>
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+        <p class="footer-copy">&copy; 2026 Akademische Schützengesellschaft zu Berlin. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <!-- ============================ MODALS ============================ -->
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-content"><div class="modal-inner">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <h3 class="modal-title">Danke für Deine Nachricht!</h3>
+            <p class="modal-text">Wir haben Deine Anfrage erhalten und melden uns in Kürze bei Dir. Gut Schuss!</p>
+            <button class="btn btn-primary" id="closeModal" style="width:100%; justify-content:center;">Verstanden</button>
+        </div></div>
+    </div>
+
+    <div id="eventDetailModal" class="modal-overlay event-modal">
+        <div class="modal-content"><div class="modal-inner">
+            <button id="closeEventModal" class="ev-modal-close-btn" title="Schließen"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+            <p class="event-modal-category" id="evModalCategory"></p>
+            <h3 class="event-modal-title" id="evModalTitle"></h3>
+            <div class="event-modal-info" id="evModalInfo"></div>
+            <div class="event-modal-description" id="evModalDesc"></div>
+            <button id="evModalIcal" class="btn btn-primary" style="width:100%; justify-content:center;">
+                <i data-lucide="calendar-plus" style="width:15px;height:15px;"></i> Zu Kalender hinzufügen
+            </button>
+        </div></div>
+    </div>
+
+    <script>
+        const COLOR_MAP = { purple: '#6f7469', orange: '#b08d46', green: '#2f5d43', blue: '#3a5a53' };
+        const MONTH_NAMES_DE = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+        function formatDateDE(s){ const [y,m,d]=s.split('-'); return `${d}.${m}.${y}`; }
+
+        function buildPillHTML(ev){
+            return `<div class="cal-pill pill-${ev.color}" data-event-id="${ev.id}">
+                <div class="pill-title">${ev.title} <span class="pill-dot"></span></div>
+                <div class="pill-meta">
+                    <span><i data-lucide="map-pin" style="width:13px;"></i> ${ev.location}</span>
+                    <span><i data-lucide="calendar" style="width:13px;"></i> ${ev.dateEnd ? formatDateDE(ev.dateStart)+'–'+formatDateDE(ev.dateEnd) : formatDateDE(ev.dateStart)}</span>
+                    <span><i data-lucide="clock" style="width:13px;"></i> ${ev.timeDisplay}</span>
+                </div>
+            </div>`;
+        }
+
+        function renderCalendarGrid(events){
+            const grid = document.getElementById('calGrid');
+            const monthSet = new Set(); events.forEach(ev => monthSet.add(ev.dateStart.slice(0,7)));
+            const months = [...monthSet].sort();
+            grid.style.gridTemplateColumns = `repeat(${months.length}, minmax(150px, 1fr))`;
+            grid.innerHTML = '';
+            const multiYear = new Set(months.map(x=>x.slice(0,4))).size > 1;
+            months.forEach(ym => { const [y,m]=ym.split('-'); const h=document.createElement('div'); h.className='cal-header'; h.textContent = multiYear ? `${MONTH_NAMES_DE[+m-1]} ${y}` : MONTH_NAMES_DE[+m-1]; grid.appendChild(h); });
+            const byMonth = {}; months.forEach(ym => byMonth[ym]=[]);
+            events.forEach(ev => { const ym=ev.dateStart.slice(0,7); if(byMonth[ym]) byMonth[ym].push(ev); });
+            months.forEach(ym => byMonth[ym].sort((a,b)=>a.dateStart.localeCompare(b.dateStart)));
+            const maxRows = Math.max(...months.map(ym => byMonth[ym].length), 1);
+            for(let r=0;r<maxRows;r++){ months.forEach(ym => { const ev=byMonth[ym][r]; const c=document.createElement('div'); c.className='cal-cell'; if(ev) c.innerHTML=buildPillHTML(ev); grid.appendChild(c); }); }
+        }
+
+        function renderCalendarList(events){
+            const list = document.getElementById('calList');
+            const sorted = [...events].sort((a,b)=>a.dateStart.localeCompare(b.dateStart));
+            const mn = ['','Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+            list.innerHTML = sorted.map(ev => { const [y,m,d]=ev.dateStart.split('-'); const color=COLOR_MAP[ev.color]||'#888';
+                return `<div class="cal-list-item" data-event-id="${ev.id}">
+                    <div class="cal-list-date"><div class="cal-list-date-day">${d}</div><div class="cal-list-date-month">${mn[+m]}</div></div>
+                    <span class="cal-list-color-dot" style="background:${color};"></span>
+                    <div style="flex:1;"><div class="cal-list-title">${ev.title}</div>
+                        <div class="cal-list-meta"><span><i data-lucide="map-pin" style="width:12px;height:12px;"></i> ${ev.location}</span><span><i data-lucide="clock" style="width:12px;height:12px;"></i> ${ev.timeDisplay}</span></div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:16px;height:16px;color:#b9ac86;flex-shrink:0;margin-top:2px;"></i>
+                </div>`; }).join('');
+        }
+
+        // iCal
+        function dateToIcal(s){ return s.replace(/-/g,''); }
+        function generateIcal(events){
+            let ical = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//A.S.G. zu Berlin//Semesterprogramm//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:A.S.G. zu Berlin – Semesterprogramm','X-WR-TIMEZONE:Europe/Berlin'];
+            events.forEach(ev => {
+                ical.push('BEGIN:VEVENT'); ical.push(`UID:asg-berlin-ev-${ev.id}@asg-berlin.de`);
+                ical.push(`SUMMARY:${ev.title}`); ical.push(`LOCATION:${ev.location}\\, ${ev.address}`);
+                ical.push(`DESCRIPTION:${ev.description.replace(/\n/g,'\\n')}`);
+                if(ev.allDay){ ical.push(`DTSTART;VALUE=DATE:${dateToIcal(ev.dateStart)}`); const d=new Date(ev.dateEnd||ev.dateStart); d.setDate(d.getDate()+1); ical.push(`DTEND;VALUE=DATE:${d.toISOString().slice(0,10).replace(/-/g,'')}`); }
+                else { ical.push(`DTSTART;TZID=Europe/Berlin:${dateToIcal(ev.dateStart)}T${ev.timeIcal}`); const eh=String(parseInt(ev.timeIcal.slice(0,2))+2).padStart(2,'0'); ical.push(`DTEND;TZID=Europe/Berlin:${dateToIcal(ev.dateStart)}T${eh}${ev.timeIcal.slice(2)}`); }
+                ical.push('END:VEVENT');
+            });
+            ical.push('END:VCALENDAR'); return ical.join('\r\n');
+        }
+        function downloadIcal(events, filename){ const b=new Blob([generateIcal(events)],{type:'text/calendar;charset=utf-8'}); const u=URL.createObjectURL(b); const a=document.createElement('a'); a.href=u; a.download=filename; a.click(); URL.revokeObjectURL(u); }
+
+        // Event modal
+        let allEvents = [];
+        function showEventModal(ev){
+            document.getElementById('evModalCategory').textContent = ev.category;
+            document.getElementById('evModalTitle').textContent = ev.title;
+            const dateStr = ev.dateEnd ? `${formatDateDE(ev.dateStart)} – ${formatDateDE(ev.dateEnd)}` : formatDateDE(ev.dateStart);
+            document.getElementById('evModalInfo').innerHTML = `
+                <div class="event-modal-info-row"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>${dateStr} &nbsp;·&nbsp; ${ev.timeDisplay}</span></div>
+                <div class="event-modal-info-row"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C12 21 5 14 5 9a7 7 0 1 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="9" r="2"/></svg><div><div style="font-weight:600;">${ev.location}</div><div style="color:#8a836e;font-size:0.9rem;">${ev.address}</div></div></div>`;
+            document.getElementById('evModalDesc').textContent = ev.description;
+            document.getElementById('evModalIcal').onclick = () => downloadIcal([ev], `asg-berlin-${ev.id}.ics`);
+            const m = document.getElementById('eventDetailModal'); m.classList.add('show'); lucide.createIcons();
+        }
+        document.getElementById('closeEventModal').addEventListener('click', () => document.getElementById('eventDetailModal').classList.remove('show'));
+        document.getElementById('eventDetailModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
+
+        function initCalendar(events){
+            allEvents = events;
+            renderCalendarGrid(events); renderCalendarList(events); lucide.createIcons();
+            document.getElementById('calGrid').addEventListener('click', e => { const p=e.target.closest('[data-event-id]'); if(p){ const ev=allEvents.find(x=>x.id===parseInt(p.dataset.eventId)); if(ev) showEventModal(ev); } });
+            document.getElementById('calList').addEventListener('click', e => { const p=e.target.closest('[data-event-id]'); if(p){ const ev=allEvents.find(x=>x.id===parseInt(p.dataset.eventId)); if(ev) showEventModal(ev); } });
+            document.getElementById('downloadAllIcal').addEventListener('click', () => downloadIcal(allEvents, 'asg-berlin-semesterprogramm.ics'));
+        }
+
+        // Termine direkt eingebettet — Fallback, damit der Kalender auch beim lokalen
+        // Öffnen (file://) funktioniert, wo der Browser fetch('events.json') blockiert.
+        // Zum Pflegen der Termine am besten events.json bearbeiten (wird bevorzugt geladen,
+        // sobald die Seite über einen Webserver / online läuft) und diese Liste gleich mitpflegen.
+        const EMBEDDED_EVENTS = [
+            { id:1,  title:"Semesterantrittskneipe", dateStart:"2026-10-16", dateEnd:null, timeDisplay:"20:00 c.t.", timeIcal:"201500", allDay:false, location:"Vereinslokal", address:"Ort folgt, Berlin", color:"orange", category:"Kneipe", description:"Feierlicher Auftakt ins Wintersemester 2026/27. Traditionelle Kneipe mit Liedgut, Bier und guter Stimmung. Gäste und Interessierte sind herzlich willkommen." },
+            { id:2,  title:"1. Übungsschießen", dateStart:"2026-10-23", dateEnd:null, timeDisplay:"19:00 s.t.", timeIcal:"190000", allDay:false, location:"BSG Berlin", address:"Oderstraße 18, 12051 Berlin", color:"green", category:"Schießsport", description:"Erster Schießabend des Semesters auf unserem Stand bei der BSG Berlin. Ausrüstung wird gestellt, alles unter fachkundiger Aufsicht. Neugierige zum Schnupperschießen erwünscht." },
+            { id:3,  title:"Stammtisch", dateStart:"2026-10-29", dateEnd:null, timeDisplay:"19:30 c.t.", timeIcal:"194500", allDay:false, location:"Vereinslokal", address:"Ort folgt, Berlin", color:"purple", category:"Stammtisch", description:"Unser geselliger Monatsstammtisch. Ein entspannter Abend bei Bier und guten Gesprächen. Locker, offen und ohne Anmeldung." },
+            { id:4,  title:"2. Übungsschießen", dateStart:"2026-11-06", dateEnd:null, timeDisplay:"19:00 s.t.", timeIcal:"190000", allDay:false, location:"BSG Berlin", address:"Oderstraße 18, 12051 Berlin", color:"green", category:"Schießsport", description:"Schießabend auf dem Stand der BSG Berlin. Wir feilen an Haltung, Atmung und Ringen. Ausrüstung wird gestellt." },
+            { id:5,  title:"Friesenpokalschießen", dateStart:"2026-11-14", dateEnd:null, timeDisplay:"15:00 s.t.", timeIcal:"150000", allDay:false, location:"BSG Berlin", address:"Oderstraße 18, 12051 Berlin", color:"green", category:"Wettkampf", description:"Unser traditionelles Pokalschießen mit befreundeten Verbindungen und Bünden. Sportlicher Wettkampf mit anschließendem Beisammensein. Ausrichter: A.S.G. zu Berlin." },
+            { id:6,  title:"Bildungsabend: Waffenrecht & Schützentradition", dateStart:"2026-11-20", dateEnd:null, timeDisplay:"19:00 c.t.", timeIcal:"191500", allDay:false, location:"Vereinslokal", address:"Ort folgt, Berlin", color:"blue", category:"Bildungsabend", description:"Vortrags- und Diskussionsabend rund um Waffenrecht, Sicherheit auf dem Stand und die Geschichte des akademischen Schützenwesens. Alle Mitglieder und Gäste eingeladen." },
+            { id:7,  title:"Stammtisch", dateStart:"2026-11-26", dateEnd:null, timeDisplay:"19:30 c.t.", timeIcal:"194500", allDay:false, location:"Vereinslokal", address:"Ort folgt, Berlin", color:"purple", category:"Stammtisch", description:"Unser geselliger Monatsstammtisch. Locker, offen und ohne Anmeldung." },
+            { id:8,  title:"3. Übungsschießen", dateStart:"2026-12-04", dateEnd:null, timeDisplay:"19:00 s.t.", timeIcal:"190000", allDay:false, location:"BSG Berlin", address:"Oderstraße 18, 12051 Berlin", color:"green", category:"Schießsport", description:"Letzter regulärer Schießabend vor Weihnachten auf dem Stand der BSG Berlin. Ausrüstung wird gestellt, Einsteiger willkommen." },
+            { id:9,  title:"Nikolauskommers", dateStart:"2026-12-11", dateEnd:null, timeDisplay:"20:00 c.t.", timeIcal:"201500", allDay:false, location:"Vereinslokal", address:"Ort folgt, Berlin", color:"orange", category:"Kommers", description:"Festlicher Kommers zur Weihnachtszeit mit Liedgut, Reden und feierlichem Rahmen. Ein Höhepunkt des Semesters — Gäste und Damen willkommen." },
+            { id:10, title:"Weihnachtsschießen & Feier", dateStart:"2026-12-18", dateEnd:null, timeDisplay:"18:00 c.t.", timeIcal:"181500", allDay:false, location:"BSG Berlin", address:"Oderstraße 18, 12051 Berlin", color:"green", category:"Fest", description:"Lockerer Jahresausklang am Stand: Weihnachtsschießen mit Glühwein, Preisen und geselliger Feier. Mehr Spaß als Wettkampf." },
+            { id:11, title:"Neujahrsschießen", dateStart:"2027-01-15", dateEnd:null, timeDisplay:"19:00 s.t.", timeIcal:"190000", allDay:false, location:"BSG Berlin", address:"Oderstraße 18, 12051 Berlin", color:"green", category:"Schießsport", description:"Erster Schießabend im neuen Jahr auf dem Stand der BSG Berlin. Gut Schuss und ein gutes neues Jahr. Ausrüstung wird gestellt." },
+            { id:12, title:"Stammtisch", dateStart:"2027-01-28", dateEnd:null, timeDisplay:"19:30 c.t.", timeIcal:"194500", allDay:false, location:"Vereinslokal", address:"Ort folgt, Berlin", color:"purple", category:"Stammtisch", description:"Unser geselliger Monatsstammtisch. Locker, offen und ohne Anmeldung." },
+            { id:13, title:"1. Stiftungsfest", dateStart:"2027-02-13", dateEnd:"2027-02-14", timeDisplay:"Ganztägig", timeIcal:null, allDay:true, location:"Berlin", address:"Ort folgt, Berlin", color:"blue", category:"Stiftungsfest", description:"Unser allererstes Stiftungsfest! Zwei Tage voller Tradition, Gemeinschaft und Feierlichkeiten zum Gründungsjubiläum der A.S.G. zu Berlin. Mit Festkommers, Preisschießen und geselligem Beisammensein." },
+            { id:14, title:"Semesterabschlusskneipe", dateStart:"2027-02-19", dateEnd:null, timeDisplay:"20:00 c.t.", timeIcal:"201500", allDay:false, location:"Vereinslokal", address:"Ort folgt, Berlin", color:"orange", category:"Kneipe", description:"Feierlicher Abschluss des Wintersemesters 2026/27. Kneipe mit Liedgut zum gemeinsamen Ausklang — Gäste und Damen herzlich willkommen." }
+        ];
+
+        fetch('events.json').then(r => { if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+            .then(data => initCalendar(data.events))
+            .catch(err => { console.warn('events.json nicht per fetch geladen (', err.message, ') — nutze eingebettete Termine.'); initCalendar(EMBEDDED_EVENTS); });
+
+        lucide.createIcons();
+
+        // FAQ
+        document.querySelectorAll('.faq-header').forEach(h => h.addEventListener('click', () => {
+            const item = h.parentElement, body = item.querySelector('.faq-body'), active = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('active'); i.querySelector('.faq-body').style.maxHeight = 0; });
+            if(!active){ item.classList.add('active'); body.style.maxHeight = body.scrollHeight + 'px'; }
+        }));
+
+        // Formular
+        document.getElementById('bewerbungsForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const form = e.target, btn = form.querySelector('button[type="submit"]'), orig = btn.textContent;
+            btn.textContent = 'Wird gesendet...'; btn.style.opacity = '0.7'; btn.disabled = true;
+            fetch(form.action, { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} })
+                .then(r => { if(r.ok){ document.getElementById('successModal').classList.add('show'); form.reset(); } else alert('Hoppla! Da ist etwas schiefgelaufen. Bitte später erneut versuchen.'); })
+                .catch(() => alert('Fehler beim Senden der Daten.'))
+                .finally(() => { btn.textContent = orig; btn.style.opacity = '1'; btn.disabled = false; });
+        });
+        document.getElementById('closeModal').addEventListener('click', () => document.getElementById('successModal').classList.remove('show'));
+        document.getElementById('successModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('show'); });
+    </script>
+</body>
+</html>
