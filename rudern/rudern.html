@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RV Wanderer — Kalender & Ruderbuch</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #1B3F7A;
+  --blue:   #2D5FA3;
+  --gold:   #C9A227;
+  --gold-l: #F0DFA0;
+  --cream:  #F5F0E8;
+  --white:  #FFFFFF;
+  --dark:   #0F2547;
+  --text:   #1a2a3a;
+  --muted:  #5a6a7a;
+  --border: rgba(43,95,163,0.15);
+  --ff-d: 'Playfair Display', Georgia, serif;
+  --ff-b: 'Source Sans 3', system-ui, sans-serif;
+  --r: 8px; --rl: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--ff-b); color: var(--text); background: var(--cream); font-size: 16px; line-height: 1.7; }
+h2,h3,h4 { font-family: var(--ff-d); line-height: 1.2; }
+h2 { font-size: clamp(1.6rem,3.5vw,2.4rem); font-weight: 600; color: var(--navy); }
+h3 { font-size: 1.15rem; font-weight: 600; color: var(--navy); }
+p  { color: var(--muted); }
+.eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+.gold-bar { width: 40px; height: 3px; background: var(--gold); border-radius: 2px; margin: 0.6rem 0 1rem; }
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, var(--dark) 0%, var(--navy) 100%);
+  border-bottom: 2px solid var(--gold);
+  padding: 1rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-text { font-family: var(--ff-d); color: var(--white); font-size: 1rem; font-weight: 600; line-height: 1.1; }
+.logo-text span { display: block; font-family: var(--ff-b); font-size: 0.62rem; font-weight: 400; color: var(--gold-l); letter-spacing: 0.08em; text-transform: uppercase; }
+.header-tabs { display: flex; gap: 0.5rem; }
+.tab-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--r); padding: 0.4rem 1rem; color: rgba(255,255,255,0.75); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all .2s; font-family: var(--ff-b); text-decoration: none; }
+.tab-btn:hover { background: rgba(255,255,255,0.18); color: white; }
+
+/* ── LOADING / ERROR ── */
+.api-status { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; padding: 0.6rem 1rem; border-radius: var(--r); margin-bottom: 1.25rem; }
+.api-status.loading { background: #EBF2FB; color: var(--blue); }
+.api-status.error   { background: #FDECEA; color: #8B2320; }
+.api-status.hidden  { display: none; }
+.spinner { width: 14px; height: 14px; border: 2px solid rgba(45,95,163,0.3); border-top-color: var(--blue); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SECTIONS ── */
+.page-section { padding: 2.5rem 0 4rem; }
+#sec-ruderbuch { background: var(--white); }
+
+/* ── KALENDER ── */
+.kal-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem; }
+.kal-nav { display: flex; align-items: center; gap: 0.6rem; }
+.kal-nav button { background: var(--white); border: 1px solid var(--border); border-radius: var(--r); padding: 0.35rem 0.75rem; cursor: pointer; font-size: 0.85rem; color: var(--navy); font-weight: 700; transition: all .2s; }
+.kal-nav button:hover { background: var(--navy); color: var(--white); }
+.kal-month-title { font-family: var(--ff-d); font-size: 1.25rem; font-weight: 600; color: var(--navy); min-width: 175px; text-align: center; }
+.kal-controls { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.kal-view-btn { background: none; border: 1px solid var(--border); border-radius: var(--r); padding: 0.3rem 0.75rem; cursor: pointer; font-size: 0.78rem; color: var(--muted); transition: all .2s; font-family: var(--ff-b); }
+.kal-view-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+.add-btn { background: var(--gold); color: var(--dark); border: none; border-radius: var(--r); padding: 0.4rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: background .2s; font-family: var(--ff-b); }
+.add-btn:hover { background: #d4ac30; }
+.add-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.kal-grid-wrap { background: var(--white); border-radius: var(--rl); overflow: hidden; box-shadow: 0 2px 24px rgba(27,63,122,0.09); }
+.kal-day-names { display: grid; grid-template-columns: repeat(7,1fr); background: var(--navy); }
+.kal-day-name { text-align: center; padding: 0.55rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+.kal-grid { display: grid; grid-template-columns: repeat(7,1fr); border-top: 1px solid var(--border); }
+.kal-cell { min-height: 88px; padding: 0.4rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.kal-cell:nth-child(7n) { border-right: none; }
+.kal-cell.other-month .kal-date { color: #c0c8d0; }
+.kal-cell.today { background: #f5f9ff; }
+.kal-cell.today .kal-date { background: var(--gold); color: var(--dark); }
+.kal-date { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-size: 0.77rem; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.kal-event { border-radius: 4px; padding: 1px 5px; font-size: 0.67rem; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: opacity .15s; line-height: 1.5; }
+.kal-event:hover { opacity: 0.75; }
+.ev-ausfahrt      { background: #D6E4F7; color: #1B3F7A; }        /* Dunkelblau */
+.ev-training      { background: #D6EDD9; color: #1A5C2A; }        /* Grün */
+.ev-mitglieder    { background: #FEF9C3; color: #7A6000; }        /* Gelb */
+.ev-extern        { background: #FDECEA; color: #8B2320; }        /* Rot */
+.ev-privat        { background: #FDEEDE; color: #8B4000; }        /* Orange */
+.kal-list { display: none; flex-direction: column; gap: 0.65rem; }
+.kal-list.visible { display: flex; }
+.kal-grid-wrap.hidden { display: none; }
+.list-event { background: var(--white); border-radius: var(--r); padding: 0.9rem 1.2rem; display: flex; gap: 1.1rem; align-items: flex-start; box-shadow: 0 1px 8px rgba(27,63,122,0.07); border-left: 4px solid var(--blue); cursor: pointer; transition: box-shadow .15s; }
+.list-event:hover { box-shadow: 0 3px 14px rgba(27,63,122,0.13); }
+.list-event.ev-ausfahrt-l    { border-left-color: #1B3F7A; }
+.list-event.ev-training-l    { border-left-color: #27ae60; }
+.list-event.ev-mitglieder-l  { border-left-color: #D4AC00; }
+.list-event.ev-extern-l      { border-left-color: #C0392B; }
+.list-event.ev-privat-l      { border-left-color: #D4650A; }
+.list-date-block { text-align: center; min-width: 44px; }
+.list-date-block .d { font-family: var(--ff-d); font-size: 1.5rem; font-weight: 700; color: var(--navy); line-height: 1; }
+.list-date-block .m { font-size: 0.67rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.list-event-info .ev-badge { display: inline-block; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; margin-bottom: 3px; }
+.list-event-info h4 { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 1px; }
+.list-event-info p { font-size: 0.82rem; color: var(--muted); }
+.kal-legend { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.1rem; }
+.kal-legend span { padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; }
+
+/* ── RUDERBUCH ── */
+.rb-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 1.75rem; }
+.rb-stat { background: var(--white); border-radius: var(--r); padding: 1rem 1.25rem; box-shadow: 0 1px 8px rgba(27,63,122,0.06); }
+.rb-stat .n { font-family: var(--ff-d); font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1.1; }
+.rb-stat .l { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.rb-toolbar { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.rb-toolbar input, .rb-toolbar select { border: 1px solid var(--border); border-radius: var(--r); padding: 0.45rem 0.85rem; font-family: var(--ff-b); font-size: 0.88rem; color: var(--text); background: var(--white); box-shadow: 0 1px 4px rgba(27,63,122,0.04); }
+.rb-toolbar input { flex: 1; min-width: 150px; }
+.rb-toolbar input:focus, .rb-toolbar select:focus { outline: none; border-color: var(--blue); }
+.rb-table-wrap { overflow-x: auto; border-radius: var(--rl); box-shadow: 0 2px 20px rgba(27,63,122,0.08); }
+table.rb-table { width: 100%; border-collapse: collapse; background: var(--white); }
+.rb-table thead { background: var(--navy); }
+.rb-table thead th { padding: 0.65rem 1rem; text-align: left; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.8); white-space: nowrap; }
+.rb-table tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+.rb-table tbody tr:hover { background: #f0f6ff; }
+.rb-table td { padding: 0.7rem 1rem; font-size: 0.875rem; color: var(--text); vertical-align: middle; }
+.rb-table td.muted { color: var(--muted); }
+.boat-badge { display: inline-block; background: #EBF2FB; color: var(--blue); font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; }
+.rb-table .km { font-weight: 700; color: var(--navy); }
+.rb-del-btn { background: none; border: none; cursor: pointer; color: #c0392b; font-size: 1rem; opacity: 0.35; transition: opacity .2s; padding: 2px 6px; border-radius: 4px; }
+.rb-del-btn:hover { opacity: 1; background: #fdecea; }
+.rb-empty { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.95rem; }
+.rb-show-more { display: block; width: 100%; text-align: center; padding: 0.75rem; background: var(--white); border: none; border-top: 1px solid var(--border); font-family: var(--ff-b); font-size: 0.88rem; font-weight: 600; color: var(--blue); cursor: pointer; transition: background .15s; border-radius: 0 0 var(--rl) var(--rl); }
+.rb-show-more:hover { background: #f0f6ff; }
+
+/* ── MODALS ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,37,71,0.55); z-index: 200; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(3px); }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: var(--rl); padding: 2rem; max-width: 460px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 40px rgba(15,37,71,0.2); }
+.modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--muted); line-height: 1; padding: 2px 6px; border-radius: 4px; }
+.modal-close:hover { background: var(--cream); }
+.modal h3 { margin-bottom: 1.25rem; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; border: 1px solid var(--border); border-radius: var(--r); padding: 0.5rem 0.8rem; font-family: var(--ff-b); font-size: 0.88rem; color: var(--text); background: var(--white); transition: border .2s; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(45,95,163,0.1); }
+.form-group textarea { resize: vertical; min-height: 72px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+.modal-actions { display: flex; gap: 0.65rem; justify-content: flex-end; margin-top: 1.35rem; }
+.btn-sm { padding: 0.48rem 1.15rem; font-size: 0.86rem; border-radius: var(--r); font-weight: 600; cursor: pointer; border: none; transition: all .18s; font-family: var(--ff-b); }
+.btn-sm:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn-primary   { background: var(--navy); color: var(--white); }
+.btn-primary:hover:not(:disabled)  { background: var(--blue); }
+.btn-secondary { background: var(--cream); color: var(--navy); border: 1px solid var(--border); }
+.btn-secondary:hover { background: #e8e2d6; }
+.btn-danger    { background: #fdecea; color: #8B2320; border: 1px solid #f5c0bc; }
+.btn-danger:hover:not(:disabled) { background: #f8d0cc; }
+.error-msg   { color: #c0392b; font-size: 0.78rem; margin-top: 0.35rem; }
+.success-msg { background: #eafaf1; border: 1px solid #a9dfbf; border-radius: var(--r); padding: 0.7rem 1rem; color: #1e8449; font-size: 0.86rem; margin-top: 0.9rem; }
+.del-section { margin-top: 1.1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.del-section summary { font-size: 0.8rem; font-weight: 600; color: var(--muted); cursor: pointer; user-select: none; }
+.del-section summary:hover { color: #c0392b; }
+.del-row { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.6rem; }
+.del-row input { flex: 1; border: 1px solid var(--border); border-radius: var(--r); padding: 0.42rem 0.75rem; font-size: 0.84rem; font-family: var(--ff-b); }
+
+
+/* ── DOWNLOAD BUTTONS (rund) ── */
+.dl-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); background: var(--white); color: var(--navy); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all .2s; flex-shrink: 0; }
+.dl-btn:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.dl-btn svg { width: 15px; height: 15px; }
+
+/* ── DOWNLOAD FORMAT CARDS ── */
+.dl-format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-top: 1rem; }
+.dl-format-card { border: 2px solid var(--border); border-radius: var(--rl); padding: 1.25rem 1rem; text-align: center; cursor: pointer; transition: all .2s; background: var(--white); }
+.dl-format-card:hover { border-color: var(--navy); background: #f5f9ff; }
+.dl-format-card .dl-icon { font-size: 2rem; margin-bottom: 0.4rem; }
+.dl-format-card strong { display: block; font-size: 0.95rem; font-weight: 700; color: var(--navy); }
+.dl-format-card span { font-size: 0.78rem; color: var(--muted); }
+
+
+@media(max-width:680px) {
+  .rb-stats { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+@media(max-width:480px) {
+  .header-tabs .tab-btn { padding: 0.35rem 0.65rem; font-size: 0.78rem; }
+  .rb-stats { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <svg width="34" height="34" viewBox="0 0 110 110" fill="none">
+          <circle cx="55" cy="55" r="52" fill="rgba(255,255,255,0.05)" stroke="#C9A227" stroke-width="2"/>
+          <line x1="30" y1="30" x2="55" y2="68" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="27" cy="26" rx="8" ry="5" fill="white" opacity="0.9" transform="rotate(-40 27 26)"/>
+          <line x1="80" y1="30" x2="55" y2="68" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="83" cy="26" rx="8" ry="5" fill="white" opacity="0.9" transform="rotate(40 83 26)"/>
+          <path d="M22 75 Q35 68 45 75 Q55 82 65 75 Q75 68 88 75" stroke="#C9A227" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="logo-text">RV Wanderer e.V.<span>Kalender &amp; Ruderbuch</span></div>
+      </a>
+      <nav class="header-tabs">
+        <a class="tab-btn" href="#sec-kalender">📅 Kalender</a>
+        <a class="tab-btn" href="#sec-ruderbuch">📖 Ruderbuch</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- ══ KALENDER ══════════════════════════════ -->
+<section id="sec-kalender" class="page-section">
+  <div class="container">
+    <div class="eyebrow">Veranstaltungen</div>
+    <h2>Ruderkalender</h2>
+    <div class="gold-bar"></div>
+
+    <div id="kal-api-status" class="api-status loading">
+      <div class="spinner"></div> Kalender wird geladen…
+    </div>
+
+    <div class="kal-header">
+      <div class="kal-nav">
+        <button onclick="changeMonth(-1)">‹</button>
+        <div class="kal-month-title" id="kal-month-title"></div>
+        <button onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="kal-controls">
+        <button class="dl-btn" onclick="downloadIcal()" title="Kalender als .ics herunterladen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+        <button class="kal-view-btn active" onclick="setView('grid',this)">Monat</button>
+        <button class="kal-view-btn" onclick="setView('list',this)">Liste</button>
+        <button class="add-btn" onclick="openKalModal()" id="kal-add-btn">+ Eintrag</button>
+      </div>
+    </div>
+
+    <div class="kal-grid-wrap" id="kal-grid-wrap">
+      <div class="kal-day-names">
+        <div class="kal-day-name">Mo</div><div class="kal-day-name">Di</div>
+        <div class="kal-day-name">Mi</div><div class="kal-day-name">Do</div>
+        <div class="kal-day-name">Fr</div><div class="kal-day-name">Sa</div>
+        <div class="kal-day-name">So</div>
+      </div>
+      <div class="kal-grid" id="kal-grid"></div>
+    </div>
+    <div class="kal-list" id="kal-list"></div>
+
+    <div class="kal-legend">
+      <span class="ev-ausfahrt"   style="padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:700">Ausfahrt</span>
+      <span class="ev-training"   style="padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:700">Training</span>
+      <span class="ev-mitglieder" style="padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:700">Mitgliederversammlung</span>
+      <span class="ev-extern"     style="padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:700">Externe Veranstaltung</span>
+      <span class="ev-privat"     style="padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:700">Privatveranstaltung</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RUDERBUCH ═════════════════════════════ -->
+<section id="sec-ruderbuch" class="page-section">
+  <div class="container">
+    <div class="eyebrow">Fahrtenbuch</div>
+    <h2>Ruderbuch</h2>
+    <div class="gold-bar"></div>
+
+    <div id="rb-api-status" class="api-status loading">
+      <div class="spinner"></div> Ruderbuch wird geladen…
+    </div>
+
+    <div class="rb-stats">
+      <div class="rb-stat"><div class="n" id="rb-total-fahrten">—</div><div class="l">Fahrten</div></div>
+      <div class="rb-stat"><div class="n" id="rb-total-km">—</div><div class="l">Gesamt km</div></div>
+      <div class="rb-stat"><div class="n" id="rb-active">—</div><div class="l">Ruderkameraden</div></div>
+    </div>
+
+    <div class="rb-toolbar">
+      <input type="text" id="rb-search" placeholder="Name oder Boot suchen…" oninput="filterRb()">
+      <button class="dl-btn" onclick="openModal('modal-rb-dl')" title="Ruderbuch herunterladen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+      <select id="rb-filter-boot" onchange="filterRb()"><option value="">Alle Boote</option></select>
+      <button class="add-btn" onclick="openRbModal()" id="rb-add-btn">+ Fahrt eintragen</button>
+    </div>
+
+    <div class="rb-table-wrap">
+      <table class="rb-table">
+        <thead>
+          <tr>
+            <th>Datum</th><th>Ruderkamerad</th><th>Boot</th>
+            <th>Strecke</th><th>km</th><th>Notiz</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="rb-tbody"></tbody>
+      </table>
+      <button class="rb-show-more" id="rb-show-more" onclick="toggleRbExpand()" style="display:none"></button>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL: Kalender — Event Detail -->
+<div class="modal-overlay" id="modal-event-detail" onclick="if(event.target===this)closeModal('modal-event-detail')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-event-detail')">×</button>
+    <span id="detail-badge" style="display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.7rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem"></span>
+    <h3 id="detail-title"></h3>
+    <div style="font-size:0.84rem;color:var(--muted);margin:0.35rem 0 0.75rem" id="detail-meta"></div>
+    <p id="detail-desc" style="font-size:0.9rem;color:var(--text)"></p>
+    <details class="del-section">
+      <summary>🗑 Eintrag löschen</summary>
+      <div class="del-row">
+        <input type="password" id="kal-del-code" placeholder="Vereinscode">
+        <button class="btn-sm btn-danger" id="kal-del-btn" onclick="deleteKalEvent()">Löschen</button>
+      </div>
+      <div class="error-msg" id="kal-del-err" style="display:none">Falscher Vereinscode.</div>
+    </details>
+  </div>
+</div>
+
+<!-- MODAL: Kalender — Eintrag hinzufügen -->
+<div class="modal-overlay" id="modal-kal-add" onclick="if(event.target===this)closeModal('modal-kal-add')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-kal-add')">×</button>
+    <h3>Veranstaltung eintragen</h3>
+    <div class="form-group" style="margin-top:1rem">
+      <label>Vereinscode *</label>
+      <input type="password" id="kal-code" placeholder="••••••••">
+      <div class="error-msg" id="kal-code-err" style="display:none">Falscher Vereinscode.</div>
+    </div>
+    <div class="form-group">
+      <label>Titel *</label>
+      <input type="text" id="kal-title" placeholder="z.B. Sommerausfahrt Wannsee">
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Datum *</label><input type="date" id="kal-date"></div>
+      <div class="form-group"><label>Typ</label>
+        <select id="kal-type">
+          <option value="ausfahrt">Ausfahrt</option>
+          <option value="training">Training</option>
+          <option value="mitglieder">Mitgliederversammlung</option>
+          <option value="extern">Externe Veranstaltung</option>
+          <option value="privat">Privatveranstaltung</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Uhrzeit</label><input type="time" id="kal-time"></div>
+      <div class="form-group"><label>Ort</label><input type="text" id="kal-ort" placeholder="Ort / Strecke"></div>
+    </div>
+    <div class="form-group"><label>Beschreibung</label><textarea id="kal-desc" placeholder="Weitere Infos…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-secondary" onclick="closeModal('modal-kal-add')">Abbrechen</button>
+      <button class="btn-sm btn-primary" id="kal-submit-btn" onclick="submitKalEvent()">Eintragen</button>
+    </div>
+    <div class="success-msg" id="kal-success" style="display:none">✓ Veranstaltung eingetragen!</div>
+  </div>
+</div>
+
+<!-- MODAL: Ruderbuch — Fahrt hinzufügen -->
+<div class="modal-overlay" id="modal-rb-add" onclick="if(event.target===this)closeModal('modal-rb-add')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-rb-add')">×</button>
+    <h3>Fahrt eintragen</h3>
+    <div class="form-group" style="margin-top:1rem">
+      <label>Vereinscode *</label>
+      <input type="password" id="rb-code" placeholder="••••••••">
+      <div class="error-msg" id="rb-code-err" style="display:none">Falscher Vereinscode.</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Name *</label><input type="text" id="rb-name" placeholder="Vorname Nachname"></div>
+      <div class="form-group"><label>Datum *</label><input type="date" id="rb-date"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Boot *</label><input type="text" id="rb-boot" placeholder="Einer, Doppelzweier…"></div>
+      <div class="form-group"><label>Kilometer *</label><input type="number" id="rb-km" placeholder="z.B. 12" min="0.1" step="0.1"></div>
+    </div>
+    <div class="form-group"><label>Strecke</label><input type="text" id="rb-strecke" placeholder="z.B. Pichelssee – Wannsee"></div>
+    <div class="form-group"><label>Notiz</label><textarea id="rb-notiz" placeholder="Wetter, Begleiter, Besonderes…" style="min-height:58px"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-secondary" onclick="closeModal('modal-rb-add')">Abbrechen</button>
+      <button class="btn-sm btn-primary" id="rb-submit-btn" onclick="submitRbEntry()">Eintragen</button>
+    </div>
+    <div class="success-msg" id="rb-success" style="display:none">✓ Fahrt eingetragen! Gut Wasser! 🚣</div>
+  </div>
+</div>
+
+<!-- MODAL: Ruderbuch — Löschen bestätigen -->
+<div class="modal-overlay" id="modal-rb-del" onclick="if(event.target===this)closeModal('modal-rb-del')">
+  <div class="modal" style="max-width:380px">
+    <button class="modal-close" onclick="closeModal('modal-rb-del')">×</button>
+    <h3 style="margin-bottom:0.5rem">Eintrag löschen</h3>
+    <p id="rb-del-info" style="font-size:0.88rem;margin-bottom:1rem"></p>
+    <div class="form-group">
+      <label>Vereinscode *</label>
+      <input type="password" id="rb-del-code" placeholder="••••••••">
+      <div class="error-msg" id="rb-del-err" style="display:none">Falscher Vereinscode.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-sm btn-secondary" onclick="closeModal('modal-rb-del')">Abbrechen</button>
+      <button class="btn-sm btn-danger" id="rb-del-confirm-btn" onclick="confirmRbDelete()">Endgültig löschen</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ruderbuch Download -->
+<div class="modal-overlay" id="modal-rb-dl" onclick="if(event.target===this)closeModal('modal-rb-dl')">
+  <div class="modal" style="max-width:380px">
+    <button class="modal-close" onclick="closeModal('modal-rb-dl')">×</button>
+    <h3>Ruderbuch herunterladen</h3>
+    <p style="font-size:0.88rem;color:var(--muted);margin-top:0.25rem">Alle Einträge exportieren — inkl. aktiver Filter.</p>
+    <div class="dl-format-grid">
+      <button class="dl-format-card" onclick="downloadRb('csv')">
+        <div class="dl-icon">📄</div>
+        <strong>CSV</strong>
+        <span>Für Excel, Numbers, LibreOffice</span>
+      </button>
+      <button class="dl-format-card" onclick="downloadRb('xlsx')">
+        <div class="dl-icon">📊</div>
+        <strong>Excel (XLSX)</strong>
+        <span>Direkt in Excel öffnen</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// KONFIGURATION — hier anpassen!
+// ══════════════════════════════════════════════
+const VEREIN_CODE   = 'WANDERER2025';
+const API_KALENDER  = 'kalender-api.php';
+const API_RUDERBUCH = 'ruderbuch-api.php';
+const RB_PAGE_SIZE  = 10;
+
+// Erkennt ob Seite auf einem echten Webserver läuft (http/https)
+// oder lokal als Datei geöffnet wurde (file://)
+const ON_SERVER = window.location.protocol.startsWith('http');
+
+// ── SEED-DATEN (Beispieleinträge für lokale Vorschau) ───────────────────
+const _td = new Date(), _Y = _td.getFullYear(), _M = _td.getMonth();
+function _fmt(y,m,d){ return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'); }
+
+const SEED_EVENTS = [
+  {id:'e001',title:'Morgendliche Vereinsausfahrt',  date:_fmt(_Y,_M,3), type:'ausfahrt',    time:'07:00',ort:'Vereinshaus Pichelssee',  desc:'Gemeinsame Morgenausfahrt für alle Leistungsstufen.'},
+  {id:'e002',title:'Herbst-Ausfahrt Pichelssee',     date:_fmt(_Y,_M,8), type:'ausfahrt',    time:'09:00',ort:'Pichelssee / Unterhavel', desc:'Gemeinsame Herbstausfahrt. Alle Leistungsstufen willkommen.'},
+  {id:'e003',title:'Technik-Training Einer',          date:_fmt(_Y,_M,11),type:'training',    time:'17:00',ort:'Vereinshaus Pichelssee',  desc:'Training für Einzel-Ruderer mit Trainer Klaus Hoffmann.'},
+  {id:'e004',title:'Mitgliederversammlung Juni',      date:_fmt(_Y,_M,15),type:'mitglieder',  time:'19:00',ort:'Vereinshaus',              desc:'Monatliche Mitgliederversammlung mit aktuellen Vereinsthemen.'},
+  {id:'e005',title:'Langstreckenfahrt Unterhavel',    date:_fmt(_Y,_M,19),type:'ausfahrt',    time:'08:00',ort:'Pichelssee → Wannsee',    desc:'Ca. 28 km. Nur für erfahrene Ruderer.'},
+  {id:'e006',title:'Jugend-Trainingstag',             date:_fmt(_Y,_M,22),type:'training',    time:'10:00',ort:'Vereinshaus Pichelssee',  desc:'Trainingstag für unsere Jugendgruppe (14–18 Jahre).'},
+  {id:'e007',title:'Ehrungsabend 2025',               date:_fmt(_Y,_M,28),type:'privat',      time:'18:00',ort:'Vereinshaus',              desc:'Jahresehrung der besten Ruderkameraden und Saisonabschluss.'},
+];
+
+const SEED_RB = [
+  {id:'r001',name:'Klaus Hoffmann',  date:_fmt(_Y,_M,1), boot:'Einer',        km:14.5,strecke:'Pichelssee – Scharfe Lanke', notiz:'Spiegelglatte Bedingungen, toller Sonnenaufgang.'},
+  {id:'r002',name:'Ingrid Schröder', date:_fmt(_Y,_M,2), boot:'Doppelzweier', km:8.0, strecke:'Pichelssee – Unterhavel',   notiz:'Mit Ute Braun.'},
+  {id:'r003',name:'Bernd Kaufmann',  date:_fmt(_Y,_M,3), boot:'Gig-Vierer',   km:22.0,strecke:'Großer Wannsee Runde',      notiz:'Vereinsausfahrt, Wind 3 Bft.'},
+  {id:'r004',name:'Ute Braun',       date:_fmt(_Y,_M,4), boot:'Doppelzweier', km:10.5,strecke:'Pichelssee – Scharfe Lanke',notiz:''},
+  {id:'r005',name:'Martin Schulze',  date:_fmt(_Y,_M,5), boot:'Einer',        km:18.0,strecke:'Unterhavel lang',            notiz:'Persönliche Bestzeit über 10 km.'},
+  {id:'r006',name:'Klaus Hoffmann',  date:_fmt(_Y,_M,7), boot:'Einer',        km:12.0,strecke:'Pichelssee Runde',           notiz:'Techniktraining.'},
+  {id:'r007',name:'Hildegard Meier', date:_fmt(_Y,_M,8), boot:'Skiff',        km:6.5, strecke:'Bootshaus – Insel Pichel',   notiz:'Erster Ausflug nach langer Pause!'},
+  {id:'r008',name:'Bernd Kaufmann',  date:_fmt(_Y,_M,10),boot:'Einer',        km:15.0,strecke:'Pichelssee – Wannsee',       notiz:''},
+];
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let kalEvents = [], rbEntries = [], rbFiltered = [];
+let curYear = new Date().getFullYear();
+let curMonth = new Date().getMonth();
+let kalView = 'grid';
+let rbExpanded = false;
+let activeEventId = null, deleteRbId = null;
+
+const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const TYPE_LABELS = {ausfahrt:'Ausfahrt',training:'Training',mitglieder:'Mitgliederversammlung',extern:'Externe Veranstaltung',privat:'Privatveranstaltung',
+  // Rückwärtskompatibilität mit alten Einträgen
+  regatta:'Ausfahrt',vereinsabend:'Mitgliederversammlung'};
+const TYPE_CLASS  = {ausfahrt:'ev-ausfahrt',training:'ev-training',mitglieder:'ev-mitglieder',extern:'ev-extern',privat:'ev-privat',
+  regatta:'ev-ausfahrt',vereinsabend:'ev-mitglieder'};
+const TYPE_CLASS_L= {ausfahrt:'ev-ausfahrt-l',training:'ev-training-l',mitglieder:'ev-mitglieder-l',extern:'ev-extern-l',privat:'ev-privat-l',
+  regatta:'ev-ausfahrt-l',vereinsabend:'ev-mitglieder-l'};
+const TYPE_BADGE  = {
+  ausfahrt:    'background:#D6E4F7;color:#1B3F7A',
+  training:    'background:#D6EDD9;color:#1A5C2A',
+  mitglieder:  'background:#FEF9C3;color:#7A6000',
+  extern:      'background:#FDECEA;color:#8B2320',
+  privat:      'background:#FDEEDE;color:#8B4000',
+  regatta:     'background:#D6E4F7;color:#1B3F7A',
+  vereinsabend:'background:#FEF9C3;color:#7A6000'
+};
+
+// ══════════════════════════════════════════════
+// API HELPERS
+// ══════════════════════════════════════════════
+function setStatus(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = 'api-status ' + type;
+  el.innerHTML = type === 'loading'
+    ? `<div class="spinner"></div> ${msg}`
+    : (type === 'error' ? `⚠ ${msg}` : msg);
+  if (type === 'hidden') el.className = 'api-status hidden';
+}
+
+async function apiFetch(url, method='GET', body=null) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000); // 8s Timeout
+  try {
+    const opts = { method, headers: {'Content-Type':'application/json'}, signal: controller.signal };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(url, opts);
+    clearTimeout(timer);
+    const text = await res.text();
+    if (!res.ok) {
+      let msg = 'HTTP ' + res.status;
+      try { msg = JSON.parse(text).error || msg; } catch(e) {}
+      throw new Error(msg + (text.length < 200 ? ': ' + text : ''));
+    }
+    try {
+      return JSON.parse(text);
+    } catch(e) {
+      throw new Error('Ungültige Antwort vom Server (kein JSON): ' + text.slice(0, 100));
+    }
+  } catch(e) {
+    clearTimeout(timer);
+    if (e.name === 'AbortError') throw new Error('Timeout — Server antwortet nicht (>8s)');
+    throw e;
+  }
+}
+
+
+// ══════════════════════════════════════════════
+// KALENDER — Laden
+// ══════════════════════════════════════════════
+async function loadKalender() {
+  if (!ON_SERVER) {
+    // Lokale Vorschau: Seed-Daten direkt nutzen, kein Server nötig
+    kalEvents = SEED_EVENTS;
+    setStatus('kal-api-status','hidden','');
+    renderKalender();
+    return;
+  }
+  setStatus('kal-api-status','loading','Kalender wird geladen…');
+  try {
+    kalEvents = await apiFetch(API_KALENDER);
+    setStatus('kal-api-status','hidden','');
+    renderKalender();
+  } catch(e) {
+    console.error('Kalender Fehler:', e.message);
+    kalEvents = SEED_EVENTS;
+    setStatus('kal-api-status','error','Server-Fehler: ' + e.message + ' — Beispieldaten werden angezeigt.');
+    renderKalender();
+  }
+}
+
+function changeMonth(d){ curMonth+=d; if(curMonth<0){curMonth=11;curYear--;}if(curMonth>11){curMonth=0;curYear++;} renderKalender(); }
+
+function setView(v,btn){
+  kalView=v;
+  document.querySelectorAll('.kal-view-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('kal-grid-wrap').classList.toggle('hidden',v==='list');
+  document.getElementById('kal-list').classList.toggle('visible',v==='list');
+  renderKalender();
+}
+
+function renderKalender(){
+  document.getElementById('kal-month-title').textContent=MONTHS[curMonth]+' '+curYear;
+  kalView==='grid' ? renderKalGrid() : renderKalList();
+}
+
+function renderKalGrid(){
+  const grid=document.getElementById('kal-grid'); grid.innerHTML='';
+  const first=new Date(curYear,curMonth,1), last=new Date(curYear,curMonth+1,0);
+  let dow=first.getDay(); if(dow===0)dow=7; dow--;
+  const prevLast=new Date(curYear,curMonth,0);
+  for(let i=dow-1;i>=0;i--) grid.appendChild(makeCell(prevLast.getDate()-i,curYear,curMonth-1,true));
+  for(let d=1;d<=last.getDate();d++) grid.appendChild(makeCell(d,curYear,curMonth,false));
+  const tot=dow+last.getDate(), rem=tot%7===0?0:7-(tot%7);
+  for(let d=1;d<=rem;d++) grid.appendChild(makeCell(d,curYear,curMonth+1,true));
+}
+
+function makeCell(day,yr,mo,other){
+  const cell=document.createElement('div');
+  cell.className='kal-cell'+(other?' other-month':'');
+  const real=new Date(yr,mo,day), now=new Date(); now.setHours(0,0,0,0);
+  if(real.getTime()===now.getTime()) cell.classList.add('today');
+  const ds=yr+'-'+String(mo+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+  cell.innerHTML=`<div class="kal-date">${day}</div>`;
+  kalEvents.filter(e=>e.date===ds).forEach(ev=>{
+    const el=document.createElement('div');
+    el.className='kal-event '+(TYPE_CLASS[ev.type]||'ev-ausfahrt');
+    el.textContent=ev.title; el.onclick=()=>openEventDetail(ev);
+    cell.appendChild(el);
+  });
+  return cell;
+}
+
+function renderKalList(){
+  const list=document.getElementById('kal-list'); list.innerHTML='';
+  const ms=curYear+'-'+String(curMonth+1).padStart(2,'0');
+  const items=kalEvents.filter(e=>e.date.startsWith(ms)).sort((a,b)=>a.date.localeCompare(b.date));
+  if(!items.length){ list.innerHTML='<div style="text-align:center;padding:3rem;color:var(--muted)">Keine Veranstaltungen in diesem Monat.</div>'; return; }
+  items.forEach(ev=>{
+    const d=new Date(ev.date+'T00:00:00'), el=document.createElement('div');
+    el.className='list-event '+(TYPE_CLASS_L[ev.type]||'ev-ausfahrt-l');
+    el.innerHTML=`
+      <div class="list-date-block"><div class="d">${d.getDate()}</div><div class="m">${MONTHS[d.getMonth()].slice(0,3)}</div></div>
+      <div class="list-event-info">
+        <span class="ev-badge" style="${TYPE_BADGE[ev.type]||''}">${TYPE_LABELS[ev.type]||ev.type}</span>
+        <h4>${ev.title}</h4>
+        <p>${ev.time?ev.time+' Uhr':''}${ev.ort?' · '+ev.ort:''}</p>
+      </div>`;
+    el.onclick=()=>openEventDetail(ev);
+    list.appendChild(el);
+  });
+}
+
+function openEventDetail(ev){
+  activeEventId=ev.id;
+  const b=document.getElementById('detail-badge');
+  b.textContent=TYPE_LABELS[ev.type]||ev.type;
+  b.setAttribute('style',(TYPE_BADGE[ev.type]||'')+';display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.7rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem');
+  document.getElementById('detail-title').textContent=ev.title;
+  const d=new Date(ev.date+'T00:00:00');
+  document.getElementById('detail-meta').textContent=
+    d.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
+    +(ev.time?' · '+ev.time+' Uhr':'')+(ev.ort?' · '+ev.ort:'');
+  document.getElementById('detail-desc').textContent=ev.desc||'';
+  document.getElementById('kal-del-code').value='';
+  document.getElementById('kal-del-err').style.display='none';
+  openModal('modal-event-detail');
+}
+
+async function deleteKalEvent(){
+  const code=document.getElementById('kal-del-code').value.trim();
+  if(code!==VEREIN_CODE){document.getElementById('kal-del-err').style.display='block';return;}
+  const btn=document.getElementById('kal-del-btn');
+  btn.disabled=true; btn.textContent='Wird gelöscht…';
+  try {
+    await apiFetch(API_KALENDER,'DELETE',{id:activeEventId});
+    kalEvents=kalEvents.filter(e=>e.id!==activeEventId);
+    closeModal('modal-event-detail');
+    renderKalender();
+  } catch(e) {
+    alert('Fehler beim Löschen: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Löschen'; }
+}
+
+function openKalModal(){
+  ['kal-code','kal-title','kal-time','kal-ort','kal-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('kal-date').value='';
+  document.getElementById('kal-type').value='ausfahrt';
+  document.getElementById('kal-code-err').style.display='none';
+  document.getElementById('kal-success').style.display='none';
+  openModal('modal-kal-add');
+}
+
+async function submitKalEvent(){
+  const code=document.getElementById('kal-code').value.trim();
+  const title=document.getElementById('kal-title').value.trim();
+  const date=document.getElementById('kal-date').value;
+  if(code!==VEREIN_CODE){document.getElementById('kal-code-err').style.display='block';return;}
+  document.getElementById('kal-code-err').style.display='none';
+  if(!title||!date) return;
+  const btn=document.getElementById('kal-submit-btn');
+  btn.disabled=true; btn.textContent='Wird gespeichert…';
+  try {
+    const ev=await apiFetch(API_KALENDER,'POST',{
+      title, date,
+      type: document.getElementById('kal-type').value,
+      time: document.getElementById('kal-time').value,
+      ort:  document.getElementById('kal-ort').value.trim(),
+      desc: document.getElementById('kal-desc').value.trim()
+    });
+    kalEvents.push(ev);
+    document.getElementById('kal-success').style.display='block';
+    renderKalender();
+    setTimeout(()=>closeModal('modal-kal-add'),1500);
+  } catch(e) {
+    alert('Fehler beim Speichern: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Eintragen'; }
+}
+
+// ══════════════════════════════════════════════
+// RUDERBUCH — Laden
+// ══════════════════════════════════════════════
+async function loadRuderbuch() {
+  if (!ON_SERVER) {
+    // Lokale Vorschau: Seed-Daten direkt nutzen, kein Server nötig
+    rbEntries = SEED_RB;
+    setStatus('rb-api-status','hidden','');
+    renderRuderbuch();
+    return;
+  }
+  setStatus('rb-api-status','loading','Ruderbuch wird geladen…');
+  try {
+    rbEntries = await apiFetch(API_RUDERBUCH);
+    setStatus('rb-api-status','hidden','');
+    renderRuderbuch();
+  } catch(e) {
+    console.error('Ruderbuch Fehler:', e.message);
+    rbEntries = SEED_RB;
+    setStatus('rb-api-status','error','Server-Fehler: ' + e.message + ' — Beispieldaten werden angezeigt.');
+    renderRuderbuch();
+  }
+}
+
+function renderRuderbuch(){
+  // Stats
+  const totalKm=rbEntries.reduce((s,r)=>s+parseFloat(r.km||0),0);
+  document.getElementById('rb-total-fahrten').textContent=rbEntries.length;
+  document.getElementById('rb-total-km').textContent=totalKm.toFixed(1)+' km';
+  document.getElementById('rb-active').textContent=new Set(rbEntries.map(r=>r.name)).size;
+
+  // Boot filter
+  const bootSel=document.getElementById('rb-filter-boot');
+  const cur=bootSel.value;
+  bootSel.innerHTML='<option value="">Alle Boote</option>';
+  [...new Set(rbEntries.map(r=>r.boot))].sort().forEach(b=>{
+    const o=document.createElement('option');
+    o.value=b; o.textContent=b; if(b===cur)o.selected=true;
+    bootSel.appendChild(o);
+  });
+
+  filterRb();
+}
+
+function filterRb(){
+  const search=document.getElementById('rb-search').value.toLowerCase();
+  const boot=document.getElementById('rb-filter-boot').value;
+  rbFiltered=[...rbEntries].sort((a,b)=>b.date.localeCompare(a.date));
+  if(search) rbFiltered=rbFiltered.filter(r=>r.name.toLowerCase().includes(search)||r.boot.toLowerCase().includes(search));
+  if(boot)   rbFiltered=rbFiltered.filter(r=>r.boot===boot);
+  rbExpanded=false;
+  renderRbRows();
+}
+
+function renderRbRows(){
+  const tbody=document.getElementById('rb-tbody');
+  const showMore=document.getElementById('rb-show-more');
+  const total=rbFiltered.length;
+  if(!total){
+    tbody.innerHTML=`<tr><td colspan="7" class="rb-empty">
+      <svg width="44" height="44" viewBox="0 0 48 48" fill="none" style="display:block;margin:0 auto 0.75rem;opacity:0.25"><rect x="8" y="6" width="32" height="36" rx="4" stroke="#888" stroke-width="2"/><line x1="14" y1="16" x2="34" y2="16" stroke="#888" stroke-width="2"/><line x1="14" y1="22" x2="34" y2="22" stroke="#888" stroke-width="2"/><line x1="14" y1="28" x2="26" y2="28" stroke="#888" stroke-width="2"/></svg>
+      Noch keine Einträge. Seid die Ersten!
+    </td></tr>`;
+    showMore.style.display='none';
+    return;
+  }
+  const display=rbExpanded?rbFiltered:rbFiltered.slice(0,RB_PAGE_SIZE);
+  tbody.innerHTML=display.map(r=>{
+    const d=new Date(r.date+'T00:00:00');
+    const ds=d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+    const n=r.notiz?(r.notiz.length>38?r.notiz.slice(0,38)+'…':r.notiz):'—';
+    return `<tr>
+      <td class="muted">${ds}</td>
+      <td><strong>${r.name}</strong></td>
+      <td><span class="boat-badge">${r.boot}</span></td>
+      <td class="muted">${r.strecke||'—'}</td>
+      <td class="km">${parseFloat(r.km).toFixed(1)}</td>
+      <td class="muted" title="${r.notiz||''}">${n}</td>
+      <td><button class="rb-del-btn" onclick="openRbDel('${r.id}')" title="Löschen">🗑</button></td>
+    </tr>`;
+  }).join('');
+  if(total>RB_PAGE_SIZE){
+    showMore.style.display='block';
+    showMore.textContent=rbExpanded
+      ?`▲ Weniger anzeigen`
+      :`▼ Alle ${total} Einträge anzeigen (${total-RB_PAGE_SIZE} weitere)`;
+  } else {
+    showMore.style.display='none';
+  }
+}
+
+function toggleRbExpand(){ rbExpanded=!rbExpanded; renderRbRows(); }
+
+function openRbDel(id){
+  deleteRbId=id;
+  const e=rbEntries.find(r=>r.id===id);
+  if(!e) return;
+  document.getElementById('rb-del-info').textContent=
+    `„${e.name} · ${e.boot} · ${parseFloat(e.km).toFixed(1)} km" wird unwiderruflich gelöscht.`;
+  document.getElementById('rb-del-code').value='';
+  document.getElementById('rb-del-err').style.display='none';
+  openModal('modal-rb-del');
+}
+
+async function confirmRbDelete(){
+  const code=document.getElementById('rb-del-code').value.trim();
+  if(code!==VEREIN_CODE){document.getElementById('rb-del-err').style.display='block';return;}
+  const btn=document.getElementById('rb-del-confirm-btn');
+  btn.disabled=true; btn.textContent='Wird gelöscht…';
+  try {
+    await apiFetch(API_RUDERBUCH,'DELETE',{id:deleteRbId});
+    rbEntries=rbEntries.filter(r=>r.id!==deleteRbId);
+    closeModal('modal-rb-del');
+    renderRuderbuch();
+  } catch(e) {
+    alert('Fehler beim Löschen: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Endgültig löschen'; }
+}
+
+function openRbModal(){
+  ['rb-code','rb-name','rb-boot','rb-strecke','rb-notiz'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('rb-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('rb-km').value='';
+  document.getElementById('rb-code-err').style.display='none';
+  document.getElementById('rb-success').style.display='none';
+  openModal('modal-rb-add');
+}
+
+async function submitRbEntry(){
+  const code=document.getElementById('rb-code').value.trim();
+  if(code!==VEREIN_CODE){document.getElementById('rb-code-err').style.display='block';return;}
+  document.getElementById('rb-code-err').style.display='none';
+  const name=document.getElementById('rb-name').value.trim();
+  const date=document.getElementById('rb-date').value;
+  const boot=document.getElementById('rb-boot').value.trim();
+  const km=parseFloat(document.getElementById('rb-km').value);
+  if(!name||!date||!boot||!km) return;
+  const btn=document.getElementById('rb-submit-btn');
+  btn.disabled=true; btn.textContent='Wird gespeichert…';
+  try {
+    const entry=await apiFetch(API_RUDERBUCH,'POST',{
+      name, date, boot, km,
+      strecke:document.getElementById('rb-strecke').value.trim(),
+      notiz:document.getElementById('rb-notiz').value.trim()
+    });
+    rbEntries.push(entry);
+    document.getElementById('rb-success').style.display='block';
+    renderRuderbuch();
+    setTimeout(()=>closeModal('modal-rb-add'),1800);
+  } catch(e) {
+    alert('Fehler beim Speichern: '+e.message);
+  } finally { btn.disabled=false; btn.textContent='Eintragen'; }
+}
+
+
+// ══════════════════════════════════════════════
+// KALENDER EXPORT — iCal
+// ══════════════════════════════════════════════
+function downloadIcal() {
+  function esc(s) { return (s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n'); }
+  var lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//RV Wanderer e.V.//Ruderkalender//DE',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'X-WR-CALNAME:RV Wanderer Ruderkalender',
+    'X-WR-TIMEZONE:Europe/Berlin'
+  ];
+  kalEvents.forEach(function(ev) {
+    var d = new Date(ev.date + 'T00:00:00');
+    var dtstart = ev.date.replace(/-/g,'');
+    d.setDate(d.getDate() + 1);
+    var dtend = d.toISOString().slice(0,10).replace(/-/g,'');
+    var descParts = [];
+    if (ev.time) descParts.push(ev.time + ' Uhr');
+    if (ev.desc) descParts.push(ev.desc);
+    lines.push('BEGIN:VEVENT');
+    lines.push('UID:' + ev.id + '@rv-wanderer');
+    lines.push('DTSTAMP:' + new Date().toISOString().replace(/[-:.]/g,'').slice(0,15) + 'Z');
+    lines.push('DTSTART;VALUE=DATE:' + dtstart);
+    lines.push('DTEND;VALUE=DATE:' + dtend);
+    lines.push('SUMMARY:' + esc(ev.title));
+    if (ev.ort)             lines.push('LOCATION:' + esc(ev.ort));
+    if (descParts.length)   lines.push('DESCRIPTION:' + esc(descParts.join(' — ')));
+    lines.push('END:VEVENT');
+  });
+  lines.push('END:VCALENDAR');
+  var content = lines.join('\r\n');
+  var blob = new Blob([content], {type: 'text/calendar;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rv-wanderer-kalender.ics';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+
+// ══════════════════════════════════════════════
+// RUDERBUCH DOWNLOAD — CSV & XLSX
+// ══════════════════════════════════════════════
+function downloadRb(format) {
+  const data   = rbFiltered.length ? rbFiltered : rbEntries;
+  const sorted = [...data].sort((a,b)=>b.date.localeCompare(a.date));
+  const headers = ['Datum','Name','Boot','Strecke','km','Notiz'];
+  const rows    = sorted.map(function(r){
+    return [r.date, r.name, r.boot, r.strecke||'', parseFloat(r.km).toFixed(1), r.notiz||''];
+  });
+
+  if (format === 'csv') {
+    function csvEsc(v){ var s=String(v); return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }
+    var lines = [headers.map(csvEsc).join(',')];
+    rows.forEach(function(r){ lines.push(r.map(csvEsc).join(',')); });
+    var blob = new Blob(['\uFEFF'+lines.join('\n')], {type:'text/csv;charset=utf-8'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'rv-wanderer-ruderbuch.csv'; a.click();
+    URL.revokeObjectURL(a.href);
+    closeModal('modal-rb-dl');
+
+  } else {
+    function xmlEsc(v){ return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function makeCell(v){
+      var num = !isNaN(v) && v !== '';
+      if(num) return '<Cell><Data ss:Type="Number">'+xmlEsc(v)+'</Data></Cell>';
+      return '<Cell><Data ss:Type="String">'+xmlEsc(v)+'</Data></Cell>';
+    }
+    function makeHeaderCell(h){
+      return '<Cell ss:StyleID="header"><Data ss:Type="String">'+xmlEsc(h)+'</Data></Cell>';
+    }
+    var headerRow = '<Row>'+headers.map(makeHeaderCell).join('')+'</Row>';
+    var dataRows  = rows.map(function(r){ return '<Row>'+r.map(makeCell).join('')+'</Row>'; }).join('\n');
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+      + '<?mso-application progid="Excel.Sheet"?>\n'
+      + '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">\n'
+      + '<Styles><Style ss:ID="header">'
+      + '<Font ss:Bold="1" ss:Color="#FFFFFF"/>'
+      + '<Interior ss:Color="#1B3F7A" ss:Pattern="Solid"/>'
+      + '</Style></Styles>\n'
+      + '<Worksheet ss:Name="Ruderbuch"><Table>\n'
+      + headerRow + '\n'
+      + dataRows  + '\n'
+      + '</Table></Worksheet>\n'
+      + '</Workbook>';
+    var blob = new Blob([xml], {type:'application/vnd.ms-excel;charset=utf-8'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'rv-wanderer-ruderbuch.xls'; a.click();
+    URL.revokeObjectURL(a.href);
+    closeModal('modal-rb-dl');
+  }
+}
+
+// ══════════════════════════════════════════════
+// MODAL HELPERS
+// ══════════════════════════════════════════════
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')); });
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  loadKalender();
+  loadRuderbuch();
+});
+</script>
+</body>
+</html>

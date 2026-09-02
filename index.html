@@ -9,17 +9,16 @@
     <link rel="shortcut icon" href="./images/icons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="./images/icons/apple-touch-icon.png" />
     <link rel="manifest" href="./images/icons/site.webmanifest" /> 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Germania+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Germania+One&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@latest"></script>
   
     <style>
         /* --- 1. General Setup --- */
         :root {
-            --primary-green: #72d124;
+            --primary-green: #4f7d22;
             --text-dark: #111;
             --overlay-white: rgba(255, 255, 255, 0.85);
             /* New Colors for Cards */
@@ -68,15 +67,17 @@
         .scroll-column {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            width: 20%; 
+            width: 20%;
             min-width: 200px;
+            /* GPU-Layer erzwingen -> flüssige Animation, kein Ruckeln */
+            will-change: transform;
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
         .scroll-column-inner {
             display: flex;
             flex-direction: column;
-            gap: 15px;
         }
 
         .col-1 { animation: scrollUp 40s linear infinite; }
@@ -87,20 +88,24 @@
 
         .scroll-column img {
             width: 100%;
-            border-radius: 4px;
+            /* FESTE Höhe: verhindert Reflow beim Nachladen -> keine springenden Bilder,
+               und -50% trifft exakt einen Bildersatz (mit margin, nicht gap) -> nahtlose Schleife */
+            height: 180px;
+            margin-bottom: 15px;
             object-fit: cover;
             display: block;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            /* Kein box-shadow / border-radius: die Bilder liegen hinter dem weißen
+               Overlay -> sichtbar bringt es nichts, spart aber Raster-/Paint-Kosten */
         }
 
         @keyframes scrollUp {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); } 
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(0, -50%, 0); }
         }
 
         @keyframes scrollDown {
-            0% { transform: translateY(-50%); }
-            100% { transform: translateY(0); }
+            0% { transform: translate3d(0, -50%, 0); }
+            100% { transform: translate3d(0, 0, 0); }
         }
 
         /* --- 3. The White Gradient Overlay --- */
@@ -475,14 +480,21 @@
 
         /* --- Wahlspruch cards --- */
         .ws-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            /* Flex statt Grid: eine unvollständige letzte Zeile wird zentriert,
+               nicht linksbündig */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 16px;
             width: 100%;
             max-width: 1100px;
         }
 
         .ws-card {
+            /* wachsen bis max. 210px (5 passen in eine Reihe), Basis 165px hält 2 Spalten auf dem Handy;
+               die Deckelung verhindert, dass Karten der letzten Zeile über die volle Breite ziehen */
+            flex: 1 1 165px;
+            max-width: 210px;
             background: #fff;
             border-radius: 16px;
             padding: 28px 22px 22px;
@@ -502,7 +514,7 @@
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 4px;
-            background: var(--ws-color, #72d124);
+            background: var(--ws-color, #4f7d22);
             border-radius: 16px 16px 0 0;
         }
 
@@ -514,7 +526,7 @@
         .ws-roman {
             font-family: 'Germania One', serif;
             font-size: 0.85rem;
-            color: var(--ws-color, #72d124);
+            color: var(--ws-color, #4f7d22);
             opacity: 0.8;
             letter-spacing: 0.05em;
         }
@@ -541,7 +553,7 @@
             gap: 4px;
             font-size: 0.78rem;
             font-weight: 600;
-            color: var(--ws-color, #72d124);
+            color: var(--ws-color, #4f7d22);
             margin-top: 4px;
         }
 
@@ -556,7 +568,7 @@
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: var(--ws-modal-color, #72d124);
+            color: var(--ws-modal-color, #4f7d22);
             margin-bottom: 8px;
         }
 
@@ -716,7 +728,7 @@
             border: 3px solid #fff;
         }
         .btn-red { background: #feebeb; color: #ff4d4d; left: 10px; }
-        .btn-green { background: #ebfef0; color: #2ecc71; right: 10px; }
+        .btn-green { background: #eef5ea; color: #4f7d22; right: 10px; }
         
         .call-badge {
             margin-top: 15px;
@@ -841,6 +853,152 @@
         .scatter-img:nth-child(2n+1) { transform: rotate(-2deg); margin-top: -5px; }
         .scatter-img:nth-child(3n) { transform: rotate(-4deg); margin-top: 15px; }
         .scatter-img:nth-child(5n) { transform: rotate(5deg); margin-top: -10px; }
+
+        /* --- Aktivitäten-Kacheln (Fechten / Rudern / Schießen) --- */
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .activity-card {
+            position: relative;
+            display: block;
+            border-radius: 14px;
+            overflow: hidden;
+            min-height: 320px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .activity-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 45px rgba(0,0,0,0.18);
+        }
+        .activity-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.82);
+        }
+        /* Rudern – Foto mit Navy-Tönung (Farben des Rudervereins) + Gold */
+        .activity-blue  { background: #1B3F7A; }
+        .activity-blue  .activity-overlay { background: linear-gradient(to top, rgba(20,45,90,0.9) 0%, rgba(27,63,122,0.45) 45%, rgba(27,63,122,0.1) 100%); }
+        /* Schießen – Foto mit Dunkelgrün-Tönung (Farben der A.S.G.) + Gold */
+        .activity-green { background: #12301f; }
+        .activity-green .activity-overlay { background: linear-gradient(to top, rgba(15,38,24,0.92) 0%, rgba(18,48,31,0.45) 45%, rgba(18,48,31,0.1) 100%); }
+        .activity-blue  .activity-icon { background: rgba(201,162,39,0.30); box-shadow: inset 0 0 0 1px rgba(201,162,39,0.6); }
+        .activity-green .activity-icon { background: rgba(176,141,70,0.30); box-shadow: inset 0 0 0 1px rgba(176,141,70,0.6); }
+        .activity-blue  .activity-link { color: #F0DFA0; }
+        .activity-green .activity-link { color: #ddc79a; }
+        .activity-overlay {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            min-height: 320px;
+            box-sizing: border-box;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            color: #fff;
+        }
+        .activity-photo .activity-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.05) 55%);
+        }
+        /* Vereinslogo oben links */
+        .activity-logo {
+            position: absolute;
+            top: 22px;
+            left: 22px;
+            width: 54px;
+            height: 54px;
+            box-sizing: border-box;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(10,20,15,0.30);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.30);
+            backdrop-filter: blur(2px);
+            overflow: hidden;
+        }
+        .activity-logo svg,
+        .activity-logo img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+        }
+        /* Wappen (Thuringia) etwas eingerückt, damit es im Kreis Luft hat */
+        .activity-logo--crest { padding: 7px; }
+        .activity-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+        }
+        .activity-link {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            transition: transform 0.25s ease;
+        }
+        .activity-photo .activity-link { color: #e9d18f; }
+        .activity-card:hover .activity-link { transform: translateX(4px); }
+
+        @media (max-width: 768px) {
+            .activity-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- Lightbox für die Community-Bilder --- */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .lightbox-overlay.show { display: flex; opacity: 1; }
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: 10px;
+            border: 5px solid #fff;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            animation: modal-pop-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 30px;
+            width: 46px;
+            height: 46px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .lightbox-close:hover { background: rgba(255,255,255,0.3); }
 
 
 /* --- 11. Calendar Section --- */
@@ -1356,7 +1514,7 @@
 
             .section-wrapper, .steps-container { margin-top: 80px; }
             
-            .calendar-card { padding: 5px; }
+            .calendar-card { padding: 14px 14px 20px; }
             
             .scatter-grid { gap: 10px; }
             .scatter-img { width: 100px; height: 80px; }
@@ -1738,7 +1896,7 @@
     background-color: #fff;
     padding: 40px 20px;
     text-align: center;
-    margin-top: 80px; /* Schafft etwas Abstand zu deinem Formular */
+    margin-top: 80px; /* Schafft etwas Abstand zu Deinem Formular */
     font-family: sans-serif;
 }
 
@@ -1769,24 +1927,252 @@
 
 /* Hover-Effekt für die Links */
 .footer-links a:hover {
-    color: #1a3a1c; /* Gleiches Grün wie das Icon in deinem Modal */
+    color: #1a3a1c; /* Gleiches Grün wie das Icon in Deinem Modal */
+}
+
+/* ==========================================================================
+   DESIGN REFRESH  —  kohärentes Farbsystem, Typo-Feinschliff, Rhythmus,
+   mobiles Menü.  Bewusst als überschreibende Ebene am Ende, damit die
+   bestehende Struktur unangetastet bleibt.
+   ========================================================================== */
+:root {
+    /* Palette:  Grün #83C63D · Weiß · Dunkelblau #253C4A */
+    --brand-green:       #83C63D;   /* helles Signaturgrün – für Flächen/Punkte */
+    --brand-green-deep:  #4f7d22;   /* dunklere Variante – für Text/Zahlen (Kontrast) */
+    --primary-green:     #4f7d22;   /* Highlights/Links = lesbare Grün-Variante */
+    --brand-blue:        #253C4A;   /* Dunkelblau */
+    --brand-blue-deep:   #17262f;
+    --color-blue:        #253C4A;   /* Karten-Blau */
+    --brand-ink:         #17201a;   /* fast-schwarz, leicht warm */
+    --line:              #e7ebe4;   /* dezente, kühle Hairline */
+
+    /* 5 unterscheidbare Pastellfarben – für Kalender (4) und Werte-Kacheln (5) */
+    --pastel-green:  #81C784;
+    --pastel-blue:   #64B5F6;
+    --pastel-purple: #BA68C8;
+    --pastel-amber:  #FFB74D;
+    --pastel-rose:   #E57373;
+
+    /* Kalender-Pills = 4 der Pastelltöne */
+    --pill-blue:   var(--pastel-blue);    /* Offiziell        */
+    --pill-green:  var(--pastel-green);   /* Hochoffiziell    */
+    --pill-orange: var(--pastel-amber);   /* Intern           */
+    --pill-purple: var(--pastel-purple);  /* Gäste & Damen    */
+
+    --radius:      16px;
+    --shadow-soft: 0 12px 34px rgba(23,32,26,0.08);
+    --shadow-lift: 0 20px 48px rgba(23,32,26,0.14);
+}
+
+/* Durchgehend weißer Canvas – keine getönten Bänder, kein „Ochre"-Durchschlagen */
+body { background-color: #ffffff; color: var(--brand-ink); }
+.content-section,
+.application-section { background-color: #ffffff; }
+.application-section .app-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Links, die nur einen Button umschließen: keine Unterstreichung / kein Violett */
+a:has(> .cta-button),
+a:has(> .cta-button):visited,
+.nav-cta, .nav-cta:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ---- Navigation ---- */
+nav {
+    background: rgba(255,255,255,0.88);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    backdrop-filter: saturate(140%) blur(10px);
+    box-shadow: 0 1px 0 var(--line), 0 8px 24px rgba(23,32,26,0.05);
+}
+.nav-brand { white-space: nowrap; display: flex; align-items: center; gap: 10px; }
+.nav-crest { width: 30px; height: 30px; object-fit: contain; }
+.nav-right { display: flex; align-items: center; gap: 22px; }
+.nav-toggle { display: none; }
+.nav-links a:hover { color: var(--brand-green-deep); }
+
+/* ---- Typografie (ohne Unterstrich-Flourish) ---- */
+h1 { font-size: clamp(2.6rem, 8vw, 4.6rem); letter-spacing: -0.5px; }
+.subtitle { font-size: clamp(1rem, 2.4vw, 1.15rem); color: #5b5f57; letter-spacing: 0.2px; }
+.section-title {
+    font-size: clamp(1.9rem, 4.6vw, 2.6rem);
+    letter-spacing: -0.4px;
+    color: var(--brand-ink);
+}
+.section-subtitle { color: #6a6d64; }
+/* Highlights in Überschriften im hellen Grün */
+.highlight, .app-highlight { color: var(--brand-green); }
+
+/* ---- Vertikaler Rhythmus: fluide statt starrer 150px ---- */
+.section-wrapper { margin-top: clamp(80px, 12vw, 140px); }
+
+/* ---- Scroll-Hinweis unter dem Hero (mit sanftem Bobbing) ---- */
+.scroll-cue {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: #111;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    /* ganze Einheit (Text + Pfeil) wippt, eigener Compositor-Layer */
+    will-change: transform;
+    animation: scrollBob 1.6s ease-in-out infinite;
+    transition: opacity .2s ease;
+}
+.scroll-cue:hover { opacity: 1; }
+.scroll-cue svg { width: 22px; height: 22px; }
+/* -50% bleibt in jedem Keyframe erhalten, sonst springt die Zentrierung */
+@keyframes scrollBob {
+    0%   { transform: translate3d(-50%, 0, 0); }
+    50%  { transform: translate3d(-50%, 6px, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .scroll-cue { animation: none; transform: translate3d(-50%, 0, 0); }
+}
+
+/* ---- Buttons ---- */
+.cta-button {
+    background: var(--brand-ink);
+    letter-spacing: 0.3px;
+    font-weight: 600;
+    box-shadow: 0 10px 24px rgba(23,32,26,0.22);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.cta-button:hover {
+    transform: translateY(-2px) scale(1.03);
+    background: #0f1712;
+    box-shadow: 0 16px 32px rgba(23,32,26,0.28);
+}
+
+/* ---- Info-Box + Stats: sauberes Weiß, dezente Hairlines ---- */
+.info-box {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+}
+.info-box h2 { color: #111; }                 /* „Netzwerk seit 150 Jahren" in Schwarz */
+.website-url { color: var(--brand-green); }    /* www.thuringia.berlin in Hellgrün */
+.stats-container {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+.stat-item h3 { color: var(--brand-green-deep); }
+
+/* ---- Karten: Radius, Schatten, Palette (Moosgrün + Dunkelblau) ---- */
+.card { border-radius: var(--radius); box-shadow: var(--shadow-soft); }
+.card:hover { box-shadow: var(--shadow-lift); }
+.card-label { letter-spacing: -0.2px; }
+.card-green { background-color: var(--brand-green); }
+.card-blue  { background-color: var(--brand-blue); }
+/* Helles Grün braucht dunkle Schrift statt Weiß (Lesbarkeit) */
+.card-green .card-label       { color: var(--brand-ink); }
+.card-green .card-description  { color: rgba(23,32,26,0.82); }
+.activity-card { border-radius: var(--radius); }
+
+/* Live-Punkt bleibt hell/leuchtend */
+.status-dot { background: var(--brand-green); }
+
+/* ---- Fact-Cards: Palette Moosgrün / Dunkelblau ---- */
+.fact-card { border-radius: var(--radius); border-color: var(--line); }
+.fact-orange, .fact-forest-green   { background-color: var(--brand-green-deep); }
+.fact-brown,  .fact-salmon         { background-color: var(--brand-blue); }
+.fact-orange-light, .fact-dark-red { background-color: var(--brand-blue-deep); }
+.fact-dark-green,  .fact-coral     { background-color: var(--brand-green-deep); }
+
+/* ==========================================================================
+   MOBILE  —  Hamburger-Menü (bisher waren die Navigationslinks auf dem
+   Handy komplett unerreichbar) + feinere Abstände
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Die 3 „So kannst Du dabei sein"-Schritte auf Mobile ausblenden
+       (der Mitglied-werden-Bereich bleibt sichtbar) */
+    #steps-section { display: none; }
+
+    nav > .nav-brand { font-size: 1.25rem !important; }
+    .nav-crest { width: 26px; height: 26px; }
+    .nav-right { gap: 10px; }
+
+    .nav-toggle {
+        display: flex; flex-direction: column; justify-content: center; gap: 5px;
+        width: 42px; height: 42px; padding: 0;
+        border: none; background: transparent; cursor: pointer;
+    }
+    .nav-toggle span {
+        display: block; height: 2.5px; width: 24px;
+        background: var(--brand-ink); border-radius: 2px;
+        transition: transform .25s ease, opacity .2s ease;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+    /* Ausklapp-Panel */
+    .nav-links {
+        position: fixed; top: 90px; left: 0; right: 0;
+        display: flex; flex-direction: column; align-items: stretch; gap: 0;
+        background: #fff; padding: 6px 22px 18px;
+        box-shadow: 0 18px 30px rgba(23,32,26,0.12);
+        border-top: 1px solid var(--line);
+        transform: translateY(-14px); opacity: 0; pointer-events: none;
+        transition: opacity .22s ease, transform .22s ease;
+    }
+    .nav-links.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .nav-links a {
+        display: block !important;
+        padding: 15px 2px; font-size: 1.05rem; font-weight: 500;
+        border-bottom: 1px solid var(--line);
+    }
+    .nav-cta .cta-button { padding: 9px 15px !important; white-space: nowrap; }
+}
+/* Sehr schmale Phones: nur das Wappen als Logomarke, damit CTA + Menü Platz haben */
+@media (max-width: 480px) {
+    .nav-wordmark { display: none; }
+    .nav-crest { width: 34px; height: 34px; }
+}
+
+/* Sanftes Einblenden beim Scrollen respektiert Reduced-Motion */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-column { animation: none !important; }
+    * { scroll-behavior: auto !important; }
 }
     </style>
 </head>
 <body>
 
     <nav>
-        <div style="font-family:'Germania One',serif; font-size:1.6rem; letter-spacing:0.5px;">V.B.B! Thuringia</div>
-        
-        <div class="nav-links">
-            <a href="#about">Impressionen</a>
-            <a href="#sempro">Semesterprogramm</a>
-            <a href="#intro">Über uns</a>
-            <a href="#mitglied"><button class="cta-button" style="padding: 10px 20px; font-size: 0.9rem;">
+        <a href="#" class="nav-brand" aria-label="V.B.B! Thuringia – Startseite" style="font-family:'Germania One',serif; font-size:1.6rem; letter-spacing:0.5px; color:var(--brand-ink); text-decoration:none;">
+            <img src="images/Wappen.png" alt="" class="nav-crest">
+            <span class="nav-wordmark">V.B.B! Thuringia</span>
+        </a>
+
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="#about">Impressionen</a>
+                <a href="#sempro">Semesterprogramm</a>
+                <a href="#intro">Über uns</a>
+            </div>
+            <a href="#mitglied" class="nav-cta"><button class="cta-button" style="padding: 10px 20px; font-size: 0.9rem;">
                 <span class="status-dot"></span>
                 Mitglied werden
             </button></a>
-            
+            <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </nav>
 
@@ -1820,9 +2206,14 @@
                 Mitglied werden
             </button>
         </a>
+
+        <a href="#entdecken" class="scroll-cue" aria-label="Mehr erfahren – nach unten scrollen">
+            <span>Mehr erfahren</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
     </div>
 
-    <section class="content-section">
+    <section class="content-section" id="entdecken">
         
         <div class="info-box">
             <h2>Netzwerk seit 150 Jahren</h2>
@@ -1838,8 +2229,8 @@
                     <p>Gegründet</p>
                 </div>
                 <div class="stat-item">
-                    <h3>3.000+</h3>
-                    <p>Fässer Bier getrunken</p>
+                    <h3>&infin;</h3>
+                    <p>Freundschaften fürs Leben</p>
                 </div>
             </div>
 
@@ -1853,8 +2244,8 @@
             </div>
         </div>
 
-        <div class="next-section-title" id="intro">
-            <h2>Was ist die V.B.B! <span class="highlight">Thuringia</span>?</h2>
+        <div class="section-wrapper" id="intro" style="margin-bottom: 10px;">
+            <h2 class="section-title">Was ist die V.B.B! <span class="highlight">Thuringia</span>?</h2>
         </div>
 
         
@@ -1864,27 +2255,19 @@
                     <div class="card-text-content">
                         <h3 class="card-label">Netzwerk</h3>
                         <p class="card-description">
-                            Von erfolgreichen Machern lernen, eigene Ziele erreichen: Unser Netzwerk aus erfolgreichen Alumni begleitet dich auf deinem Weg nach oben - nicht nur digital sondern im echten Leben.
+                            Von erfolgreichen Machern lernen, eigene Ziele erreichen: Unser Netzwerk aus Alumni begleitet Dich auf Deinem Weg nach oben - nicht nur digital sondern im echten Leben.
                         </p>
                     </div>
                 </div>
             </div>
             
             
-            <div class="card card-blue card-image-top" style="grid-row: span 2;">
-                <div class="card-image-content">
-                    <img src="images/Fechten.png" alt="Fechtsport">
+            <div class="card card-blue" style="grid-column: span 2; grid-row: span 2;">
+                <div class="card-image-content" style="padding: 40px; justify-content: flex-start;">
                     <div class="card-text-content">
-                        <h3 class="card-label">Fechtsport</h3>
-                    </div>
-                </div>
-            </div>    
-            <div class="card card-blue" style="grid-row: span 2;">
-                <div class="card-image-content" style="padding: 30px; justify-content: flex-start;">
-                    <div class="card-text-content">
-                        <h3 class="card-label">Kompetenz-Erwerb</h3>
+                        <h3 class="card-label" style="font-size: 2rem;">Kompetenzen</h3>
                         <p class="card-description">
-                            Freie Rede. Organisationsfähigkeit. Führungsverantwortung. Bei uns sammelst du genau die Praxiserfahrung, die spätere Arbeitgeber fordern. Dazu gehört auch das aktive Erleben demokratischer Strukturen - lerne, Mehrheiten zu organisieren, fundiert zu debattieren und gemeinsam Verantwortung zu tragen.
+                            Freie Rede. Organisationsfähigkeit. Führungsverantwortung. Bei uns sammelst Du genau die Praxiserfahrung, die spätere Arbeitgeber fordern. Dazu gehört auch das aktive Erleben demokratischer Strukturen - lerne, Mehrheiten zu organisieren, fundiert zu debattieren und gemeinsam Verantwortung zu tragen.
                         </p>
                     </div>
                 </div>
@@ -1904,7 +2287,7 @@
                     <div class="card-text-content">
                         <h3 class="card-label">Austausch</h3>
                         <p class="card-description">
-                            Dialog mit anderen Studenten interfakultativ – um deine eigene Blase zu verlassen.
+                            Dialog mit anderen Studenten interfakultativ – um Deine eigene Blase zu verlassen.
                         </p>
                     </div>
                 </div>
@@ -1914,7 +2297,7 @@
         <div class="section-wrapper">
             <h2 class="section-title" id="sempro">Vielfalt & Austausch – in <span class="highlight">jedem Semester</span></h2>
             <p class="section-subtitle">
-                Ob sportlicher Fokus beim Fechten, Erholung am Wasser, lebhafter Austausch am Stammtisch oder gesellige Kneipenabende: Unser Programm bietet dir genau die richtige Mischung aus Anspruch und Ausgleich.
+                Ob sportlicher Fokus beim Fechten, Erholung am Wasser, lebhafter Austausch am Stammtisch oder gesellige Kneipenabende: Unser Programm bietet Dir genau die richtige Mischung aus Anspruch und Ausgleich.
             </p>
 
 <div class="calendar-card">
@@ -1927,10 +2310,10 @@
     <!-- Legende -->
     <div class="cal-legend">
         <div style="display:flex; flex-wrap:wrap; gap:14px 24px; flex:1;">
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#3498db;"></div> Offizielle Veranstaltung</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#2ecc71;"></div> Hochoffizielle Veranstaltung</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#e67e22;"></div> Intern</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#9b59b6;"></div> Gäste &amp; Damen willkommen</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#64B5F6;"></div> Offizielle Veranstaltung</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#81C784;"></div> Hochoffizielle Veranstaltung</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#FFB74D;"></div> Intern</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#BA68C8;"></div> Gäste &amp; Damen willkommen</div>
         </div>
         <button id="downloadAllIcal" class="btn-ical-icon btn-ical-icon--green" title="Alle Termine als iCal herunterladen">
             <i data-lucide="download" style="width:18px; height:18px;"></i>
@@ -1948,40 +2331,40 @@
 </div>
 
         <div class="section-wrapper" id="about">
-            <h2 class="section-title">Unser <span class="highlight">Wahlspruch</span></h2>
-            <p class="section-subtitle">Fünf Werte. Ein Lebensbund. Klick auf eine Kachel für die volle Bedeutung.</p>
+            <h2 class="section-title">Unsere <span class="highlight">Werte</span></h2>
+            <p class="section-subtitle">Fünf Werte, unser Wahlspruch. Klick auf eine Kachel für die volle Bedeutung.</p>
 
             <div class="ws-grid">
 
-                <div class="ws-card" data-ws="0" style="--ws-color:#72d124;">
+                <div class="ws-card" data-ws="0" style="--ws-color:#81C784;">
                     <span class="ws-roman">I</span>
                     <h3 class="ws-title">Einer für alle,<br>alle für einen</h3>
                     <p class="ws-short">Das unbedingte Solidaritätsprinzip des Lebensbundes.</p>
                     <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
                 </div>
 
-                <div class="ws-card" data-ws="1" style="--ws-color:#8f3428;">
+                <div class="ws-card" data-ws="1" style="--ws-color:#64B5F6;">
                     <span class="ws-roman">II</span>
                     <h3 class="ws-title">Ehre</h3>
                     <p class="ws-short">Charakterliche Integrität, Aufrichtigkeit und Haltung.</p>
                     <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
                 </div>
 
-                <div class="ws-card" data-ws="2" style="--ws-color:#3498db;">
+                <div class="ws-card" data-ws="2" style="--ws-color:#BA68C8;">
                     <span class="ws-roman">III</span>
                     <h3 class="ws-title">Freiheit</h3>
                     <p class="ws-short">Verteidigung von Meinungsfreiheit und selbstbestimmtem Denken.</p>
                     <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
                 </div>
 
-                <div class="ws-card" data-ws="3" style="--ws-color:#3f465f;">
+                <div class="ws-card" data-ws="3" style="--ws-color:#FFB74D;">
                     <span class="ws-roman">IV</span>
                     <h3 class="ws-title">Recht</h3>
                     <p class="ws-short">Bekenntnis zu Demokratie, Rechtsstaatlichkeit und fairen Regeln.</p>
                     <div class="ws-more">Mehr erfahren <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></div>
                 </div>
 
-                <div class="ws-card" data-ws="4" style="--ws-color:#e67e22;">
+                <div class="ws-card" data-ws="4" style="--ws-color:#E57373;">
                     <span class="ws-roman">V</span>
                     <h3 class="ws-title">Brudersinn</h3>
                     <p class="ws-short">Das Fundament der generationenübergreifenden Gemeinschaft.</p>
@@ -2001,7 +2384,7 @@
             
             <h2 class="section-title">Regionale & selbstorganisierte Treffen<br>von Thüringern. <span class="highlight">Für die Gemeinschaft.</span></h2>
             <p class="section-subtitle">
-                Hier siehst du Eindrücke von Treffen, die Mitglieder ganz einfach selbst organisiert haben.
+                Hier siehst Du Eindrücke von Treffen, die Mitglieder ganz einfach selbst organisiert haben.
             </p>
 
             <div class="scatter-grid">
@@ -2021,8 +2404,10 @@
 
         
 
-        <div class="section-wrapper" >
-            <h2 class="section-title">So kannst du dabei sein</h2>
+
+
+        <div class="section-wrapper" id="steps-section">
+            <h2 class="section-title">So kannst Du dabei sein</h2>
             <p class="section-subtitle">Folge diesen einfachen Schritten</p>
 
             <div class="steps-grid">
@@ -2039,9 +2424,9 @@
                             </div>
                         </div>
                     </div>
-                    <h3 class="step-title">Bewirb dich</h3>
+                    <h3 class="step-title">Bewirb Dich</h3>
                     <p class="step-desc">
-                        Nimm Kontakt auf und sende uns deine Bewerbung. Wir freuen uns auf dich.
+                        Nimm Kontakt auf und sende uns Deine Bewerbung. Wir freuen uns auf Dich.
                     </p>
                 </div>
 
@@ -2060,7 +2445,7 @@
                     
                     <h3 class="step-title" style="margin-top: 15px;">Gespräch mit Tim</h3>
                     <p class="step-desc">
-                        Um das Commitment zu validieren und zu prüfen, ob du ins Netzwerk passt, ruft Tim jeden Bewerber persönlich an.
+                        Um das Commitment zu validieren und zu prüfen, ob Du ins Netzwerk passt, ruft Tim jeden Bewerber persönlich an.
                     </p>
                 </div>
 
@@ -2079,7 +2464,7 @@
                     </div>
                     <h3 class="step-title">Du bist Teil von Thuringia</h3>
                     <p class="step-desc">
-                        Nach einem erfolgreichen Bewerbungsgespräch bekommst du eine Einladung zu einer unserer Veranstaltungen.
+                        Nach einem erfolgreichen Bewerbungsgespräch bekommst Du eine Einladung zu einer unserer Veranstaltungen.
                     </p>
                 </div>
 
@@ -2089,10 +2474,10 @@
 <!-- Dein bestehendes Formular (nur die ID wurde hinzugefügt) -->
 <section class="application-section" id="mitglied">
     <div class="app-card">
-        <h2 class="app-title">150 Jahre Netzwerk<br><span class="app-highlight">Wo bist du?</span></h2>
+        <h2 class="app-title">150 Jahre Netzwerk<br><span class="app-highlight">Wo bist Du?</span></h2>
         <p class="app-desc">Werde Teil einer Gemeinschaft die Generationen überschreitet.</p>
         
-        <div class="form-header">Bewirb dich jetzt</div>
+        <div class="form-header">Bewirb Dich jetzt</div>
         
         <!-- ID hinzugefügt -->
         <form id="bewerbungsForm" action="https://formsubmit.co/h3rm4nn.kru3g3r@gmail.com" method="POST">
@@ -2116,7 +2501,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Nachricht*</label>
-                <textarea name="Nachricht" class="form-input" placeholder="Deine Nachricht an uns..." rows="4" required></textarea>
+                <textarea name="Nachricht" class="form-input" placeholder="Deine Nachricht an uns..." rows="4" style="resize: vertical;" required></textarea>
             </div>
 
             <div class="form-btn-wrapper">
@@ -2125,6 +2510,77 @@
         </form>
     </div>
 </section>
+
+        <div class="section-wrapper">
+            <h2 class="section-title">Sport &amp; Tradition – <span class="highlight">drei Leidenschaften</span></h2>
+            <p class="section-subtitle">
+                Ob auf der Planke, auf dem Wasser oder am Stand: Bei uns findest Du sportlichen Ausgleich mit Anspruch, Haltung und langer Geschichte.
+            </p>
+
+            <div class="activity-grid">
+
+                <!-- Schießen: verlinkt auf die ASG-Seite, Logo oben links = A.S.G.-Siegel -->
+                <a href="./asg/index.html" class="activity-card activity-green">
+                    <img src="images/schiessen.jpg" alt="Schießen">
+                    <div class="activity-overlay">
+                        <div class="activity-logo">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="100" cy="100" r="98" fill="#1c4530"/>
+                                <circle cx="100" cy="100" r="91" fill="none" stroke="#b08d46" stroke-width="1.5"/>
+                                <circle cx="100" cy="100" r="91" fill="none" stroke="#c9cfcf" stroke-width="3" stroke-dasharray="1.5 7"/>
+                                <circle cx="100" cy="100" r="80" fill="#f4eede"/>
+                                <circle cx="100" cy="100" r="30" fill="#1c4530"/>
+                                <circle cx="100" cy="100" r="24" fill="#f4eede"/>
+                                <circle cx="100" cy="100" r="17" fill="#1c4530"/>
+                                <circle cx="100" cy="100" r="10" fill="#f4eede"/>
+                                <circle cx="100" cy="100" r="4" fill="#b08d46"/>
+                                <g stroke="#1c4530" stroke-width="3" stroke-linecap="round">
+                                    <line x1="100" y1="42" x2="100" y2="58"/>
+                                    <line x1="100" y1="142" x2="100" y2="158"/>
+                                    <line x1="42" y1="100" x2="58" y2="100"/>
+                                    <line x1="142" y1="100" x2="158" y2="100"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <h3 class="activity-label">Schießen</h3>
+                        <span class="activity-link">Zur A.S.G. Berlin →</span>
+                    </div>
+                </a>
+
+                <!-- Fechten: öffnet ein Popup (kein Link), Logo oben links = Thuringia-Wappen -->
+                <a href="#" id="fechtenCard" class="activity-card activity-photo">
+                    <img src="images/Fechten.png" alt="Akademisches Fechten">
+                    <div class="activity-overlay">
+                        <div class="activity-logo activity-logo--crest">
+                            <img src="images/Wappen.png" alt="V.B.B! Thuringia">
+                        </div>
+                        <h3 class="activity-label">Akademisches Fechten</h3>
+                        <span class="activity-link">Mehr erfahren →</span>
+                    </div>
+                </a>
+
+                <!-- Rudern: verlinkt auf die Ruderverein-Seite, Logo oben links = RV Wanderer -->
+                <a href="./rudern/rudern.html" class="activity-card activity-blue">
+                    <img src="images/rudern.jpg" alt="Rudern">
+                    <div class="activity-overlay">
+                        <div class="activity-logo">
+                            <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="55" cy="55" r="52" fill="rgba(255,255,255,0.05)" stroke="#C9A227" stroke-width="4"/>
+                                <line x1="30" y1="30" x2="55" y2="68" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                                <ellipse cx="27" cy="26" rx="8" ry="5" fill="white" transform="rotate(-40 27 26)"/>
+                                <line x1="80" y1="30" x2="55" y2="68" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                                <ellipse cx="83" cy="26" rx="8" ry="5" fill="white" transform="rotate(40 83 26)"/>
+                                <path d="M22 75 Q35 68 45 75 Q55 82 65 75 Q75 68 88 75" stroke="#C9A227" stroke-width="4" fill="none" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3 class="activity-label">Rudern</h3>
+                        <span class="activity-link">Zum Ruderverein →</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
 <div class="section-wrapper">
             <h2 class="section-title">Unsere <span class="highlight">Liegenschaften</span></h2>
             <p class="section-subtitle">Zwei besondere Orte, die das Herz der Thuringia bilden – mitten in Berlin und direkt am Wasser.</p>
@@ -2180,8 +2636,8 @@
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
         </div>
-        <h3 class="modal-title">Danke für deine Bewerbung!</h3>
-        <p class="modal-text">Wir haben deine Nachricht erhalten und melden uns in Kürze bei dir.</p>
+        <h3 class="modal-title">Danke für Deine Bewerbung!</h3>
+        <p class="modal-text">Wir haben Deine Nachricht erhalten und melden uns in Kürze bei Dir.</p>
         <button class="btn-close-modal" id="closeModal">Verstanden</button>
     </div>
 </div>
@@ -2205,6 +2661,26 @@
     </div>
 </div>
 
+<div id="lightbox" class="lightbox-overlay">
+    <button id="lightboxClose" class="lightbox-close" title="Schließen">&times;</button>
+    <img id="lightboxImg" src="" alt="Vergrößerte Ansicht">
+</div>
+
+<div id="fechtenModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px; text-align:left; position:relative;">
+        <button id="closeFechtenModal" class="ev-modal-close-btn" title="Schließen">
+            <i data-lucide="x" style="width:18px;height:18px;"></i>
+        </button>
+        <div class="ws-modal-tag" style="color:#8f3428;">Akademisches Fechten</div>
+        <h3 class="modal-title" style="text-align:left; margin-bottom:16px;">Eine Schule des Charakters</h3>
+        <div class="modal-text" style="text-align:left; margin-bottom:0;">
+            <p style="margin:0 0 14px 0;">Das akademische Fechten ist für uns weit mehr als ein Sport – es ist eine Schule des Charakters. Wer zur Mensur geht, lernt, Anspannung auszuhalten, die eigene Angst zu beherrschen und ruhig sowie diszipliniert zu bleiben, wenn es darauf ankommt.</p>
+            <p style="margin:0 0 14px 0;">Es fördert Mut, Selbstbeherrschung und Stehvermögen – Eigenschaften, die weit über das Fechten hinaus im Studium und im späteren Berufsleben tragen. Zugleich ist es Ausdruck von Vertrauen: Man verlässt sich vollständig auf seine Bundesbrüder, die einen vorbereiten und begleiten.</p>
+            <p style="margin:0;">So verbindet das akademische Fechten jahrhundertealte Tradition mit dem, was uns bis heute prägt: Haltung, Verlässlichkeit und innere Stärke.</p>
+        </div>
+    </div>
+</div>
+
 <div id="wsModal" class="modal-overlay">
     <div class="modal-content ws-modal-content" style="position:relative;">
         <button id="closeWsModal" class="ev-modal-close-btn" title="Schließen">
@@ -2218,7 +2694,7 @@
 
 <section class="faq-section" id="faq">  
     <h2 class="faq-title">Frequently Asked Questions</h2>  
-    <p class="faq-subtitle">Wenn du noch Fragen hast, schreib uns gerne eine E-Mail.</p>  
+    <p class="faq-subtitle">Wenn Du noch Fragen hast, schreib uns gerne eine E-Mail.</p>  
 
     <div class="faq-list">  
         <!-- FAQ 1 -->
@@ -2254,7 +2730,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Vorsprung durch Struktur: Ein erfolgreiches Studium verlangt mehr als nur den Besuch von Vorlesungen – es erfordert Struktur, Disziplin und das richtige Umfeld. Unsere Erfolgsroutine setzt genau hier an: Wir lernen gemeinsam auf dem Verbindungshaus und unterstützen uns akademisch auf Augenhöhe. Durch den stetigen Austausch mit höheren Semestern profitierst du von echtem Mentoring. So erhältst du nicht nur erprobtes Wissen für deine Prüfungen, sondern auch entscheidende Impulse für deinen späteren Berufseinstieg.
+                    Vorsprung durch Struktur: Ein erfolgreiches Studium verlangt mehr als nur den Besuch von Vorlesungen – es erfordert Struktur, Disziplin und das richtige Umfeld. Unsere Erfolgsroutine setzt genau hier an: Wir lernen gemeinsam auf dem Verbindungshaus und unterstützen uns akademisch auf Augenhöhe. Durch den stetigen Austausch mit höheren Semestern profitierst Du von echtem Mentoring. So erhältst Du nicht nur erprobtes Wissen für Deine Prüfungen, sondern auch entscheidende Impulse für Deinen späteren Berufseinstieg.
                 </div>  
             </div>  
         </div>  
@@ -2267,7 +2743,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                   Deine Vorteile auf einen Blick: Wer in Berlin studiert, kennt den harten Wohnungsmarkt. Genau hier greift unser Netzwerk: Wir lassen dich bei der Wohnungssuche nicht allein und vermitteln gezielt Kontakte zu Wohnraum. Doch Thuringia bietet noch mehr: Als Teil unseres Lebensbundes profitierst du von exzellenten akademischen Kontakten für Praktika und Karriereschritte. Du entwickelst dich durch die Übernahme von Ämtern persönlich weiter und erlebst auf unseren gemeinsamen Veranstaltungen echte, lebenslange Freundschaften.
+                   Deine Vorteile auf einen Blick: Wer in Berlin studiert, kennt den harten Wohnungsmarkt. Genau hier greift unser Netzwerk: Wir lassen Dich bei der Wohnungssuche nicht allein und vermitteln gezielt Kontakte zu Wohnraum. Doch Thuringia bietet noch mehr: Als Teil unseres Lebensbundes profitierst Du von exzellenten akademischen Kontakten für Praktika und Karriereschritte. Du entwickelst Dich durch die Übernahme von Ämtern persönlich weiter und erlebst auf unseren gemeinsamen Veranstaltungen echte, lebenslange Freundschaften.
                 </div>  
             </div>  
         </div>  
@@ -2280,7 +2756,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Der einfachste Weg: Schreib uns eine Nachricht oder komm ganz unverbindlich auf unserem Haus vorbei. Lerne uns bei einem gemeinsamen Abend persönlich kennen! Um die Kosten musst du dir dabei keine Sorgen machen: Da unser Bund finanziell stark von unseren berufstätigen Mitgliedern (den „Alten Herren“) getragen wird, ist der Semesterbeitrag für aktive Studenten sehr gering und schont dein Budget.
+                    Der einfachste Weg: Schreib uns eine Nachricht oder komm ganz unverbindlich auf unserem Haus vorbei. Lerne uns bei einem gemeinsamen Abend persönlich kennen! Um die Kosten musst Du Dir dabei keine Sorgen machen: Da unser Bund finanziell stark von unseren berufstätigen Mitgliedern (den „Alten Herren“) getragen wird, ist der Semesterbeitrag für aktive Studenten sehr gering und schont Dein Budget.
                 </div>  
             </div>  
         </div>  
@@ -2306,7 +2782,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                    Ja, absolut! Die Entscheidung für einen Lebensbund trifft man nicht über Nacht. Genau dafür gibt es bei uns die „Fuxenzeit“. In deinen ersten Semestern bist du als sogenannter Fux zunächst auf Probe dabei. Dieses gegenseitige Kennenlernen ist entscheidend für beide Seiten. Du hast die Ruhe, unsere Gemeinschaft und Werte aus erster Hand zu erleben. Erst am Ende dieser Zeit fällt die gemeinsame Entscheidung: Wenn du Teil des Lebensbundes werden möchtest und der Bund dir das Vertrauen ausspricht, wirst du als Vollmitglied (Bursch) aufgenommen. 
+                    Ja, absolut! Die Entscheidung für einen Lebensbund trifft man nicht über Nacht. Genau dafür gibt es bei uns die „Fuxenzeit“. In Deinen ersten Semestern bist Du als sogenannter Fux zunächst auf Probe dabei. Dieses gegenseitige Kennenlernen ist entscheidend für beide Seiten. Du hast die Ruhe, unsere Gemeinschaft und Werte aus erster Hand zu erleben. Erst am Ende dieser Zeit fällt die gemeinsame Entscheidung: Wenn Du Teil des Lebensbundes werden möchtest und der Bund Dir das Vertrauen ausspricht, wirst Du als Vollmitglied (Bursch) aufgenommen. 
                 </div>  
             </div>  
         </div>  
@@ -2319,7 +2795,7 @@
             </div>  
             <div class="faq-body">  
                 <div class="faq-content">  
-                   Wir sind mehr als nur ein Netzwerk auf Zeit! Wo andere Netzwerke nach dem Studium zerfallen, fängt unsere Gemeinschaft erst richtig an. Der entscheidende Unterschied ist unser Lebensbund: eine unverbrüchliche Freundschaft, die weit über die Studienzeit hinausgeht. Bei Thuringia begegnen sich junge Erstsemester erfahrene Akademikern aus allen Lebensphasen auf Augenhöhe. Eine derartige generationenübergreifende und fast familiäre Verbundenheit findest du in keinem Business-Club der Welt.
+                   Wir sind mehr als nur ein Netzwerk auf Zeit! Wo andere Netzwerke nach dem Studium zerfallen, fängt unsere Gemeinschaft erst richtig an. Der entscheidende Unterschied ist unser Lebensbund: eine unverbrüchliche Freundschaft, die weit über die Studienzeit hinausgeht. Bei Thuringia begegnen sich junge Erstsemester erfahrene Akademikern aus allen Lebensphasen auf Augenhöhe. Eine derartige generationenübergreifende und fast familiäre Verbundenheit findest Du in keinem Business-Club der Welt.
                 </div>  
             </div>  
         </div>  
@@ -2340,7 +2816,7 @@
     <script>
         // --- KALENDER AUS events.json LADEN UND RENDERN ---
         const COLOR_MAP = {
-            purple: '#9b59b6', orange: '#e67e22', green: '#2ecc71', blue: '#3498db'
+            purple: '#BA68C8', orange: '#FFB74D', green: '#81C784', blue: '#64B5F6'
         };
 
         function formatDateDE(dateStr) {
@@ -2589,27 +3065,27 @@
         const WS_DATA = [
             {
                 title: 'Einer für alle, alle für einen',
-                color: '#72d124',
+                color: '#81C784',
                 body: `Dieser Grundsatz verkörpert das unbedingte Solidaritätsprinzip des Lebensbundes. Er bedeutet, dass jedes Mitglied verlässlich und bedingungslos für die Gemeinschaft einsteht. Im Gegenzug bietet die Verbindung einen starken Rückhalt, der den Einzelnen in akademischen, beruflichen und privaten Herausforderungen stützt und trägt.`
             },
             {
                 title: 'Ehre',
-                color: '#8f3428',
+                color: '#64B5F6',
                 body: `Im burschenschaftlichen Sinne bedeutet Ehre charakterliche Integrität, Aufrichtigkeit und Haltung. Es geht darum, für die eigenen Überzeugungen mutig einzustehen, stets zu seinem Wort zu stehen und Konflikte mit offenem Visier auszutragen. Diese persönliche Standhaftigkeit und das Einstehen für das eigene Handeln finden historisch und teils bis heute in der studentischen Mensur ihren symbolischen Ausdruck.`
             },
             {
                 title: 'Freiheit',
-                color: '#3498db',
+                color: '#BA68C8',
                 body: `Die Wurzeln dieses Wertes reichen zurück zur Urburschenschaft von 1815 und dem Wartburgfest, wo Studenten gegen Zensur und absolutistische Kleinstaaterei aufbegehrten. Heute übersetzt sich dieser burschenschaftliche Freiheitsbegriff in die unbedingte Verteidigung von Meinungsfreiheit, akademischer Wissenschaftsfreiheit und dem Recht auf selbstbestimmtes, kritisches Denken abseits gesellschaftlicher Konventionen.`
             },
             {
                 title: 'Recht',
-                color: '#3f465f',
+                color: '#FFB74D',
                 body: `Der Einsatz für das Recht ist untrennbar mit der historischen Forderung der frühen Burschenschafter nach einer demokratischen Verfassung und Rechtsstaatlichkeit verbunden, die 1848 in der Paulskirche ihren Höhepunkt fand. Innerhalb der Gemeinschaft bedeutet dies ein Bekenntnis zu demokratischen Spielregeln, basisdemokratischer Mitbestimmung in den Konventen und einem Zusammenleben, das auf gemeinsamen Werten und fairen Regeln basiert.`
             },
             {
                 title: 'Brudersinn',
-                color: '#e67e22',
+                color: '#E57373',
                 body: `Der Brudersinn ist das Fundament der generationenübergreifenden Gemeinschaft und des Lebensbundprinzips. Er überwindet Herkunft, Stand und Fakultätsgrenzen, um eine völlig egalitäre Ebene unter den Bundesbrüdern zu schaffen. Dieser Wert verpflichtet zu lebenslanger Freundschaft, gegenseitigem Respekt und einem stetigen Wissenstransfer vom jungen Studenten bis zum Alter Herrn.`
             }
         ];
@@ -2632,39 +3108,85 @@
         });
 
         document.getElementById('closeWsModal').addEventListener('click', () => wsModal.classList.remove('show'));
-        wsModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+        wsModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
 
-        // --- SCRIPT TO GENERATE IMAGE GRID ---
+        // --- Lightbox für die Community-Bilder ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        function closeLightbox() { lightbox.classList.remove('show'); }
+        document.querySelectorAll('.scatter-img').forEach(img => {
+            img.addEventListener('click', function() {
+                lightboxImg.src = this.src;
+                lightboxImg.alt = this.alt || 'Vergrößerte Ansicht';
+                lightbox.classList.add('show');
+            });
+        });
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+
+        // --- Fechten-Popup (erklärt das akademische Fechten) ---
+        const fechtenCard = document.getElementById('fechtenCard');
+        const fechtenModal = document.getElementById('fechtenModal');
+        function closeFechten() { fechtenModal.classList.remove('show'); }
+        if (fechtenCard && fechtenModal) {
+            fechtenCard.addEventListener('click', function(e) {
+                e.preventDefault();
+                fechtenModal.classList.add('show');
+                lucide.createIcons();
+            });
+            document.getElementById('closeFechtenModal').addEventListener('click', closeFechten);
+            fechtenModal.addEventListener('click', function(e) { if (e.target === this) closeFechten(); });
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFechten(); });
+        }
+
+        // --- Mobiles Navigations-Menü (Hamburger) ---
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        if (navToggle && navLinks) {
+            const setNav = (open) => {
+                navLinks.classList.toggle('open', open);
+                navToggle.classList.toggle('open', open);
+                navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                navToggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+            };
+            navToggle.addEventListener('click', () => setNav(!navLinks.classList.contains('open')));
+            navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNav(false)));
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setNav(false); });
+        }
+
+        // --- SCRIPT TO GENERATE IMAGE GRID (Hintergrund) ---
         const wrapper = document.querySelector('.background-wrapper');
-        const columnsCount = 5; 
-        const imagesPerColumn = 8; 
+        // Mobile: weniger Spalten & Bilder -> deutlich weniger Ladelast (nur 2 Spalten sichtbar)
+        const isMobileBg = window.matchMedia('(max-width: 768px)').matches;
+        const columnsCount = isMobileBg ? 2 : 5;
+        const imagesPerColumn = isMobileBg ? 5 : 8;
+        const BG_DIR = 'images/activity-sm'; // vorab verkleinerte Bilder (~1,3 MB statt >100 MB)
+        const BG_STRIDE = 5; // fester Versatz, damit die Spalten unterschiedliche Bilder zeigen
 
         function createColumn(colIndex) {
             const col = document.createElement('div');
             col.className = `scroll-column col-${colIndex + 1}`;
-            
+
             const inner = document.createElement('div');
             inner.className = 'scroll-column-inner';
-            
-            // Set 1
-            for(let i = 1; i <= imagesPerColumn; i++) {
-                const img = document.createElement('img');
-                // Using random nature images for nice placeholder effect
-                img.src = `images/activity/${i+colIndex*columnsCount}.jpg`; 
-                inner.appendChild(img);
-            }
-            // Set 2 (Clone for loop for seamless scroll)
-            for(let i = 1; i <= imagesPerColumn; i++) {
-                const img = document.createElement('img');
-                img.src = `images/activity/${i+colIndex*columnsCount}.jpg`;
-                inner.appendChild(img);
+
+            // Zwei identische Sätze = nahtlose Schleife
+            for (let set = 0; set < 2; set++) {
+                for (let i = 1; i <= imagesPerColumn; i++) {
+                    const img = document.createElement('img');
+                    img.src = `${BG_DIR}/${i + colIndex * BG_STRIDE}.jpg`;
+                    img.decoding = 'async';
+                    img.alt = '';
+                    inner.appendChild(img);
+                }
             }
 
             col.appendChild(inner);
             wrapper.appendChild(col);
         }
 
-        for(let c = 0; c < columnsCount; c++) {
+        for (let c = 0; c < columnsCount; c++) {
             createColumn(c);
         }
 

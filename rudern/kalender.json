@@ -1,0 +1,92 @@
+[
+    {
+        "id": "e001",
+        "title": "Morgendliche Vereinsausfahrt",
+        "date": "2025-06-03",
+        "type": "ausfahrt",
+        "time": "07:00",
+        "ort": "Bootshaus Pichelssee",
+        "desc": "Gemeinsame Morgenausfahrt für alle Leistungsstufen."
+    },
+    {
+        "id": "e002",
+        "title": "Herbst-Regatta Pichelssee",
+        "date": "2025-06-08",
+        "type": "regatta",
+        "time": "09:00",
+        "ort": "Pichelssee \/ Unterhavel",
+        "desc": "Vereinsinterne Herbstregatta. Anmeldung bis eine Woche vorher."
+    },
+    {
+        "id": "e003",
+        "title": "Technik-Training Einer",
+        "date": "2025-06-11",
+        "type": "training",
+        "time": "17:00",
+        "ort": "Bootshaus Pichelssee",
+        "desc": "Training für Einzel-Ruderer mit Trainer Klaus Hoffmann."
+    },
+    {
+        "id": "e004",
+        "title": "Monatlicher Vereinsabend",
+        "date": "2025-06-15",
+        "type": "vereinsabend",
+        "time": "19:00",
+        "ort": "Vereinshaus",
+        "desc": "Aktuelles aus dem Verein, Planung und Gemeinschaft."
+    },
+    {
+        "id": "e005",
+        "title": "Langstreckenfahrt Unterhavel",
+        "date": "2025-06-19",
+        "type": "ausfahrt",
+        "time": "08:00",
+        "ort": "Pichelssee → Wannsee",
+        "desc": "Mehrstündige Langstreckenausfahrt ca. 28 km. Erfahrene Ruderer."
+    },
+    {
+        "id": "e006",
+        "title": "Jugend-Trainingstag",
+        "date": "2025-06-22",
+        "type": "training",
+        "time": "10:00",
+        "ort": "Bootshaus Pichelssee",
+        "desc": "Trainingstag für unsere Jugendgruppe (14–18 Jahre)."
+    },
+    {
+        "id": "e007",
+        "title": "Ehrungsabend 2025",
+        "date": "2025-06-28",
+        "type": "vereinsabend",
+        "time": "18:00",
+        "ort": "Vereinshaus",
+        "desc": "Jahresehrung der besten Ruderkameraden und Saisonabschluss."
+    },
+    {
+        "id": "e1781555870250",
+        "title": "asdqsad1",
+        "date": "2026-06-17",
+        "type": "ausfahrt",
+        "time": "",
+        "ort": "",
+        "desc": ""
+    },
+    {
+        "id": "e1781555348126",
+        "title": "Testeintrag",
+        "date": "2026-06-20",
+        "type": "ausfahrt",
+        "time": "10:00",
+        "ort": "Berlin",
+        "desc": "Test"
+    },
+    {
+        "id": "e1781555663412",
+        "title": "Test3",
+        "date": "2026-06-21",
+        "type": "ausfahrt",
+        "time": "10:00",
+        "ort": "STASD",
+        "desc": "ASDASD"
+    }
+]
