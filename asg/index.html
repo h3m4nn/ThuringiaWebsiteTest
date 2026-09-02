@@ -249,7 +249,7 @@
         .step h4 { font-size: 1.55rem; color: var(--ink); margin-bottom: 10px; }
         .step p { color: var(--ink-soft); font-size: 1.08rem; max-width: 300px; margin: 0 auto; }
 
-        /* ============================ Semesterprogramm (übernommen) ============================ */
+        /* ============================ Jahresplan (übernommen) ============================ */
         .calendar-card {
             background: var(--paper); border: 1px solid var(--green); padding: 22px;
             width: 100%; overflow-x: auto; margin-top: 50px;
@@ -331,6 +331,26 @@
         .form-input:focus { outline: none; border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(28,69,48,0.08); }
         textarea.form-input { resize: vertical; }
         .form-btn-wrapper { margin-top: 30px; }
+        .form-check {
+            display: flex; align-items: flex-start; gap: 13px; text-align: left;
+            margin: 24px 0 4px; padding: 16px 18px;
+            border: 1px solid var(--line); border-radius: 2px; background: var(--paper-2);
+            cursor: pointer; transition: border-color 0.2s, background 0.2s;
+        }
+        .form-check:hover { border-color: var(--green); background: #fff; }
+        .form-check input {
+            appearance: none; -webkit-appearance: none;
+            flex: 0 0 auto; width: 20px; height: 20px; margin-top: 3px; position: relative;
+            border: 1px solid var(--green); border-radius: 2px; background: var(--paper);
+            cursor: pointer; transition: background 0.15s;
+        }
+        .form-check input:checked { background: var(--green); }
+        .form-check input:checked::after {
+            content: ''; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px;
+            border: solid var(--paper); border-width: 0 2px 2px 0; transform: rotate(45deg);
+        }
+        .form-check input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+        .form-check span { font-size: 1.02rem; color: var(--ink); line-height: 1.45; }
 
         /* ============================ FAQ (übernommen) ============================ */
         .faq-list { margin-top: 46px; border-top: 1px solid var(--green); }
@@ -450,7 +470,7 @@
         <div class="nav-links">
             <a href="#ueber">Über uns</a>
             <a href="#werte">Leitwerte</a>
-            <a href="#programm">Semesterprogramm</a>
+            <a href="#programm">Jahresplan</a>
             <a href="#faq">Fragen</a>
             <a href="#mitglied" class="nav-cta"><button class="btn btn-primary" style="padding:10px 22px;">Mitglied werden</button></a>
         </div>
@@ -462,8 +482,8 @@
             <svg class="seal"><use href="#asg-seal"/></svg>
             <h1>Akademische Schützen&shy;gesellschaft zu Berlin</h1>
             <div class="subline">Gegründet A.D. 2025 &nbsp;·&nbsp; zu Berlin</div>
-            <p class="motto">„Klarer Blick. Ruhige Hand. Fester Bund."</p>
-            <p class="founded">Studentische Tradition und Schießsport — offen für alle Studenten.</p>
+            <p class="motto">„Üb’ Aug’ und Hand fürs Vaterland."</p>
+            <p class="founded">Studentische Tradition und Schießsport — offen für Studenten und Akademiker.</p>
             <div class="hero-actions">
                 <a href="#mitglied" class="btn btn-primary">Mitglied werden</a>
                 <a href="#ueber" class="btn btn-ghost">Mehr erfahren</a>
@@ -503,24 +523,24 @@
             <div class="pillars">
                 <div class="pillar">
                     <div class="pillar-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22.5" y2="12"/></svg>
+                        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 19v-1.5a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4V19"/><path d="M15 13.5h.5a4 4 0 0 1 4 4V19"/></svg>
                     </div>
-                    <h3>Schießsport</h3>
-                    <p>Ob Luftgewehr, Kleinkaliber oder Pistole — bei uns lernst Du den Schießsport von Grund auf, unter fachkundiger Aufsicht. Ausrüstung wird gestellt, Vorerfahrung braucht es keine.</p>
+                    <h3>Gemeinschaft</h3>
+                    <p>Über alle Fakultäten und Semester hinweg: eine offene, verlässliche Gemeinschaft. Man kommt als Gast — und bleibt als Freund. Fest im Bund, ein Leben lang.</p>
                 </div>
                 <div class="pillar">
                     <div class="pillar-icon">
                         <svg viewBox="0 0 24 24"><path d="M5 10h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-6z"/><path d="M16 11h2.5a2.5 2.5 0 0 1 0 5H16"/><path d="M7 10V6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v4"/><line x1="9" y1="2.5" x2="9" y2="4.5"/><line x1="12" y1="2.5" x2="12" y2="4.5"/></svg>
                     </div>
                     <h3>Tradition</h3>
-                    <p>Studentisches Brauchtum lebt vom Miteinander: Kneipen, Kommerse und der Stammtisch mit Liedgut und gutem Bier. Gepflegt und mit Haltung — aber nie verstaubt.</p>
+                    <p>Studentisches Brauchtum und Schützenbrauch — gepflegt und mit klaren Werten: Kneipen, Kommerse und der Stammtisch mit Liedgut und gutem Bier. Viele unserer Mitglieder sind zudem Jäger und Sportschützen. Gelebte Tradition, nie verstaubt.</p>
                 </div>
                 <div class="pillar">
                     <div class="pillar-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 19v-1.5a4 4 0 0 1 4-4h3a4 4 0 0 1 4 4V19"/><path d="M15 13.5h.5a4 4 0 0 1 4 4V19"/></svg>
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22.5" y2="12"/></svg>
                     </div>
-                    <h3>Gemeinschaft</h3>
-                    <p>Über alle Fakultäten und Semester hinweg: eine offene, verlässliche Gemeinschaft. Man kommt als Gast — und bleibt als Freund. Fest im Bund, ein Leben lang.</p>
+                    <h3>Schießsport</h3>
+                    <p>Luftpistole und Luftgewehr, die klassischen olympischen Disziplinen, sind bei uns die Grundlage fürs Erleben des Schießsports. Du lernst sie von Grund auf unter fachkundiger Aufsicht — später sind weitere Disziplinen möglich. Ausrüstung wird gestellt, Vorerfahrung braucht es keine.</p>
                 </div>
             </div>
         </div>
@@ -530,7 +550,7 @@
     <section class="band" id="werte">
         <div class="container-narrow">
             <p class="eyebrow">Unser Wahlspruch</p>
-            <h2 class="sec-title" style="color:var(--green);">Klarer Blick.<br>Ruhige Hand. Fester Bund.</h2>
+            <h2 class="sec-title" style="color:var(--green);">Üb’ Aug’ und Hand<br>fürs Vaterland.</h2>
             <div class="ornament"><span class="diamond"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><span class="diamond"></span></div>
             <p class="sec-intro" style="margin-top:24px;">Fünf Werte tragen unseren Bund.</p>
 
@@ -539,36 +559,36 @@
                     <div class="value-row">
                         <div class="value-roman">I</div>
                         <div class="value-body">
-                            <h4>Präzision</h4>
-                            <p>Ein ruhiger Puls, ein klarer Blick, volle Konzentration im entscheidenden Moment. Was auf dem Stand über Ringe entscheidet, zahlt sich auch im Studium und im Leben aus: die Fähigkeit, sich zu fokussieren und im richtigen Augenblick Ruhe zu bewahren.</p>
+                            <h4>Akademische Gemeinschaft</h4>
+                            <p>Wir sind ein <strong>Lebensbund</strong>: Die Verbindung endet nicht mit dem Examen, sondern trägt über alle Fakultäten und Generationen hinweg. Man unterstützt einander im Studium, im Beruf und weit darüber hinaus — vom ersten Schuss bis zum letzten Lied des Abends.</p>
                         </div>
                     </div>
                     <div class="value-row">
                         <div class="value-roman">II</div>
                         <div class="value-body">
-                            <h4>Gemeinschaft</h4>
-                            <p>Vom ersten Schuss bis zum letzten Lied des Abends zählt der Zusammenhalt — über alle Fakultäten und Generationen hinweg. Man unterstützt einander beim Training, im Studium und weit darüber hinaus.</p>
+                            <h4>Demokratie und akademische Freiheit</h4>
+                            <p>Wir treten für die freiheitliche Demokratie ein und ganz besonders für die akademischen Freiheitsrechte: Freiheit von Forschung, Lehre und Meinung. Wer bei uns mitmacht, steht auf diesem Boden.</p>
                         </div>
                     </div>
                     <div class="value-row">
                         <div class="value-roman">III</div>
                         <div class="value-body">
-                            <h4>Tradition</h4>
-                            <p>Wir vereinen studentisches Brauchtum und Schützenbrauch mit ihren Ritualen und ihrem Liedgut. Diese Traditionen pflegen wir mit Respekt — sie geben uns Halt und Identität, ohne uns einzuengen.</p>
+                            <h4>Offenheit</h4>
+                            <p>Die A.S.G. steht Männern und Frauen gleichermaßen offen, unabhängig von Nationalität, Herkunft, Religion oder Weltanschauung. Bei uns entscheiden Charakter und die Freude an der gemeinsamen Sache — sonst nichts.</p>
                         </div>
                     </div>
                     <div class="value-row">
                         <div class="value-roman">IV</div>
                         <div class="value-body">
-                            <h4>Fairness</h4>
-                            <p>Sportliche Ehrlichkeit ist für uns Haltung, nicht bloß Regel. Respekt vor Mitstreitern und Gegnern und ein aufrichtiger Umgang prägen uns auf dem Stand wie im Vereinsleben. Wer verliert, gratuliert; wer gewinnt, bleibt bescheiden.</p>
+                            <h4>Sportsgeist</h4>
+                            <p>Ein ruhiger Puls, ein klarer Blick, volle Konzentration im entscheidenden Moment. Wir messen uns gern, treiben einander an und gehen den Weg der stetigen Verbesserung — auf dem Stand wie im Studium.</p>
                         </div>
                     </div>
                     <div class="value-row">
                         <div class="value-roman">V</div>
                         <div class="value-body">
-                            <h4>Offenheit</h4>
-                            <p>Die A.S.G. steht Studenten aus allen Fakultäten offen. Bei uns entscheidet der Charakter und die Freude an der gemeinsamen Sache. Wer sich einbringt und zur Gemeinschaft passt, ist herzlich willkommen.</p>
+                            <h4>Fairness</h4>
+                            <p>Sportliche Ehrlichkeit ist für uns Haltung, nicht bloß Regel. Respekt vor Mitstreitern und Gegnern und ein aufrichtiger Umgang prägen uns auf dem Stand wie im Vereinsleben. Wer verliert, gratuliert; wer gewinnt, bleibt bescheiden.</p>
                         </div>
                     </div>
                 </div>
@@ -576,11 +596,11 @@
         </div>
     </section>
 
-    <!-- ============================ SEMESTERPROGRAMM ============================ -->
+    <!-- ============================ JAHRESPLAN ============================ -->
     <section class="band" id="programm" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
         <div class="container">
             <p class="eyebrow">Was ansteht</p>
-            <h2 class="sec-title">Semesterprogramm</h2>
+            <h2 class="sec-title">Jahresplan</h2>
             <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
             <p class="sec-intro" style="margin-top:20px;">Schießabende, Wettkämpfe, Kneipen und Stammtische — die richtige Mischung aus sportlichem Anspruch und studentischer Geselligkeit.</p>
 
@@ -634,7 +654,7 @@
                 <div class="step">
                     <div class="numeral">I</div>
                     <h4>Melde Dich</h4>
-                    <p>Schreib uns über das Formular unten — oder komm einfach zu einem Termin aus dem Semesterprogramm vorbei.</p>
+                    <p>Schreib uns über das Formular unten — oder komm einfach zu einem Termin aus dem <a href="#programm">Jahresplan</a> vorbei.</p>
                 </div>
                 <div class="step">
                     <div class="numeral">II</div>
@@ -686,6 +706,19 @@
                         <label class="form-label">Nachricht*</label>
                         <textarea name="Nachricht" class="form-input" placeholder="Deine Nachricht an uns..." rows="4" required></textarea>
                     </div>
+                    <label class="form-check">
+                        <input type="checkbox" name="Schnupperschiessen" value="Ja — bitte zum Schnupperschießen einladen">
+                        <span>Ja, ich möchte zum Schnupperschießen eingeladen werden.</span>
+                    </label>
+
+                    <!-- TODO — automatisierte Empfangsbestätigung:
+                         Der Absender soll unmittelbar nach dem Abschicken eine E-Mail
+                         bekommen ("Wir haben Deine Anfrage erhalten und melden uns
+                         schnellstmöglich bei Dir"). Aktuell passiert das NICHT — es
+                         erscheint lediglich das Erfolgs-Modal auf der Seite, an den
+                         Absender geht keine Mail raus.
+                         Implementation folgt. -->
+
                     <div class="form-btn-wrapper">
                         <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Absenden</button>
                     </div>
@@ -698,7 +731,7 @@
     <section class="band">
         <div class="container">
             <p class="eyebrow">Wo Du uns findest</p>
-            <h2 class="sec-title">Unser Schießstand</h2>
+            <h2 class="sec-title">Unsere Sportstätte</h2>
             <div class="ornament"><span class="diamond"></span><span class="diamond"></span></div>
 
             <div class="location-card">
@@ -706,7 +739,7 @@
                     <iframe src="https://maps.google.com/maps?q=Oderstra%C3%9Fe%2018%2C%2012051%20Berlin&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
                 <div class="location-info">
-                    <div class="location-tag">Schießstand · zu Gast</div>
+                    <div class="location-tag">Sportstätte · zu Gast bei der BSG Berlin</div>
                     <div class="location-name">BSG Berlin</div>
                     <div class="location-address">
                         <i data-lucide="map-pin" style="width:16px;height:16px;"></i>
@@ -729,27 +762,27 @@
             <div class="faq-list">
                 <div class="faq-item">
                     <div class="faq-header"><div class="faq-question">Was bedeutet „A.S.G. zu Berlin"?</div><div class="faq-toggle"></div></div>
-                    <div class="faq-body"><div class="faq-content">A.S.G. steht für Akademische Schützengesellschaft zu Berlin. Wir sind eine 2025 gegründete studentische Gemeinschaft, die den Schießsport mit studentischer Tradition verbindet — Kneipen, Kommerse und Stammtische inklusive. Wir stehen allen Studenten Berlins offen.</div></div>
+                    <div class="faq-body"><div class="faq-content">A.S.G. steht für Akademische Schützengesellschaft zu Berlin. Wir sind eine 2025 gegründete studentische Gemeinschaft, die den Schießsport mit studentischer Tradition verbindet — Kneipen, Kommerse und Stammtische inklusive.</div></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-header"><div class="faq-question">Für wen ist die A.S.G. geeignet?</div><div class="faq-toggle"></div></div>
-                    <div class="faq-body"><div class="faq-content">Für Studenten aller Berliner Hochschulen und Fakultäten — ganz ohne schießsportliche Vorerfahrung. Wichtig ist uns nur die Freude an Präzision, Tradition und Gemeinschaft.</div></div>
+                    <div class="faq-body"><div class="faq-content">Für Studenten aller Berliner Hochschulen und Fakultäten, für fertige Akademiker und für alle, die dem akademischen Leben verbunden sind. Schießsportliche Vorerfahrung braucht es nicht — wichtig sind uns die Freude an Präzision, gepflegter Tradition und aufrichtiger Gemeinschaft.</div></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-header"><div class="faq-question">Brauche ich Erfahrung oder einen Waffenschein?</div><div class="faq-toggle"></div></div>
-                    <div class="faq-body"><div class="faq-content">Nein. Das Schießen findet unter fachkundiger Aufsicht auf dem Stand der BSG Berlin statt — dafür brauchst Du weder Vorerfahrung noch eine Waffenbesitzkarte. Die Ausrüstung wird gestellt, und wir bringen Dir Sicherheit und Technik Schritt für Schritt bei.</div></div>
+                    <div class="faq-header"><div class="faq-question">Brauche ich Erfahrung oder eine Waffenbesitzkarte?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Nein. Das Schießen findet unter fachkundiger Aufsicht auf dem Stand der BSG Berlin statt — dafür brauchst Du weder Vorerfahrung noch eine eigene Waffenbesitzkarte. Sicherheit und Technik bringen wir Dir Schritt für Schritt bei.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-header"><div class="faq-question">Brauche ich Sportkleidung oder eigene Sportgeräte?</div><div class="faq-toggle"></div></div>
+                    <div class="faq-body"><div class="faq-content">Nein. Die Sportgeräte werden Dir anfangs gestellt, und besondere Sportkleidung brauchst Du nicht — komm einfach so, wie Du bist.</div></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-header"><div class="faq-question">Muss ich schießen, oder geht es auch um Geselligkeit?</div><div class="faq-toggle"></div></div>
                     <div class="faq-body"><div class="faq-content">Beides gehört bei uns zusammen. Der Schießsport ist unser Kern — aber genauso wichtig sind Kneipe, Kommers und Stammtisch. Viele kommen wegen des einen und bleiben wegen des anderen.</div></div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-header"><div class="faq-question">Können auch Frauen mitmachen?</div><div class="faq-toggle"></div></div>
-                    <div class="faq-body"><div class="faq-content">Ja, selbstverständlich. Die A.S.G. zu Berlin steht Studentinnen ebenso offen wie Studenten — wer Freude am Schießsport und an studentischer Tradition hat, ist willkommen.</div></div>
-                </div>
-                <div class="faq-item">
                     <div class="faq-header"><div class="faq-question">Was kostet die Mitgliedschaft?</div><div class="faq-toggle"></div></div>
-                    <div class="faq-body"><div class="faq-content">Als junge, studentische Gemeinschaft halten wir die Beiträge bewusst gering. Die genauen Konditionen (Semesterbeitrag, Standmiete, Munition) besprechen wir am besten persönlich — melde Dich einfach, dann klären wir alles in Ruhe. <em>(Konkrete Beträge hier eintragen.)</em></div></div>
+                    <div class="faq-body"><div class="faq-content">Es gibt einen bewusst günstigen Mitgliedsbeitrag. Seine Höhe hängt davon ab, ob Du bereits Teil einer Studentenverbindung bist — die genauen Konditionen besprechen wir gern persönlich. <em>(Konkrete Beträge hier eintragen.)</em></div></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-header"><div class="faq-question">Kann ich unverbindlich reinschnuppern?</div><div class="faq-toggle"></div></div>
@@ -757,8 +790,13 @@
                 </div>
                 <div class="faq-item">
                     <div class="faq-header"><div class="faq-question">Wo trainiert ihr?</div><div class="faq-toggle"></div></div>
-                    <div class="faq-body"><div class="faq-content">Aktuell sind wir zu Gast auf dem Stand der BSG Berlin. Dort finden unsere Übungs- und Wettkampfabende statt. Die geselligen Veranstaltungen halten wir an wechselnden Orten in Berlin ab.</div></div>
+                    <div class="faq-body"><div class="faq-content">Wir sind zu Gast auf dem Stand der <strong>BSG Berlin</strong>, gegründet 1882 (e.V.), in der Oderstraße 18 in 12051 Berlin. Dort finden unsere Übungs- und Wettkampfabende statt. Die geselligen Veranstaltungen halten wir an wechselnden Orten in Berlin ab.</div></div>
                 </div>
+            </div>
+
+            <div style="text-align:center; margin-top:44px;">
+                <p class="sec-intro" style="margin-bottom:20px;">Frage nicht dabei? Schreib uns einfach.</p>
+                <a href="#mitglied" class="btn btn-primary">Zum Anmeldeformular</a>
             </div>
         </div>
     </section>
@@ -768,10 +806,10 @@
         <div class="band-cap"><div class="band-ribbon"><span class="s-green"></span><span class="s-gold"></span><span class="s-white"></span><span class="s-black"></span></div></div>
         <svg class="footer-seal"><use href="#asg-seal"/></svg>
         <div class="footer-brand">A.S.G. zu Berlin</div>
-        <div class="footer-tag">Klarer Blick · Ruhige Hand · Fester Bund</div>
+        <div class="footer-tag">Üb’ Aug’ und Hand fürs Vaterland</div>
         <ul class="footer-links">
             <li><a href="#ueber">Über uns</a></li>
-            <li><a href="#programm">Programm</a></li>
+            <li><a href="#programm">Jahresplan</a></li>
             <li><a href="#mitglied">Mitglied werden</a></li>
             <li><a href="impressum.html">Impressum</a></li>
             <li><a href="datenschutz.html">Datenschutz</a></li>
@@ -853,7 +891,7 @@
         // iCal
         function dateToIcal(s){ return s.replace(/-/g,''); }
         function generateIcal(events){
-            let ical = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//A.S.G. zu Berlin//Semesterprogramm//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:A.S.G. zu Berlin – Semesterprogramm','X-WR-TIMEZONE:Europe/Berlin'];
+            let ical = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//A.S.G. zu Berlin//Jahresplan//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:A.S.G. zu Berlin – Jahresplan','X-WR-TIMEZONE:Europe/Berlin'];
             events.forEach(ev => {
                 ical.push('BEGIN:VEVENT'); ical.push(`UID:asg-berlin-ev-${ev.id}@asg-berlin.de`);
                 ical.push(`SUMMARY:${ev.title}`); ical.push(`LOCATION:${ev.location}\\, ${ev.address}`);
@@ -887,7 +925,7 @@
             renderCalendarGrid(events); renderCalendarList(events); lucide.createIcons();
             document.getElementById('calGrid').addEventListener('click', e => { const p=e.target.closest('[data-event-id]'); if(p){ const ev=allEvents.find(x=>x.id===parseInt(p.dataset.eventId)); if(ev) showEventModal(ev); } });
             document.getElementById('calList').addEventListener('click', e => { const p=e.target.closest('[data-event-id]'); if(p){ const ev=allEvents.find(x=>x.id===parseInt(p.dataset.eventId)); if(ev) showEventModal(ev); } });
-            document.getElementById('downloadAllIcal').addEventListener('click', () => downloadIcal(allEvents, 'asg-berlin-semesterprogramm.ics'));
+            document.getElementById('downloadAllIcal').addEventListener('click', () => downloadIcal(allEvents, 'asg-berlin-jahresplan.ics'));
         }
 
         // Termine direkt eingebettet — Fallback, damit der Kalender auch beim lokalen
